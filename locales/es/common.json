@@ -1,19 +1,26 @@
 {
   "nav": {
     "home": "Inicio",
-    "charterFlights": "Vuelos Charter",
+    "charterFlights": "Vuelos Privados",
     "airTours": "Tours Aéreos",
-    "more": "Más",
-    "language": "Idioma"
+    "contact": "Contacto",
+    "getQuote": "Cotizar"
   },
   "contact": {
     "phone": "(998) 740 7149",
     "email": "info@vuelatour.com",
-    "address": "Calle 1 Aeropuerto Cancún, 77569 Cancún, Q.R."
+    "address": "Calle 1 Aeropuerto Cancún, 77569 Cancún, Q.R.",
+    "title": "Contáctanos",
+    "subtitle": "¿Listo para vivir una experiencia única? Envíanos un mensaje y te responderemos en menos de 24 horas."
   },
   "footer": {
+    "description": "Vuelos privados y tours aéreos panorámicos en Cancún y la Riviera Maya. 15+ años de experiencia.",
+    "services": "Servicios",
+    "legal": "Legal",
+    "contactTitle": "Contacto",
     "terms": "Términos y Condiciones",
-    "privacy": "Políticas de Privacidad",
-    "rights": "Todos los derechos reservados"
+    "privacy": "Política de Privacidad",
+    "rights": "Todos los derechos reservados",
+    "yearsExperience": "años de experiencia"
   }
 }

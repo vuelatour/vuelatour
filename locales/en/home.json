@@ -1,79 +1,73 @@
 {
   "hero": {
-    "title": "Get a Quote for Your Private Charter Flight or Air Tour",
-    "subtitle": "The easiest, most relaxing, and beautiful way of exploring and traveling in the Riviera Maya, Mexico and Central America",
-    "badge": "Premium Air Experience",
-    "description": "Discover the Caribbean from a unique perspective with our luxury tours and charter flights.",
+    "badge": "Available today",
+    "titleLine1": "Private flights in",
+    "titleLine2": "Cancún & Riviera Maya",
+    "subtitle": "The fastest and most exclusive way to explore the Mexican Caribbean. Charter flights and panoramic air tours.",
     "cta": {
-      "primary": "Book Now",
-      "secondary": "View Tours"
+      "primary": "Get a Quote",
+      "secondary": "View Services"
     },
     "stats": {
-      "years": "Years Experience",
-      "flights": "Flights Completed",
-      "satisfaction": "Satisfaction"
-    },
-    "card": {
-      "label": "Next Flight",
-      "value": "Available Today"
+      "years": "years",
+      "flights": "flights",
+      "rating": "rating"
     }
   },
-  "flyAndDive": {
-    "title": "Fly and Dive",
-    "description": "Discover our brand-new fly and dive package!",
-    "cta": "Learn more about this unique package that combines the excitement of flying with the adventure of exploring the underwater world of the Riviera Maya.",
-    "button": "MORE ABOUT THE PACKAGE"
-  },
-  "airTours": {
-    "title": "Vuelatour Air Tours",
-    "subtitle1": "A completely personalized experience",
-    "description1": "Carry out your custom tour with us. We design each flight according to your preferences and schedules.",
-    "subtitle2": "An unforgettable panoramic air trip",
-    "description2": "Enjoy spectacular views from our Cessna 206 and Kodiak aircraft. Each flight is a unique experience over the most beautiful landscapes of the Riviera Maya.",
-    "cta": "Carry out your custom tour with us"
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Choose your next aerial adventure. Transparent pricing, immediate availability.",
+    "charter": {
+      "title": "Charter Flights",
+      "subtitle": "Travel to your destination privately",
+      "from": "From",
+      "viewAll": "View all destinations"
+    },
+    "tours": {
+      "title": "Air Tours",
+      "subtitle": "Unforgettable panoramic views",
+      "upTo": "Up to",
+      "passengers": "passengers",
+      "viewAll": "View all tours",
+      "hotelZone": {
+        "name": "Cancún Hotel Zone",
+        "description": "Fly over turquoise beaches and Nichupté lagoon"
+      },
+      "tulum": {
+        "name": "Tulum from Above",
+        "description": "Mayan ruins and cenotes from a unique perspective"
+      },
+      "chichenItza": {
+        "name": "Chichén Itzá",
+        "description": "Panoramic flight to the wonder of the Mayan world"
+      },
+      "rioLagartos": {
+        "name": "Río Lagartos",
+        "description": "Pink beaches and flamingos from the sky"
+      }
+    },
+    "custom": {
+      "title": "Need something custom?",
+      "description": "We design tailored flights to your needs. Special destinations, flexible schedules.",
+      "cta": "Contact Us"
+    }
   },
   "charterFlights": {
-    "title": "Private charter flights",
-    "description": "Private charter flights are a safe, fast and uncomplicated way to travel. Our airplanes have a capacity of up to 8 passengers.",
-    "features": {
-      "safe": "Safe, fast and uncomplicated",
-      "national": "National and international private flights",
-      "fleet": "4 airplanes: Cessna, Seneca, Embla, Kodiak",
-      "capacity": "Capacity up to 8 passengers"
+    "meta": {
+      "title": "Private Charter Flights | Vuelatour",
+      "description": "Private charter flights from Cancún to the best destinations in the Mexican Caribbean. Cozumel, Holbox, Mérida and more."
     },
-    "map": {
-      "title": "Our Maya World Flight Area"
-    },
-    "cta": {
-      "title": "Ask us for our destinations!",
-      "description": "We fly to more than 50 destinations in Mexico, USA and Central America. Your destination is just one flight away.",
-      "button": "GET A QUOTE FOR YOUR PRIVATE CHARTER FLIGHT"
-    }
+    "title": "Charter Flights",
+    "subtitle": "Travel to your destination privately and exclusively",
+    "description": "We offer private charter flights to the most spectacular destinations in the region. Take off from Cancún and reach your destination in minutes, not hours. Maximum comfort, total flexibility."
   },
-  "whyChoose": {
-    "title": "Why choose Vuelatour?",
-    "reason1": {
-      "title": "Local Pilots with more than 15 years of experience",
-      "description": "Our pilots know every corner of the region. Professionalism, safety and local knowledge guaranteed."
+  "airTours": {
+    "meta": {
+      "title": "Panoramic Air Tours | Vuelatour",
+      "description": "Unique aerial experiences over Cancún, the Riviera Maya and the Archaeological Zone. Unforgettable views of the Mexican Caribbean."
     },
-    "reason2": {
-      "title": "15 years of experience",
-      "description": "We are pioneers in the charter and air tour business in Cancun. Thousands of satisfied passengers support us."
-    },
-    "reason3": {
-      "title": "Excellence",
-      "description": "We have the best pilots in the area. International certifications and superior quality standards."
-    }
-  },
-  "jetset": {
-    "title": "Your Private Ride to Cancún",
-    "from": "From $30 USD",
-    "services": {
-      "airport": "Airport ↔ Hotel / Terminals",
-      "resort": "Resort & Beach Transfers",
-      "shopping": "Shopping & Tours"
-    },
-    "badge": "Safe • On-Time • 24/7 Service",
-    "button": "Book Now"
+    "title": "Air Tours",
+    "subtitle": "Unforgettable panoramic experiences",
+    "description": "Discover the Mexican Caribbean from a unique perspective. Our air tours offer spectacular views of the hotel zone, Mayan ruins, cenotes and the most beautiful beaches in the region."
   }
 }

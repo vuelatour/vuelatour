@@ -6,60 +6,81 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        primary: {
-          red: '#E63946',
-          dark: '#1D1D1D',
-          gray: '#333333',
+        // Vuelatour brand red (from logo)
+        brand: {
+          50: '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          300: '#fca5a5',
+          400: '#f87171',
+          500: '#E63946', // Vuelatour red
+          600: '#dc2626',
+          700: '#b91c1c',
+          800: '#991b1b',
+          900: '#7f1d1d',
         },
-        accent: {
-          yellow: '#FFD60A',
-          blue: '#457B9D',
-          cyan: '#06B6D4',
-          purple: '#8B5CF6',
+        // Navy for secondary elements and dark mode background
+        navy: {
+          50: '#f0f4f8',
+          100: '#d9e2ec',
+          200: '#bcccdc',
+          300: '#9fb3c8',
+          400: '#829ab1',
+          500: '#627d98',
+          600: '#486581',
+          700: '#334e68',
+          800: '#243b53',
+          900: '#102a43', // Dark mode background
+          950: '#0d1f33',
         },
-        dark: {
-          bg: '#0A0A0A',
-          card: '#111111',
-          border: '#1E1E1E',
+        // Semantic colors - Light mode
+        surface: {
+          light: '#ffffff',
+          dark: '#102a43', // Navy solid
+        },
+        background: {
+          light: '#fafafa',
+          dark: '#0d1f33', // Darker navy
+        },
+        muted: {
+          light: '#f5f5f5',
+          dark: '#1a3a5c', // Navy mid-tone
+        },
+        border: {
+          light: '#e5e5e5',
+          dark: '#234567', // Navy border
         },
       },
       fontFamily: {
-        sans: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
-        heading: ['var(--font-montserrat)', 'sans-serif'],
+        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      fontSize: {
+        'display': ['4.5rem', { lineHeight: '1', letterSpacing: '-0.02em' }],
+        'display-sm': ['3.75rem', { lineHeight: '1', letterSpacing: '-0.02em' }],
       },
       animation: {
-        'float': 'float 6s ease-in-out infinite',
+        'fade-in': 'fade-in 0.5s ease-out',
         'slide-up': 'slide-up 0.5s ease-out',
-        'fade-in': 'fade-in 0.6s ease-out',
-        'scale-in': 'scale-in 0.5s ease-out',
+        'slide-down': 'slide-down 0.3s ease-out',
       },
       keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-20px)' },
-        },
-        'slide-up': {
-          '0%': { transform: 'translateY(100px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
         'fade-in': {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
-        'scale-in': {
-          '0%': { transform: 'scale(0.9)', opacity: '0' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
+        'slide-up': {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-      },
-      backdropBlur: {
-        xs: '2px',
+        'slide-down': {
+          '0%': { opacity: '0', transform: 'translateY(-10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
       },
     },
   },

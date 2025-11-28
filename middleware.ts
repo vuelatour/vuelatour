@@ -1,17 +1,25 @@
-import createMiddleware from 'next-intl/middleware';
+import { NextResponse, type NextRequest } from 'next/server';
+import createIntlMiddleware from 'next-intl/middleware';
+import { updateSession } from '@/lib/supabase/middleware';
 
-export default createMiddleware({
-  // A list of all locales that are supported
+const intlMiddleware = createIntlMiddleware({
   locales: ['es', 'en'],
-
-  // Used when no locale matches
   defaultLocale: 'es',
-
-  // Always use a locale prefix
   localePrefix: 'always'
 });
 
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Handle admin routes with Supabase auth
+  if (pathname.startsWith('/admin')) {
+    return updateSession(request);
+  }
+
+  // Handle internationalized routes
+  return intlMiddleware(request);
+}
+
 export const config = {
-  // Match only internationalized pathnames
-  matcher: ['/', '/(es|en)/:path*']
+  matcher: ['/', '/(es|en)/:path*', '/admin/:path*']
 };

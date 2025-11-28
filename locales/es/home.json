@@ -1,79 +1,73 @@
 {
   "hero": {
-    "title": "Solicita una Cotización para tu Vuelo Charter Privado o Tour Aéreo",
-    "subtitle": "La forma más fácil, relajante y hermosa de explorar y viajar por la Riviera Maya, México y Centroamérica",
-    "badge": "Experiencia Premium en el Aire",
-    "description": "Descubre el Caribe desde una perspectiva única con nuestros tours y vuelos charter de lujo.",
+    "badge": "Disponible hoy",
+    "titleLine1": "Vuelos privados en",
+    "titleLine2": "Cancún y Riviera Maya",
+    "subtitle": "La forma más rápida y exclusiva de explorar el Caribe mexicano. Vuelos privados y tours aéreos panorámicos.",
     "cta": {
-      "primary": "Reservar Ahora",
-      "secondary": "Ver Tours"
+      "primary": "Solicitar Cotización",
+      "secondary": "Ver Servicios"
     },
     "stats": {
-      "years": "Años de Experiencia",
-      "flights": "Vuelos Realizados",
-      "satisfaction": "Satisfacción"
-    },
-    "card": {
-      "label": "Próximo Vuelo",
-      "value": "Disponible Hoy"
+      "years": "años",
+      "flights": "vuelos",
+      "rating": "rating"
     }
   },
-  "flyAndDive": {
-    "title": "Fly and Dive",
-    "description": "¡Descubre nuestro nuevo paquete de vuelo y buceo!",
-    "cta": "Conoce más sobre este paquete único que combina la emoción de volar con la aventura de explorar el mundo submarino de la Riviera Maya.",
-    "button": "MÁS SOBRE EL PAQUETE"
-  },
-  "airTours": {
-    "title": "Vuelatour Air Tours",
-    "subtitle1": "Una experiencia completamente personalizada",
-    "description1": "Lleva a cabo tu tour personalizado con nosotros. Diseñamos cada vuelo según tus preferencias y horarios.",
-    "subtitle2": "Un inolvidable viaje panorámico aéreo",
-    "description2": "Disfruta de vistas espectaculares desde nuestros aviones Cessna 206 y Kodiak. Cada vuelo es una experiencia única sobre los paisajes más hermosos de la Riviera Maya.",
-    "cta": "Realiza tu tour personalizado con nosotros"
+  "services": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Elige tu próxima aventura aérea. Precios transparentes, disponibilidad inmediata.",
+    "charter": {
+      "title": "Vuelos Privados",
+      "subtitle": "Viaja a tu destino de forma privada",
+      "from": "Desde",
+      "viewAll": "Ver todos los destinos"
+    },
+    "tours": {
+      "title": "Tours Aéreos",
+      "subtitle": "Vistas panorámicas inolvidables",
+      "upTo": "Hasta",
+      "passengers": "pasajeros",
+      "viewAll": "Ver todos los tours",
+      "hotelZone": {
+        "name": "Zona Hotelera Cancún",
+        "description": "Sobrevuela las playas turquesa y la laguna Nichupté"
+      },
+      "tulum": {
+        "name": "Tulum desde el Aire",
+        "description": "Ruinas mayas y cenotes desde una perspectiva única"
+      },
+      "chichenItza": {
+        "name": "Chichén Itzá",
+        "description": "Vuelo panorámico a la maravilla del mundo maya"
+      },
+      "rioLagartos": {
+        "name": "Río Lagartos",
+        "description": "Las playas rosadas y flamingos desde el cielo"
+      }
+    },
+    "custom": {
+      "title": "¿Necesitas algo personalizado?",
+      "description": "Diseñamos vuelos a medida según tus necesidades. Destinos especiales, horarios flexibles.",
+      "cta": "Contactar"
+    }
   },
   "charterFlights": {
-    "title": "Vuelos charter privados",
-    "description": "Los vuelos charter privados son una forma segura, rápida y sin complicaciones de viajar. Nuestros aviones tienen capacidad de hasta 8 pasajeros.",
-    "features": {
-      "safe": "Seguro, rápido y sin complicaciones",
-      "national": "Vuelos privados nacionales e internacionales",
-      "fleet": "4 aviones: Cessna, Seneca, Embla, Kodiak",
-      "capacity": "Capacidad hasta 8 pasajeros"
+    "meta": {
+      "title": "Vuelos Privados | Vuelatour",
+      "description": "Vuelos privados desde Cancún a los mejores destinos del Caribe mexicano. Cozumel, Holbox, Mérida y más."
     },
-    "map": {
-      "title": "Nuestra Área de Vuelo del Mundo Maya"
-    },
-    "cta": {
-      "title": "¡Pregúntanos por nuestros destinos!",
-      "description": "Volamos a más de 50 destinos en México, USA y Centroamérica. Tu destino está a solo un vuelo de distancia.",
-      "button": "OBTÉN UNA COTIZACIÓN PARA TU VUELO CHARTER PRIVADO"
-    }
+    "title": "Vuelos Privados",
+    "subtitle": "Viaja a tu destino de forma privada y exclusiva",
+    "description": "Ofrecemos vuelos privados a los destinos más espectaculares de la región. Despega desde Cancún y llega a tu destino en minutos, no en horas. Máximo confort, flexibilidad total."
   },
-  "whyChoose": {
-    "title": "¿Por qué elegir Vuelatour?",
-    "reason1": {
-      "title": "Pilotos locales con más de 15 años de experiencia",
-      "description": "Nuestros pilotos conocen cada rincón de la región. Profesionalismo, seguridad y conocimiento local garantizados."
+  "airTours": {
+    "meta": {
+      "title": "Tours Aéreos Panorámicos | Vuelatour",
+      "description": "Experiencias aéreas únicas sobre Cancún, la Riviera Maya y la Zona Arqueológica. Vistas inolvidables del Caribe mexicano."
     },
-    "reason2": {
-      "title": "15 años de experiencia",
-      "description": "Somos pioneros en el negocio de charters y tours aéreos en Cancún. Miles de pasajeros satisfechos nos respaldan."
-    },
-    "reason3": {
-      "title": "Excelencia",
-      "description": "Contamos con los mejores pilotos del área. Certificaciones internacionales y estándares de calidad superiores."
-    }
-  },
-  "jetset": {
-    "title": "Tu Transporte Privado a Cancún",
-    "from": "Desde $30 USD",
-    "services": {
-      "airport": "Aeropuerto ↔ Hotel / Terminales",
-      "resort": "Traslados a Resort & Playa",
-      "shopping": "Shopping & Tours"
-    },
-    "badge": "Seguro • Puntual • Servicio 24/7",
-    "button": "Reserva Ahora"
+    "title": "Tours Aéreos",
+    "subtitle": "Experiencias panorámicas inolvidables",
+    "description": "Descubre el Caribe mexicano desde una perspectiva única. Nuestros tours aéreos te ofrecen vistas espectaculares de la zona hotelera, las ruinas mayas, cenotes y las playas más hermosas de la región."
   }
 }
