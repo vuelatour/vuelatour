@@ -70,7 +70,7 @@ export default function Footer({ contactInfo }: FooterProps) {
   const email = contactInfo?.email || 'info@vuelatour.com';
 
   return (
-    <footer className="border-t border-default">
+    <footer className="bg-navy-900 border-t border-navy-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer */}
         <div className="py-12 md:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
@@ -93,7 +93,7 @@ export default function Footer({ contactInfo }: FooterProps) {
                 title={locale === 'es' ? 'Vuelatour' : 'Vuelatour'}
               />
             </Link>
-            <p className="text-sm text-muted mb-6 max-w-xs">
+            <p className="text-sm text-gray-400 mb-6 max-w-xs">
               {t('footer.description')} {getYearsOfExperienceFormatted()} {t('footer.yearsExperience')}.
             </p>
             {/* Social Links - Only show if there are any */}
@@ -105,7 +105,7 @@ export default function Footer({ contactInfo }: FooterProps) {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 md:w-11 md:h-11 rounded-lg surface-muted flex items-center justify-center text-muted hover:text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors"
+                    className="w-10 h-10 md:w-11 md:h-11 rounded-lg bg-navy-800 flex items-center justify-center text-gray-400 hover:text-brand-400 hover:bg-navy-700 transition-colors"
                     aria-label={social.label}
                   >
                     <social.icon className="w-5 h-5" />
@@ -117,12 +117,12 @@ export default function Footer({ contactInfo }: FooterProps) {
 
           {/* Services */}
           <div>
-            <h4 className="font-semibold mb-4">{t('footer.services')}</h4>
+            <h4 className="font-semibold text-white mb-4">{t('footer.services')}</h4>
             <ul className="space-y-3">
               <li>
                 <Link
                   href={`/${locale}/charter-flights`}
-                  className="text-sm text-muted hover:text-foreground transition-colors"
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
                 >
                   {t('nav.charterFlights')}
                 </Link>
@@ -130,7 +130,7 @@ export default function Footer({ contactInfo }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/air-tours`}
-                  className="text-sm text-muted hover:text-foreground transition-colors"
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
                 >
                   {t('nav.airTours')}
                 </Link>
@@ -138,7 +138,7 @@ export default function Footer({ contactInfo }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/contact`}
-                  className="text-sm text-muted hover:text-foreground transition-colors"
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
                 >
                   {t('nav.contact')}
                 </Link>
@@ -148,12 +148,12 @@ export default function Footer({ contactInfo }: FooterProps) {
 
           {/* Legal */}
           <div>
-            <h4 className="font-semibold mb-4">{t('footer.legal')}</h4>
+            <h4 className="font-semibold text-white mb-4">{t('footer.legal')}</h4>
             <ul className="space-y-3">
               <li>
                 <Link
                   href={`/${locale}/terms`}
-                  className="text-sm text-muted hover:text-foreground transition-colors"
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
                 >
                   {t('footer.terms')}
                 </Link>
@@ -161,7 +161,7 @@ export default function Footer({ contactInfo }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/privacy`}
-                  className="text-sm text-muted hover:text-foreground transition-colors"
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
                 >
                   {t('footer.privacy')}
                 </Link>
@@ -169,7 +169,7 @@ export default function Footer({ contactInfo }: FooterProps) {
               <li>
                 <Link
                   href={`/${locale}/cookies`}
-                  className="text-sm text-muted hover:text-foreground transition-colors"
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
                 >
                   {t('footer.cookies')}
                 </Link>
@@ -179,26 +179,26 @@ export default function Footer({ contactInfo }: FooterProps) {
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold mb-4">{t('footer.contactTitle')}</h4>
+            <h4 className="font-semibold text-white mb-4">{t('footer.contactTitle')}</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <MapPinIcon className="w-4 h-4 text-muted mt-0.5 flex-shrink-0" />
-                <span className="text-sm text-muted">{address}</span>
+                <MapPinIcon className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                <span className="text-sm text-gray-400">{address}</span>
               </li>
               <li className="flex items-center gap-3">
-                <PhoneIcon className="w-4 h-4 text-muted flex-shrink-0" />
+                <PhoneIcon className="w-4 h-4 text-gray-500 flex-shrink-0" />
                 <a
                   href={`tel:${phoneLink}`}
-                  className="text-sm text-muted hover:text-foreground transition-colors"
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
                 >
                   {phone}
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <EnvelopeIcon className="w-4 h-4 text-muted flex-shrink-0" />
+                <EnvelopeIcon className="w-4 h-4 text-gray-500 flex-shrink-0" />
                 <a
                   href={`mailto:${email}`}
-                  className="text-sm text-muted hover:text-foreground transition-colors"
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
                 >
                   {email}
                 </a>
@@ -208,14 +208,14 @@ export default function Footer({ contactInfo }: FooterProps) {
         </div>
 
         {/* Bottom Bar */}
-        <div className="py-6 border-t border-default">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted">
+        <div className="py-6 border-t border-navy-800">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-400">
             <div className="flex items-center gap-4">
               <p>© 2025 Vuelatour. {t('footer.rights')}</p>
               <span>•</span>
               <Link
                 href="/admin/login"
-                className="hover:text-foreground transition-colors"
+                className="hover:text-white transition-colors"
               >
                 Admin
               </Link>

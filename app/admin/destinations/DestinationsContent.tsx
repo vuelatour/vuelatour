@@ -102,7 +102,6 @@ interface Destination {
   services_included?: string[] | null;
   benefits?: Benefit[] | null;
   aircraft_pricing?: AircraftPricing[] | null;
-  max_passengers?: number | null;
   gallery_images?: string[] | null;
   meta_title_es?: string | null;
   meta_title_en?: string | null;
@@ -132,7 +131,6 @@ const emptyDestination: Omit<Destination, 'id'> = {
   services_included: ['climate', 'luggage', 'water', 'photos', 'sanitizer', 'safety'],
   benefits: DEFAULT_BENEFITS,
   aircraft_pricing: DEFAULT_AIRCRAFT_PRICING,
-  max_passengers: 5,
   gallery_images: [],
   meta_title_es: '',
   meta_title_en: '',
@@ -183,7 +181,6 @@ export default function DestinationsContent({ user, destinations: initialDestina
       services_included: destination.services_included || ['climate', 'luggage', 'water', 'photos', 'sanitizer', 'safety'],
       benefits: (destination.benefits && destination.benefits.length > 0) ? destination.benefits : DEFAULT_BENEFITS,
       aircraft_pricing: (destination.aircraft_pricing && destination.aircraft_pricing.length > 0) ? destination.aircraft_pricing : DEFAULT_AIRCRAFT_PRICING,
-      max_passengers: destination.max_passengers || 5,
       gallery_images: destination.gallery_images || [],
       meta_title_es: destination.meta_title_es || '',
       meta_title_en: destination.meta_title_en || '',

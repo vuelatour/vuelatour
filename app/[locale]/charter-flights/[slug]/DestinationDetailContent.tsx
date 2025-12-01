@@ -55,7 +55,6 @@ interface Destination {
   services_included?: string[] | null;
   benefits?: Benefit[] | null;
   aircraft_pricing?: AircraftPricing[] | null;
-  max_passengers?: number | null;
   gallery_images?: string[] | null;
 }
 

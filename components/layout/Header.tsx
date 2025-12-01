@@ -53,10 +53,8 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled || mobileMenuOpen
-          ? 'bg-white dark:bg-navy-900 shadow-soft'
-          : 'bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 bg-navy-900 transition-all duration-300 ${
+        scrolled || mobileMenuOpen ? 'shadow-lg' : ''
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -87,7 +85,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-muted hover:text-foreground transition-colors"
+                className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
               >
                 {link.label}
               </Link>
@@ -97,7 +95,7 @@ export default function Header() {
           {/* Right side actions */}
           <div className="flex items-center gap-2">
             {/* Language Switcher */}
-            <div className="hidden sm:flex items-center gap-1 p-1 rounded-lg surface-muted">
+            <div className="hidden sm:flex items-center gap-1 p-1 rounded-lg bg-navy-800">
               {['es', 'en'].map((lang) => (
                 <button
                   key={lang}
@@ -105,7 +103,7 @@ export default function Header() {
                   className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
                     locale === lang
                       ? 'bg-brand-500 text-white'
-                      : 'text-muted hover:text-foreground'
+                      : 'text-gray-400 hover:text-white'
                   }`}
                 >
                   {lang.toUpperCase()}
@@ -116,7 +114,7 @@ export default function Header() {
             {/* Theme Toggle */}
             <button
               onClick={toggleDarkMode}
-              className="p-2 rounded-lg surface-muted transition-colors"
+              className="p-2 rounded-lg bg-navy-800 text-gray-300 hover:text-white transition-colors"
               aria-label="Toggle theme"
             >
               {darkMode ? (
@@ -137,7 +135,7 @@ export default function Header() {
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg surface-muted transition-colors"
+              className="md:hidden p-2 rounded-lg bg-navy-800 text-gray-300 hover:text-white transition-colors"
             >
               {mobileMenuOpen ? (
                 <XMarkIcon className="w-6 h-6" />
@@ -150,13 +148,13 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-default animate-slide-down bg-white dark:bg-navy-900">
+          <div className="md:hidden py-4 border-t border-navy-800 animate-slide-down bg-navy-900">
             <nav className="flex flex-col gap-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="px-4 py-3 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-navy-800 transition-colors"
+                  className="px-4 py-3 text-sm font-medium rounded-lg text-gray-200 hover:bg-navy-800 transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
@@ -164,7 +162,7 @@ export default function Header() {
               ))}
 
               {/* Mobile Language */}
-              <div className="px-4 pt-4 mt-2 border-t border-default">
+              <div className="px-4 pt-4 mt-2 border-t border-navy-800">
                 <div className="flex gap-2">
                   {['es', 'en'].map((lang) => (
                     <button
@@ -176,7 +174,7 @@ export default function Header() {
                       className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
                         locale === lang
                           ? 'bg-brand-500 text-white'
-                          : 'bg-gray-100 dark:bg-navy-800 text-gray-600 dark:text-gray-300'
+                          : 'bg-navy-800 text-gray-300'
                       }`}
                     >
                       {lang === 'es' ? 'Español' : 'English'}

@@ -61,7 +61,6 @@ interface AirTour {
   services_included?: string[] | null;
   features?: Feature[] | null;
   aircraft_pricing?: AircraftPricing[] | null;
-  max_passengers?: number | null;
   departure_location_es?: string | null;
   departure_location_en?: string | null;
   gallery_images?: string[] | null;
@@ -228,8 +227,6 @@ export default function TourDetailContent({
   const prevLightboxImage = () => {
     setCurrentSlide((prev) => (prev - 1 + galleryImages.length) % galleryImages.length);
   };
-
-  const maxPassengers = tour.max_passengers || 5;
 
   return (
     <>

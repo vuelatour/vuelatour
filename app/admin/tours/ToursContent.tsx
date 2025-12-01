@@ -103,7 +103,6 @@ interface AirTour {
   services_included?: string[] | null;
   features?: Feature[] | null;
   aircraft_pricing?: AircraftPricing[] | null;
-  max_passengers?: number | null;
   departure_location_es?: string | null;
   departure_location_en?: string | null;
   gallery_images?: string[] | null;
@@ -137,7 +136,6 @@ const emptyTour: Omit<AirTour, 'id'> = {
   services_included: ['pilot', 'safety', 'photos', 'water', 'headset', 'briefing'],
   features: DEFAULT_FEATURES,
   aircraft_pricing: DEFAULT_AIRCRAFT_PRICING,
-  max_passengers: 5,
   departure_location_es: 'Aeropuerto de Cancún',
   departure_location_en: 'Cancún Airport',
   gallery_images: [],
@@ -194,7 +192,6 @@ export default function ToursContent({ user, tours: initialTours, availableServi
       services_included: tour.services_included || ['pilot', 'safety', 'photos', 'water', 'headset', 'briefing'],
       features: tour.features || DEFAULT_FEATURES,
       aircraft_pricing: (tour.aircraft_pricing && tour.aircraft_pricing.length > 0) ? tour.aircraft_pricing : DEFAULT_AIRCRAFT_PRICING,
-      max_passengers: tour.max_passengers || 5,
       departure_location_es: tour.departure_location_es || 'Aeropuerto de Cancún',
       departure_location_en: tour.departure_location_en || 'Cancún Airport',
       gallery_images: tour.gallery_images || [],

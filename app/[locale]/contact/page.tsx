@@ -73,7 +73,7 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.2847392889904!2d-86.87699268507456!3d21.036544985994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f4c2b05aef653db%3A0xce32b73c625fcd8a!2sAeropuerto%20Internacional%20de%20Canc%C3%BAn!5e0!3m2!1ses-419!2smx!4v1640000000000!5m2!1ses-419!2smx';
 
   return (
-    <main className="min-h-screen pt-20 pb-16">
+    <main className="min-h-screen pt-28 md:pt-32 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -87,7 +87,7 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Form */}
-          <div className="order-2 lg:order-1">
+          <div className="order-1 lg:order-1">
             <div className="card p-6 md:p-8">
               <h2 className="text-xl font-semibold mb-6">
                 {locale === 'es' ? 'Envíanos un mensaje' : 'Send us a message'}
@@ -97,7 +97,7 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
           </div>
 
           {/* Contact Info */}
-          <div className="order-1 lg:order-2">
+          <div className="order-2 lg:order-2">
             <div className="space-y-6">
               {contactInfoItems.map((item, index) => (
                 <div key={index} className="card p-4 flex items-start gap-4">
