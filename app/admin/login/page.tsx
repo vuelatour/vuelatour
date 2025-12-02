@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { EnvelopeIcon, LockClosedIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { createClient } from '@/lib/supabase/client';
 
@@ -60,10 +61,15 @@ export default function AdminLoginPage() {
       <div className="relative w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-semibold text-white">
-            vuela<span className="text-brand-500">tour</span>
-          </h1>
-          <p className="text-navy-400 mt-2 text-sm">Panel de Administración</p>
+          <Image
+            src="/images/logo/vuelatour-logo.png"
+            alt="Vuelatour - Panel de Administración"
+            width={180}
+            height={48}
+            className="h-12 w-auto mx-auto"
+            priority
+          />
+          <p className="text-navy-400 mt-3 text-sm">Panel de Administración</p>
         </div>
 
         {/* Login Card */}
