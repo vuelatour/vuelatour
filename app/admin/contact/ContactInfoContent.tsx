@@ -14,8 +14,15 @@ import {
   MapIcon,
   GlobeAltIcon,
   CheckIcon,
+  PlusIcon,
+  TrashIcon,
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
+
+interface Phone {
+  display: string;
+  link: string;
+}
 
 interface ContactInfo {
   id: string;
@@ -23,6 +30,7 @@ interface ContactInfo {
   address_en: string;
   phone: string;
   phone_link: string;
+  phones: Phone[] | null;
   email: string;
   hours_es: string;
   hours_en: string;
@@ -68,15 +76,23 @@ export default function ContactInfoContent({ user, contactInfo }: ContactInfoCon
     youtube_url: contactInfo?.youtube_url || '',
   });
 
+  const [phones, setPhones] = useState<Phone[]>(
+    contactInfo?.phones || [{ display: '', link: '' }]
+  );
+
   const handleSave = async () => {
     setSaving(true);
     try {
+      // Filter out empty phones
+      const validPhones = phones.filter(p => p.display.trim() !== '' && p.link.trim() !== '');
+
       if (contactInfo?.id) {
         // Update existing
         const { error } = await supabase
           .from('contact_info')
           .update({
             ...formData,
+            phones: validPhones,
             updated_at: new Date().toISOString(),
           })
           .eq('id', contactInfo.id);
@@ -86,7 +102,10 @@ export default function ContactInfoContent({ user, contactInfo }: ContactInfoCon
         // Insert new
         const { error } = await supabase
           .from('contact_info')
-          .insert(formData);
+          .insert({
+            ...formData,
+            phones: validPhones,
+          });
 
         if (error) throw error;
       }
@@ -99,6 +118,20 @@ export default function ContactInfoContent({ user, contactInfo }: ContactInfoCon
     } finally {
       setSaving(false);
     }
+  };
+
+  const addPhone = () => {
+    setPhones([...phones, { display: '', link: '' }]);
+  };
+
+  const removePhone = (index: number) => {
+    setPhones(phones.filter((_, i) => i !== index));
+  };
+
+  const updatePhone = (index: number, field: 'display' | 'link', value: string) => {
+    const newPhones = [...phones];
+    newPhones[index][field] = value;
+    setPhones(newPhones);
   };
 
   const tabs = [
@@ -193,37 +226,64 @@ export default function ContactInfoContent({ user, contactInfo }: ContactInfoCon
                 </div>
               </div>
 
-              {/* Phone */}
+              {/* Phones */}
               <div className="space-y-4">
-                <div className="flex items-center gap-2 text-navy-300">
-                  <PhoneIcon className="w-5 h-5" />
-                  <span className="font-medium">Teléfono</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-navy-300">
+                    <PhoneIcon className="w-5 h-5" />
+                    <span className="font-medium">Teléfonos</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={addPhone}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-navy-800 hover:bg-navy-700 text-navy-300 hover:text-white rounded-lg transition-colors text-sm"
+                  >
+                    <PlusIcon className="w-4 h-4" />
+                    Agregar teléfono
+                  </button>
                 </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-navy-400 mb-1">
-                      Número mostrado
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="+52 998 740 7149"
-                      className="w-full px-3 py-2 bg-navy-800 border border-navy-700 rounded-lg text-white placeholder-navy-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-navy-400 mb-1">
-                      Número para enlace (sin espacios)
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.phone_link}
-                      onChange={(e) => setFormData({ ...formData, phone_link: e.target.value })}
-                      placeholder="+529987407149"
-                      className="w-full px-3 py-2 bg-navy-800 border border-navy-700 rounded-lg text-white placeholder-navy-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
-                    />
-                  </div>
+
+                <div className="space-y-3">
+                  {phones.map((phone, index) => (
+                    <div key={index} className="flex gap-3 items-start p-3 bg-navy-800 rounded-lg border border-navy-700">
+                      <div className="flex-1 grid md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-medium text-navy-400 mb-1">
+                            Número mostrado
+                          </label>
+                          <input
+                            type="text"
+                            value={phone.display}
+                            onChange={(e) => updatePhone(index, 'display', e.target.value)}
+                            placeholder="+52 998 740 7149"
+                            className="w-full px-3 py-2 bg-navy-900 border border-navy-600 rounded-lg text-white placeholder-navy-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-navy-400 mb-1">
+                            Número para enlace (sin espacios)
+                          </label>
+                          <input
+                            type="text"
+                            value={phone.link}
+                            onChange={(e) => updatePhone(index, 'link', e.target.value)}
+                            placeholder="+529987407149"
+                            className="w-full px-3 py-2 bg-navy-900 border border-navy-600 rounded-lg text-white placeholder-navy-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                          />
+                        </div>
+                      </div>
+                      {phones.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removePhone(index)}
+                          className="mt-6 p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                          title="Eliminar teléfono"
+                        >
+                          <TrashIcon className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
 

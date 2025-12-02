@@ -11,11 +11,17 @@ import {
 import { FaFacebook, FaInstagram, FaTiktok, FaWhatsapp, FaYoutube } from 'react-icons/fa';
 import { getYearsOfExperienceFormatted } from '@/lib/constants';
 
+interface Phone {
+  display: string;
+  link: string;
+}
+
 interface ContactInfo {
   address_es?: string;
   address_en?: string;
   phone?: string;
   phone_link?: string;
+  phones?: Phone[];
   email?: string;
   whatsapp_number?: string;
   facebook_url?: string;
@@ -65,8 +71,12 @@ export default function Footer({ contactInfo }: FooterProps) {
   const address = locale === 'es'
     ? (contactInfo?.address_es || 'Aeropuerto Internacional de Cancún, Terminal FBO, Cancún, Q.R., México')
     : (contactInfo?.address_en || 'Cancún International Airport, FBO Terminal, Cancún, Q.R., Mexico');
-  const phone = contactInfo?.phone || '+52 998 740 7149';
-  const phoneLink = contactInfo?.phone_link || '+529987407149';
+
+  // Get phones array or fallback to old phone field
+  const phones = contactInfo?.phones && Array.isArray(contactInfo.phones) && contactInfo.phones.length > 0
+    ? contactInfo.phones
+    : [{ display: contactInfo?.phone || '+52 998 740 7149', link: contactInfo?.phone_link || '+529987407149' }];
+
   const email = contactInfo?.email || 'info@vuelatour.com';
 
   return (
@@ -185,15 +195,17 @@ export default function Footer({ contactInfo }: FooterProps) {
                 <MapPinIcon className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
                 <span className="text-sm text-gray-400">{address}</span>
               </li>
-              <li className="flex items-center gap-3">
-                <PhoneIcon className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                <a
-                  href={`tel:${phoneLink}`}
-                  className="text-sm text-gray-400 hover:text-white transition-colors"
-                >
-                  {phone}
-                </a>
-              </li>
+              {phones.map((phone, index) => (
+                <li key={`phone-${index}`} className="flex items-center gap-3">
+                  <PhoneIcon className="w-4 h-4 text-gray-500 flex-shrink-0" />
+                  <a
+                    href={`tel:${phone.link}`}
+                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                  >
+                    {phone.display}
+                  </a>
+                </li>
+              ))}
               <li className="flex items-center gap-3">
                 <EnvelopeIcon className="w-4 h-4 text-gray-500 flex-shrink-0" />
                 <a

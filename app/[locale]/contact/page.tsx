@@ -31,6 +31,11 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
     .select('*')
     .single();
 
+  // Get phones array or fallback to old phone field
+  const phones = dbContactInfo?.phones && Array.isArray(dbContactInfo.phones) && dbContactInfo.phones.length > 0
+    ? dbContactInfo.phones
+    : [{ display: dbContactInfo?.phone || '+52 998 740 7149', link: dbContactInfo?.phone_link || '+529987407149' }];
+
   // Build contact info array with database values or defaults
   const contactInfoItems = [
     {
@@ -39,12 +44,6 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
       content: locale === 'es'
         ? (dbContactInfo?.address_es || 'Aeropuerto Internacional de Cancún, Terminal FBO, Cancún, Q.R., México')
         : (dbContactInfo?.address_en || 'Cancún International Airport, FBO Terminal, Cancún, Q.R., Mexico'),
-    },
-    {
-      icon: PhoneIcon,
-      title: locale === 'es' ? 'Teléfono' : 'Phone',
-      content: dbContactInfo?.phone || '+52 998 740 7149',
-      href: `tel:${dbContactInfo?.phone_link || '+529987407149'}`,
     },
     {
       icon: EnvelopeIcon,
@@ -119,6 +118,31 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
                   </div>
                 </div>
               ))}
+
+              {/* Multiple Phones in Single Card */}
+              <div className="card p-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-2 rounded-lg bg-brand-100 dark:bg-brand-900/30">
+                    <PhoneIcon className="w-5 h-5 text-brand-600 dark:text-brand-400" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-medium mb-1">
+                      {locale === 'es' ? 'Teléfono' : 'Phone'}
+                    </h3>
+                    <div className="space-y-2">
+                      {phones.map((phone, index) => (
+                        <a
+                          key={`phone-${index}`}
+                          href={`tel:${phone.link}`}
+                          className="block text-muted hover:text-brand-500 transition-colors"
+                        >
+                          {phone.display}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               {/* WhatsApp CTA */}
               <a
