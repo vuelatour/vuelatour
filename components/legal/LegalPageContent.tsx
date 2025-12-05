@@ -1,7 +1,6 @@
 'use client';
 
 import ReactMarkdown from 'react-markdown';
-import Header from '@/components/layout/Header';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
@@ -39,9 +38,7 @@ export default function LegalPageContent({ locale, page, fallbackTitle }: LegalP
     : null;
 
   return (
-    <>
-      <Header />
-      <main className="min-h-screen pt-20 pb-16">
+    <main className="min-h-screen pt-20 pb-16">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-navy-900 to-navy-950 py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -138,7 +135,6 @@ export default function LegalPageContent({ locale, page, fallbackTitle }: LegalP
             </div>
           </div>
         </section>
-      </main>
-    </>
+    </main>
   );
 }

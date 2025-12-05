@@ -21,7 +21,6 @@ import {
   ChevronRightIcon,
 } from '@heroicons/react/24/outline';
 import { useCurrency } from '@/contexts/CurrencyContext';
-import Header from '@/components/layout/Header';
 import LazySection from '@/components/ui/LazySection';
 
 interface Benefit {
@@ -205,7 +204,6 @@ export default function DestinationDetailContent({
 
   return (
     <>
-      <Header />
       <main className="min-h-screen pt-20">
         {/* Hero Section */}
         <section className="relative h-[50vh] md:h-[60vh] overflow-hidden">
