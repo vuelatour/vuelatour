@@ -14,7 +14,10 @@
       "Bash(npm run build:*)",
       "Bash(Select-String -Pattern \"(Error|Warning|Compiled)\")",
       "Bash(Select-Object -First 20)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nfix: Default language to English and fix TypeScript types\n\n- Change default locale from Spanish to English\n- Disable automatic browser language detection (always English by default)\n- Add Phone interface type to contact page to fix build error\n- User language preference is still saved in cookies when changed manually\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nfix: Default language to English and fix TypeScript types\n\n- Change default locale from Spanish to English\n- Disable automatic browser language detection (always English by default)\n- Add Phone interface type to contact page to fix build error\n- User language preference is still saved in cookies when changed manually\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(npm install:*)",
+      "Bash(mkdir:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import { usePathname, useRouter } from 'next/navigation';
 import { Bars3Icon, XMarkIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+import ChristmasDecoration from '@/components/decorations/ChristmasDecoration';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -197,6 +198,9 @@ export default function Header() {
           </div>
         )}
       </div>
+
+      {/* Christmas Decoration - Only shows in December */}
+      <ChristmasDecoration />
     </header>
   );
 }

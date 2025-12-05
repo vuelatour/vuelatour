@@ -158,6 +158,36 @@ export default function ContactForm({ locale, searchParams }: ContactFormProps) 
 
       if (insertError) throw insertError;
 
+      // Send email notification to Vuelatour team
+      try {
+        await fetch('/api/send-notification', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            message: formData.message,
+            service_type: formData.service_type,
+            destination: formData.destination,
+            destination_other: formData.destination_other,
+            departure_location: formData.departure_location,
+            departure_location_other: formData.departure_location_other,
+            travel_date: formData.travel_date,
+            departure_time: formData.departure_time,
+            return_date: formData.return_date,
+            return_time: formData.return_time,
+            aircraft_selected: formData.aircraft_selected,
+            tour: formData.tour,
+            number_of_passengers: parseInt(formData.number_of_passengers) || null,
+            preSelectedPrice: preSelectedPrice,
+          }),
+        });
+      } catch (emailError) {
+        // Log but don't fail the form submission if email fails
+        console.error('Email notification error:', emailError);
+      }
+
       setSuccess(true);
       setFormData({
         name: '',
