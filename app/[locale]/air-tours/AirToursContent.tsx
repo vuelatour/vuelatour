@@ -10,7 +10,6 @@ import {
   PhoneIcon,
 } from '@heroicons/react/24/outline';
 import { useCurrency } from '@/contexts/CurrencyContext';
-import Header from '@/components/layout/Header';
 import LazySection from '@/components/ui/LazySection';
 
 interface AircraftPricing {
@@ -87,9 +86,7 @@ export default function AirToursContent({ locale, tours }: AirToursContentProps)
   const { formatPrice, currency } = useCurrency();
 
   return (
-    <>
-      <Header />
-      <main className="min-h-screen pt-20">
+    <main className="min-h-screen pt-20">
         {/* Hero Section */}
         <section className="relative py-16 md:py-24 bg-gradient-to-b from-brand-50 to-white dark:from-navy-950 dark:to-navy-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -223,7 +220,6 @@ export default function AirToursContent({ locale, tours }: AirToursContentProps)
             </Link>
           </div>
         </LazySection>
-      </main>
-    </>
+    </main>
   );
 }
