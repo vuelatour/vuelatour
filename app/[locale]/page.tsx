@@ -1,5 +1,6 @@
 import HeroSection from '@/components/home/HeroSection';
 import LazyServicesWrapper from '@/components/home/LazyServicesWrapper';
+import TripAdvisorSection from '@/components/home/TripAdvisorSection';
 import { LocalBusinessSchema, ServiceSchema, OrganizationSchema } from '@/components/seo/SchemaMarkup';
 import { createClient } from '@/lib/supabase/server';
 import { getYearsOfExperienceFormatted } from '@/lib/constants';
@@ -140,6 +141,7 @@ export default async function HomePage({ params }: HomePageProps) {
         destinations={destinations || []}
         tours={tours || []}
       />
+      <TripAdvisorSection locale={locale} />
     </>
   );
 }

@@ -67,21 +67,8 @@ export default function ChristmasDecoration() {
       className="absolute top-full left-0 right-0 pointer-events-none z-40 overflow-hidden"
       aria-hidden="true"
     >
-      <div className="relative w-full flex justify-between px-4 md:px-8 lg:px-16">
-        {/* Left decoration - hidden on mobile */}
-        <div className="hidden md:block w-32 lg:w-40 -mt-2">
-          <Lottie
-            animationData={animationData}
-            loop={true}
-            autoplay={true}
-            style={{ width: '100%', height: 'auto' }}
-          />
-        </div>
-
-        {/* Spacer for mobile to push right decoration to the right */}
-        <div className="flex-1 md:hidden" />
-
-        {/* Right decoration (mirrored) - always visible */}
+      <div className="relative w-full flex justify-end px-4 md:px-8 lg:px-16">
+        {/* Right decoration (mirrored) */}
         <div className="w-24 md:w-32 lg:w-40 -mt-2" style={{ transform: 'scaleX(-1)' }}>
           <Lottie
             animationData={animationData}
