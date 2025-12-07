@@ -43,13 +43,15 @@ export default function TripAdvisorRatingWidget({ locale = 'en' }: TripAdvisorRa
       rel="noopener noreferrer"
       className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-navy-800 transition-colors"
     >
-      <Image
-        src="https://static.tacdn.com/img2/brand_refresh/Tripadvisor_logomark_solid_green.svg"
-        alt="TripAdvisor"
-        width={32}
-        height={32}
-        className="w-8 h-8"
-      />
+      <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
+        <Image
+          src="https://static.tacdn.com/img2/brand_refresh_2025/logos/logo.svg"
+          alt="TripAdvisor"
+          width={28}
+          height={28}
+          className="w-7 h-7"
+        />
+      </div>
       <div className="flex flex-col">
         <TripAdvisorRating />
         <span className="text-xs text-muted mt-1">{t.reviews}</span>

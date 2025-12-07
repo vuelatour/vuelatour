@@ -181,13 +181,15 @@ export default function TripAdvisorSection({ locale }: TripAdvisorSectionProps) 
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <Image
-              src="https://static.tacdn.com/img2/brand_refresh/Tripadvisor_lockup_horizontal_secondary.svg"
-              alt="TripAdvisor"
-              width={150}
-              height={30}
-              className="h-8 w-auto"
-            />
+            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-md">
+              <Image
+                src="https://static.tacdn.com/img2/brand_refresh_2025/logos/logo.svg"
+                alt="TripAdvisor"
+                width={36}
+                height={36}
+                className="w-9 h-9"
+              />
+            </div>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             {t.title}
@@ -250,13 +252,15 @@ export default function TripAdvisorSection({ locale }: TripAdvisorSectionProps) 
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[#00AA6C] hover:bg-[#009660] text-white font-medium rounded-lg transition-colors"
           >
-            <Image
-              src="https://static.tacdn.com/img2/brand_refresh/Tripadvisor_logomark_solid_green.svg"
-              alt=""
-              width={24}
-              height={24}
-              className="w-6 h-6"
-            />
+            <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+              <Image
+                src="https://static.tacdn.com/img2/brand_refresh_2025/logos/logo.svg"
+                alt=""
+                width={18}
+                height={18}
+                className="w-[18px] h-[18px]"
+              />
+            </div>
             {t.cta}
           </a>
         </div>
