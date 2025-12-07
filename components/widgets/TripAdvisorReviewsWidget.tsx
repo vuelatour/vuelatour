@@ -1,31 +1,22 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function TripAdvisorReviewsWidget() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const scriptLoadedRef = useRef(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (!containerRef.current || scriptLoadedRef.current) return;
+    setMounted(true);
+  }, []);
 
-    // Create the widget div
-    const widgetDiv = document.createElement('div');
-    widgetDiv.id = 'TA_cdsscrollingravewide319';
-    widgetDiv.className = 'TA_cdsscrollingravewide';
-    widgetDiv.innerHTML = `
-      <ul id="PP8hLtNCUcE" class="TA_links EtpadVtMLP">
-        <li id="GdiLpk" class="QOgFqY">
-          <a target="_blank" href="https://www.tripadvisor.com/Attraction_Review-g150807-d12135503-Reviews-Vuelatour-Cancun_Yucatan_Peninsula.html">
-            <img src="https://static.tacdn.com/img2/brand_refresh/Tripadvisor_lockup_vertical.svg" alt="TripAdvisor" class="widEXCIMG" id="CDSWIDEXCLOGO"/>
-          </a>
-        </li>
-      </ul>
-    `;
+  useEffect(() => {
+    if (!mounted) return;
 
-    containerRef.current.appendChild(widgetDiv);
+    // Check if script already exists
+    const existingScript = document.querySelector('script[src*="cdsscrollingravewide"][src*="uniq=319"]');
+    if (existingScript) return;
 
-    // Load the TripAdvisor script
+    // Load the TripAdvisor script after the widget div is in the DOM
     const script = document.createElement('script');
     script.src = 'https://www.jscache.com/wejs?wtype=cdsscrollingravewide&uniq=319&locationId=12135503&lang=en_US&border=true&shadow=false&display_version=2';
     script.async = true;
@@ -34,22 +25,31 @@ export default function TripAdvisorReviewsWidget() {
       (script as any).loadtrk = true;
     };
     document.body.appendChild(script);
-    scriptLoadedRef.current = true;
 
     return () => {
-      // Cleanup on unmount
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
-      }
       script.remove();
-      scriptLoadedRef.current = false;
     };
-  }, []);
+  }, [mounted]);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div
-      ref={containerRef}
-      className="tripadvisor-reviews-widget flex justify-center w-full"
+      id="TA_cdsscrollingravewide319"
+      className="TA_cdsscrollingravewide"
+      dangerouslySetInnerHTML={{
+        __html: `
+          <ul id="PP8hLtNCUcE" class="TA_links EtpadVtMLP">
+            <li id="GdiLpk" class="QOgFqY">
+              <a target="_blank" href="https://www.tripadvisor.com/Attraction_Review-g150807-d12135503-Reviews-Vuelatour-Cancun_Yucatan_Peninsula.html">
+                <img src="https://static.tacdn.com/img2/brand_refresh/Tripadvisor_lockup_vertical.svg" alt="TripAdvisor" class="widEXCIMG" id="CDSWIDEXCLOGO"/>
+              </a>
+            </li>
+          </ul>
+        `
+      }}
     />
   );
 }
