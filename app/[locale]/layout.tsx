@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import Header from '@/components/layout/Header';
 import FooterWrapper from '@/components/layout/FooterWrapper';
 import { LazyCookieBanner } from '@/components/layout/LazyComponents';
@@ -53,6 +54,20 @@ export default async function LocaleLayout({
         />
       </head>
       <body className={`${inter.className} antialiased`}>
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-HN7PLHRVGY"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-HN7PLHRVGY');
+          `}
+        </Script>
+
         <NextIntlClientProvider messages={messages}>
           <CurrencyProvider>
             <LoadingProvider>
