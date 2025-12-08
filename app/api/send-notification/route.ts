@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend only when needed (at runtime, not build time)
+function getResendClient() {
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
 interface QuoteRequestData {
   // Contact info
@@ -269,6 +272,7 @@ export async function POST(request: NextRequest) {
       ? `Nueva Cotización: Vuelo a ${destination ? formatSlug(destination) : 'destino personalizado'} - ${data.name}`
       : `Nueva Cotización: Tour ${tour ? formatSlug(tour) : 'aéreo'} - ${data.name}`;
 
+    const resend = getResendClient();
     const { data: emailData, error } = await resend.emails.send({
       from: 'Vuelatour Notificaciones <notificaciones@notify.vuelatour.com>',
       to: ['info@vuelatour.com'],

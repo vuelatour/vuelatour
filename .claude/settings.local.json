@@ -18,7 +18,9 @@
       "Bash(npm install:*)",
       "Bash(mkdir:*)",
       "Bash(git commit:*)",
-      "Bash(powershell -Command:*)"
+      "Bash(powershell -Command:*)",
+      "Bash(dir:*)",
+      "Bash(Select-String -Pattern \"(sitemap|Error|Warning|Compiled)\")"
     ],
     "deny": [],
     "ask": []
