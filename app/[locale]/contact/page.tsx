@@ -181,10 +181,50 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
 export async function generateMetadata({ params }: ContactPageProps) {
   const { locale } = await params;
 
+  const titles = {
+    es: 'Contacto | Reserva tu Vuelo Privado en Cancún | Vuelatour',
+    en: 'Contact | Book Your Private Flight in Cancún | Vuelatour',
+  };
+
+  const descriptions = {
+    es: 'Contáctanos para reservar tu vuelo privado o tour aéreo en Cancún. Atención personalizada por WhatsApp. Respondemos en menos de 24 horas.',
+    en: 'Contact us to book your charter flight or air tour in Cancún. Personalized attention via WhatsApp. We respond within 24 hours.',
+  };
+
+  const title = titles[locale as keyof typeof titles] || titles.es;
+  const description = descriptions[locale as keyof typeof descriptions] || descriptions.es;
+
   return {
-    title: locale === 'es' ? 'Contacto | Vuelatour' : 'Contact | Vuelatour',
-    description: locale === 'es'
-      ? 'Contáctanos para reservar tu vuelo privado o tour aéreo en Cancún. Respondemos en menos de 24 horas.'
-      : 'Contact us to book your charter flight or air tour in Cancún. We respond within 24 hours.',
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://vuelatour.com/${locale}/contact`,
+      siteName: 'Vuelatour',
+      images: [
+        {
+          url: 'https://vuelatour.com/images/og/og-image.jpg',
+          width: 1200,
+          height: 630,
+          alt: locale === 'es' ? 'Contacta a Vuelatour' : 'Contact Vuelatour',
+        },
+      ],
+      locale: locale === 'es' ? 'es_MX' : 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['https://vuelatour.com/images/og/og-image.jpg'],
+    },
+    alternates: {
+      canonical: `https://vuelatour.com/${locale}/contact`,
+      languages: {
+        'es': 'https://vuelatour.com/es/contact',
+        'en': 'https://vuelatour.com/en/contact',
+      },
+    },
   };
 }

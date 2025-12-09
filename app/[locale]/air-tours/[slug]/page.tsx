@@ -29,20 +29,37 @@ export async function generateMetadata({ params }: TourDetailPageProps): Promise
 
   // Use custom meta fields from database if available, otherwise use fallbacks
   const metaTitle = locale === 'es'
-    ? (tour.meta_title_es || `${name} - Tour Aéreo | Vuelatour`)
-    : (tour.meta_title_en || `${name} - Air Tour | Vuelatour`);
+    ? (tour.meta_title_es || `${name} - Tour Aéreo en Cancún | Vuelatour`)
+    : (tour.meta_title_en || `${name} - Air Tour in Cancún | Vuelatour`);
 
   const metaDescription = locale === 'es'
-    ? (tour.meta_description_es || description || `Tour aéreo panorámico: ${name}. Vive una experiencia única sobrevolando el Caribe mexicano.`)
-    : (tour.meta_description_en || description || `Panoramic air tour: ${name}. Live a unique experience flying over the Mexican Caribbean.`);
+    ? (tour.meta_description_es || description || `Tour aéreo panorámico: ${name}. Duración: ${tour.duration || '30-60 min'}. Vive una experiencia única sobrevolando el Caribe mexicano. Reserva hoy.`)
+    : (tour.meta_description_en || description || `Panoramic air tour: ${name}. Duration: ${tour.duration || '30-60 min'}. Live a unique experience flying over the Mexican Caribbean. Book today.`);
+
+  // Get image URL - ensure it's absolute
+  const imageUrl = tour.image_url
+    ? (tour.image_url.startsWith('http') ? tour.image_url : `https://vuelatour.com${tour.image_url}`)
+    : 'https://vuelatour.com/images/og/og-image.jpg';
 
   return {
     title: metaTitle,
     description: metaDescription,
+    keywords: locale === 'es'
+      ? `tour aereo ${name.toLowerCase()}, paseo aereo cancun, vuelo panoramico ${name.toLowerCase()}, experiencia aerea cancun`
+      : `air tour ${name.toLowerCase()}, aerial tour cancun, panoramic flight ${name.toLowerCase()}, aerial experience cancun`,
     openGraph: {
       title: metaTitle,
       description: metaDescription,
-      images: tour.image_url ? [tour.image_url] : [],
+      url: `https://vuelatour.com/${locale}/air-tours/${slug}`,
+      siteName: 'Vuelatour',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: locale === 'es' ? `Tour aéreo ${name} - Vuelatour` : `Air tour ${name} - Vuelatour`,
+        },
+      ],
       type: 'website',
       locale: locale === 'es' ? 'es_MX' : 'en_US',
     },
@@ -50,7 +67,14 @@ export async function generateMetadata({ params }: TourDetailPageProps): Promise
       card: 'summary_large_image',
       title: metaTitle,
       description: metaDescription,
-      images: tour.image_url ? [tour.image_url] : [],
+      images: [imageUrl],
+    },
+    alternates: {
+      canonical: `https://vuelatour.com/${locale}/air-tours/${slug}`,
+      languages: {
+        'es': `https://vuelatour.com/es/air-tours/${slug}`,
+        'en': `https://vuelatour.com/en/air-tours/${slug}`,
+      },
     },
   };
 }

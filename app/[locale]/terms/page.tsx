@@ -19,11 +19,33 @@ export async function generateMetadata({ params }: PageProps) {
     ? page?.title_es || 'Términos y Condiciones'
     : page?.title_en || 'Terms and Conditions';
 
+  const fullTitle = `${title} | Vuelatour`;
+  const description = locale === 'es'
+    ? 'Términos y condiciones de uso de los servicios de vuelos privados y tours aéreos de Vuelatour en Cancún.'
+    : 'Terms and conditions of use for Vuelatour private flights and air tours services in Cancún.';
+
   return {
-    title: `${title} | Vuelatour`,
-    description: locale === 'es'
-      ? 'Términos y condiciones de uso de los servicios de Vuelatour'
-      : 'Terms and conditions of use for Vuelatour services',
+    title: fullTitle,
+    description,
+    openGraph: {
+      title: fullTitle,
+      description,
+      url: `https://vuelatour.com/${locale}/terms`,
+      siteName: 'Vuelatour',
+      locale: locale === 'es' ? 'es_MX' : 'en_US',
+      type: 'website',
+    },
+    alternates: {
+      canonical: `https://vuelatour.com/${locale}/terms`,
+      languages: {
+        'es': 'https://vuelatour.com/es/terms',
+        'en': 'https://vuelatour.com/en/terms',
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 

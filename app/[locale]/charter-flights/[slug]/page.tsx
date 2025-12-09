@@ -29,20 +29,37 @@ export async function generateMetadata({ params }: DestinationDetailPageProps): 
 
   // Use custom meta fields from database if available, otherwise use fallbacks
   const metaTitle = locale === 'es'
-    ? (destination.meta_title_es || `Vuelo Privado a ${name} | Vuelatour`)
-    : (destination.meta_title_en || `Private Flight to ${name} | Vuelatour`);
+    ? (destination.meta_title_es || `Vuelo Privado a ${name} desde Cancún | Vuelatour`)
+    : (destination.meta_title_en || `Private Flight to ${name} from Cancún | Vuelatour`);
 
   const metaDescription = locale === 'es'
-    ? (destination.meta_description_es || description || `Vuelo privado desde Cancún a ${name}. Reserva tu vuelo privado exclusivo.`)
-    : (destination.meta_description_en || description || `Private flight from Cancún to ${name}. Book your exclusive charter flight.`);
+    ? (destination.meta_description_es || description || `Vuelo privado desde Cancún a ${name}. Tiempo de vuelo: ${destination.flight_time || '20-45 min'}. Servicio exclusivo y horarios flexibles. Reserva hoy.`)
+    : (destination.meta_description_en || description || `Private flight from Cancún to ${name}. Flight time: ${destination.flight_time || '20-45 min'}. Exclusive service and flexible schedules. Book today.`);
+
+  // Get image URL - ensure it's absolute
+  const imageUrl = destination.image_url
+    ? (destination.image_url.startsWith('http') ? destination.image_url : `https://vuelatour.com${destination.image_url}`)
+    : 'https://vuelatour.com/images/og/og-image.jpg';
 
   return {
     title: metaTitle,
     description: metaDescription,
+    keywords: locale === 'es'
+      ? `vuelo privado ${name.toLowerCase()}, charter ${name.toLowerCase()}, avion privado cancun ${name.toLowerCase()}`
+      : `private flight ${name.toLowerCase()}, charter ${name.toLowerCase()}, private plane cancun ${name.toLowerCase()}`,
     openGraph: {
       title: metaTitle,
       description: metaDescription,
-      images: destination.image_url ? [destination.image_url] : [],
+      url: `https://vuelatour.com/${locale}/charter-flights/${slug}`,
+      siteName: 'Vuelatour',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: locale === 'es' ? `Vuelo privado a ${name} - Vuelatour` : `Private flight to ${name} - Vuelatour`,
+        },
+      ],
       type: 'website',
       locale: locale === 'es' ? 'es_MX' : 'en_US',
     },
@@ -50,7 +67,14 @@ export async function generateMetadata({ params }: DestinationDetailPageProps): 
       card: 'summary_large_image',
       title: metaTitle,
       description: metaDescription,
-      images: destination.image_url ? [destination.image_url] : [],
+      images: [imageUrl],
+    },
+    alternates: {
+      canonical: `https://vuelatour.com/${locale}/charter-flights/${slug}`,
+      languages: {
+        'es': `https://vuelatour.com/es/charter-flights/${slug}`,
+        'en': `https://vuelatour.com/en/charter-flights/${slug}`,
+      },
     },
   };
 }

@@ -19,11 +19,33 @@ export async function generateMetadata({ params }: PageProps) {
     ? page?.title_es || 'Aviso de Privacidad'
     : page?.title_en || 'Privacy Policy';
 
+  const fullTitle = `${title} | Vuelatour`;
+  const description = locale === 'es'
+    ? 'Política de privacidad y protección de datos personales de Vuelatour. Conoce cómo protegemos tu información.'
+    : 'Privacy policy and personal data protection of Vuelatour. Learn how we protect your information.';
+
   return {
-    title: `${title} | Vuelatour`,
-    description: locale === 'es'
-      ? 'Política de privacidad y protección de datos de Vuelatour'
-      : 'Privacy policy and data protection of Vuelatour',
+    title: fullTitle,
+    description,
+    openGraph: {
+      title: fullTitle,
+      description,
+      url: `https://vuelatour.com/${locale}/privacy`,
+      siteName: 'Vuelatour',
+      locale: locale === 'es' ? 'es_MX' : 'en_US',
+      type: 'website',
+    },
+    alternates: {
+      canonical: `https://vuelatour.com/${locale}/privacy`,
+      languages: {
+        'es': 'https://vuelatour.com/es/privacy',
+        'en': 'https://vuelatour.com/en/privacy',
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 

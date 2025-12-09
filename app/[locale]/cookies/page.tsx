@@ -19,11 +19,33 @@ export async function generateMetadata({ params }: PageProps) {
     ? page?.title_es || 'Política de Cookies'
     : page?.title_en || 'Cookie Policy';
 
+  const fullTitle = `${title} | Vuelatour`;
+  const description = locale === 'es'
+    ? 'Información sobre el uso de cookies en el sitio web de Vuelatour. Conoce qué cookies utilizamos y cómo gestionarlas.'
+    : 'Information about cookie usage on Vuelatour website. Learn what cookies we use and how to manage them.';
+
   return {
-    title: `${title} | Vuelatour`,
-    description: locale === 'es'
-      ? 'Información sobre el uso de cookies en Vuelatour'
-      : 'Information about cookie usage on Vuelatour',
+    title: fullTitle,
+    description,
+    openGraph: {
+      title: fullTitle,
+      description,
+      url: `https://vuelatour.com/${locale}/cookies`,
+      siteName: 'Vuelatour',
+      locale: locale === 'es' ? 'es_MX' : 'en_US',
+      type: 'website',
+    },
+    alternates: {
+      canonical: `https://vuelatour.com/${locale}/cookies`,
+      languages: {
+        'es': 'https://vuelatour.com/es/cookies',
+        'en': 'https://vuelatour.com/en/cookies',
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 
