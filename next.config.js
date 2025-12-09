@@ -4,6 +4,23 @@ const withNextIntl = require('next-intl/plugin')(
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Redirect non-www to www and ensure HTTPS (permanent 308 redirects for SEO)
+  async redirects() {
+    return [
+      // Redirect non-www to www
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'vuelatour.com',
+          },
+        ],
+        destination: 'https://www.vuelatour.com/:path*',
+        permanent: true,
+      },
+    ];
+  },
   images: {
     // Remote patterns for Supabase Storage and other image sources
     remotePatterns: [
