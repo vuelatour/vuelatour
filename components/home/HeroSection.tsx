@@ -73,6 +73,7 @@ export default function HeroSection({ locale, content, heroImage, featuredTour, 
           alt={heroImageAlt}
           fill
           priority
+          fetchPriority="high"
           quality={90}
           sizes="100vw"
           className="object-cover"

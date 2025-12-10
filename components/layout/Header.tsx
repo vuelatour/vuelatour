@@ -80,7 +80,8 @@ export default function Header() {
                 : 'Vuelatour - Charter flights and air tours company logo in Cancún and Riviera Maya'}
               width={150}
               height={40}
-              className="h-8 md:h-10 w-auto"
+              style={{ width: 'auto', height: '2rem' }}
+              className="md:h-10"
               priority
               title={locale === 'es' ? 'Vuelatour' : 'Vuelatour'}
             />

@@ -100,7 +100,7 @@ export default function Footer({ contactInfo }: FooterProps) {
                   : 'Vuelatour - Charter flights and air tours company logo in Cancún and Riviera Maya'}
                 width={150}
                 height={40}
-                className="h-10 w-auto"
+                style={{ width: 'auto', height: '2.5rem' }}
                 title={locale === 'es' ? 'Vuelatour' : 'Vuelatour'}
               />
             </Link>
