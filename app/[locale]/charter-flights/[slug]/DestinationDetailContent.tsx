@@ -404,7 +404,7 @@ export default function DestinationDetailContent({
                           strong: ({ children }) => <strong className="font-bold text-foreground">{children}</strong>,
                           em: ({ children }) => <em className="italic">{children}</em>,
                           a: ({ href, children }) => (
-                            <a href={href} className="text-brand-500 hover:text-brand-600 underline" target="_blank" rel="noopener noreferrer">
+                            <a href={href} className="text-brand-600 hover:text-brand-700 underline" target="_blank" rel="noopener noreferrer">
                               {children}
                             </a>
                           ),
@@ -422,7 +422,7 @@ export default function DestinationDetailContent({
             {servicesToShow.length > 0 && (
               <div className="bg-gradient-to-br from-brand-50 to-white dark:from-navy-900 dark:to-navy-950 rounded-3xl p-8 border border-brand-100 dark:border-brand-900 mb-12">
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                  <CheckCircleIcon className="w-7 h-7 text-brand-500" />
+                  <CheckCircleIcon className="w-7 h-7 text-brand-600" />
                   {t.servicesIncluded}
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">

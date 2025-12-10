@@ -119,7 +119,7 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
                     ) : item.href ? (
                       <a
                         href={item.href}
-                        className="text-muted hover:text-brand-500 transition-colors"
+                        className="text-muted hover:text-brand-600 transition-colors"
                       >
                         {item.content}
                       </a>

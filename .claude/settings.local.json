@@ -28,7 +28,8 @@
       "Bash(grep:*)",
       "Bash(timeout 120 npm run build:*)",
       "Bash(Select-Object -First 60)",
-      "Bash(Select-String -Pattern \"(sitemap|Error|error|Failed|failed|Compiled|Route|○|●|ƒ)\")"
+      "Bash(Select-String -Pattern \"(sitemap|Error|error|Failed|failed|Compiled|Route|○|●|ƒ)\")",
+      "Bash(Select-String -Pattern \"text-brand-500\")"
     ],
     "deny": [],
     "ask": []

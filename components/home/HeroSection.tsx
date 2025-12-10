@@ -97,7 +97,7 @@ export default function HeroSection({ locale, content, heroImage, featuredTour, 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1] mb-6">
               {getContent('hero_title', t('titleLine1'))}
               <br />
-              <span className="text-brand-500">
+              <span className="text-brand-600">
                 {getContent('hero_subtitle', t('titleLine2'))}
               </span>
             </h1>
