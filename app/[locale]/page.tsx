@@ -1,9 +1,17 @@
+import dynamic from 'next/dynamic';
 import HeroSection from '@/components/home/HeroSection';
-import LazyServicesWrapper from '@/components/home/LazyServicesWrapper';
-import TripAdvisorSection from '@/components/home/TripAdvisorSection';
 import { LocalBusinessSchema, ServiceSchema, OrganizationSchema } from '@/components/seo/SchemaMarkup';
 import { createClient } from '@/lib/supabase/server';
 import { getYearsOfExperienceFormatted } from '@/lib/constants';
+
+// Dynamic imports for below-the-fold components to reduce initial JS bundle
+const LazyServicesWrapper = dynamic(() => import('@/components/home/LazyServicesWrapper'), {
+  loading: () => <div className="min-h-[400px] bg-navy-50 dark:bg-navy-900 animate-pulse" />,
+});
+
+const TripAdvisorSection = dynamic(() => import('@/components/home/TripAdvisorSection'), {
+  loading: () => <div className="min-h-[300px] bg-white dark:bg-navy-950 animate-pulse" />,
+});
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
