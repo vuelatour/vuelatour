@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: AirToursPageProps): Promise<M
   };
 
   const descriptions = {
-    es: 'Tours aéreos panorámicos en Cancún y Riviera Maya. Sobrevuela Chichén Itzá, Tulum, la Zona Hotelera e Isla Mujeres. Experiencia única e inolvidable. Reserva hoy.',
-    en: 'Panoramic air tours in Cancún and Riviera Maya. Fly over Chichén Itzá, Tulum, Hotel Zone and Isla Mujeres. Unique and unforgettable experience. Book today.',
+    es: 'Tours aéreos en Cancún. Sobrevuela Chichén Itzá, Tulum, Zona Hotelera e Isla Mujeres. Experiencia única e inolvidable. Reserva hoy.',
+    en: 'Air tours in Cancún. Fly over Chichén Itzá, Tulum, Hotel Zone and Isla Mujeres. Unique and unforgettable experience. Book today.',
   };
 
   const title = titles[locale as keyof typeof titles] || titles.es;

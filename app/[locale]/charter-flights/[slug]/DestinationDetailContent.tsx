@@ -386,6 +386,11 @@ export default function DestinationDetailContent({
                 {/* Description */}
                 {description && (
                   <div className={hasGallery ? '' : 'max-w-3xl'}>
+                    {!description.trim().startsWith('#') && (
+                      <h2 className="text-2xl md:text-3xl font-bold mb-6">
+                        {locale === 'es' ? 'Sobre este destino' : 'About this destination'}
+                      </h2>
+                    )}
                     <div className="prose prose-lg dark:prose-invert prose-brand max-w-none">
                       <ReactMarkdown
                         components={{

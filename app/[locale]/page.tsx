@@ -177,8 +177,8 @@ export async function generateMetadata({ params }: HomePageProps) {
 
   const yearsExp = getYearsOfExperienceFormatted();
   const descriptions = {
-    es: `Vuelos privados y tours aéreos panorámicos en Cancún y la Riviera Maya. Sobrevuela Tulum, Chichén Itzá, Cozumel y más. ${yearsExp} años de experiencia. Reserva hoy.`,
-    en: `Private charter flights and panoramic air tours in Cancún and the Riviera Maya. Fly over Tulum, Chichén Itzá, Cozumel and more. ${yearsExp} years experience. Book today.`,
+    es: `Vuelos privados y tours aéreos en Cancún. Sobrevuela Tulum, Chichén Itzá, Cozumel. ${yearsExp} años de experiencia. Reserva hoy.`,
+    en: `Private flights and air tours in Cancún. Fly over Tulum, Chichén Itzá, Cozumel. ${yearsExp} years experience. Book today.`,
   };
 
   return {

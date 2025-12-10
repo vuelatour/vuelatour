@@ -113,6 +113,9 @@ export default function CharterFlightsContent({ locale, destinations }: CharterF
         {/* Destinations Grid */}
         <section className="py-16 md:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+              {locale === 'es' ? 'Nuestros Destinos' : 'Our Destinations'}
+            </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
               {destinations.map((dest, index) => (
                 <LazySection
@@ -156,9 +159,9 @@ export default function CharterFlightsContent({ locale, destinations }: CharterF
 
                     {/* Content */}
                     <div className="p-6">
-                      <h2 className="text-2xl font-bold mb-3 group-hover:text-navy-600 dark:group-hover:text-navy-300 transition-colors">
+                      <h3 className="text-2xl font-bold mb-3 group-hover:text-navy-600 dark:group-hover:text-navy-300 transition-colors">
                         {locale === 'es' ? dest.name_es : dest.name_en}
-                      </h2>
+                      </h3>
 
                       <p className="text-muted mb-6 line-clamp-3">
                         {locale === 'es' ? dest.description_es : dest.description_en}

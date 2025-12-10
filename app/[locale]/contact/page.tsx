@@ -103,6 +103,9 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
 
           {/* Contact Info */}
           <div className="order-2 lg:order-2">
+            <h2 className="text-xl font-semibold mb-6">
+              {locale === 'es' ? 'Información de Contacto' : 'Contact Information'}
+            </h2>
             <div className="space-y-6">
               {contactInfoItems.map((item, index) => (
                 <div key={index} className="card p-4 flex items-start gap-4">

@@ -117,6 +117,9 @@ export default function AirToursContent({ locale, tours }: AirToursContentProps)
         {/* Tours Grid */}
         <section className="py-16 md:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+              {locale === 'es' ? 'Nuestros Tours Aéreos' : 'Our Air Tours'}
+            </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
               {tours.map((tour, index) => (
                 <LazySection
@@ -160,9 +163,9 @@ export default function AirToursContent({ locale, tours }: AirToursContentProps)
 
                     {/* Content */}
                     <div className="p-6">
-                      <h2 className="text-2xl font-bold mb-3 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+                      <h3 className="text-2xl font-bold mb-3 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
                         {locale === 'es' ? tour.name_es : tour.name_en}
-                      </h2>
+                      </h3>
 
                       <p className="text-muted mb-6 line-clamp-3">
                         {locale === 'es' ? tour.description_es : tour.description_en}
