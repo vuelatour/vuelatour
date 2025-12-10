@@ -90,7 +90,7 @@ export default function CookieBanner() {
       analytics: 'Cookies de Análisis',
       analyticsDesc: 'Nos ayudan a entender cómo usas el sitio para mejorarlo (Google Analytics).',
       save: 'Guardar preferencias',
-      learnMore: 'Más información',
+      learnMore: 'Más información sobre nuestra política de cookies',
     },
     en: {
       title: 'We use cookies',
@@ -104,7 +104,7 @@ export default function CookieBanner() {
       analytics: 'Analytics Cookies',
       analyticsDesc: 'Help us understand how you use the site to improve it (Google Analytics).',
       save: 'Save preferences',
-      learnMore: 'Learn more',
+      learnMore: 'Learn more about our cookie policy',
     },
   };
 
