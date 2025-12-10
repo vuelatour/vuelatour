@@ -142,11 +142,11 @@
 
   /* Text utilities */
   .text-muted {
-    color: rgb(var(--foreground) / 0.6);
+    color: rgb(var(--foreground) / 0.7);
   }
 
   .text-subtle {
-    color: rgb(var(--foreground) / 0.4);
+    color: rgb(var(--foreground) / 0.55);
   }
 
   /* Card component */

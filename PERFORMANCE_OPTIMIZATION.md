@@ -233,6 +233,8 @@ import Script from 'next/script';
 - [x] **FIX LCP: fetchPriority="high" en hero image**
 - [x] **FIX Caché: Headers para static assets (454 KiB savings)**
 - [x] Analytics con requestIdleCallback (defer non-critical)
+- [x] **FIX Accesibilidad: aria-labels en botones (100% botones accesibles)**
+- [x] **FIX Contraste: text-muted 0.6 → 0.7, text-subtle 0.4 → 0.55**
 - [ ] **Optimizar imágenes existentes (354 KiB - ACCIÓN REQUERIDA)**
 - [ ] Implementar dynamic imports adicionales
 - [ ] Configurar next/script para GA4
