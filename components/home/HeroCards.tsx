@@ -156,7 +156,7 @@ export default function HeroCards({ locale, featuredTour, featuredDestination, h
                 {featured.price_from && (
                   <div className="text-right flex-shrink-0">
                     <div className="text-xs text-muted">{t.from}</div>
-                    <div className="font-bold text-brand-500">
+                    <div className="font-bold text-brand-600">
                       {formatPrice(featured.price_from)}
                     </div>
                   </div>
@@ -164,7 +164,7 @@ export default function HeroCards({ locale, featuredTour, featuredDestination, h
               </div>
 
               <div className="mt-3 flex items-center justify-between">
-                <span className="text-xs text-brand-500 font-medium group-hover:underline">
+                <span className="text-xs text-brand-600 font-medium group-hover:underline">
                   {t.viewMore} →
                 </span>
               </div>
