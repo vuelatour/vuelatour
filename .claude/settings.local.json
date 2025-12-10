@@ -20,7 +20,13 @@
       "Bash(git commit:*)",
       "Bash(powershell -Command:*)",
       "Bash(dir:*)",
-      "Bash(Select-String -Pattern \"(sitemap|Error|Warning|Compiled)\")"
+      "Bash(Select-String -Pattern \"(sitemap|Error|Warning|Compiled)\")",
+      "Bash(find:*)",
+      "Bash(Select-String -Pattern \"(Error|error|Failed|failed|Compiled|Route|○|●|ƒ)\")",
+      "Bash(Select-Object -First 50)",
+      "Bash(Select-Object -First 30)",
+      "Bash(grep:*)",
+      "Bash(timeout 120 npm run build:*)"
     ],
     "deny": [],
     "ask": []

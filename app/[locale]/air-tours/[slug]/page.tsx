@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { createClient, createBuildClient } from '@/lib/supabase/server';
 import TourDetailContent from './TourDetailContent';
-import { TourProductSchema, BreadcrumbSchema } from '@/components/seo/SchemaMarkup';
 
 interface TourDetailPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -42,6 +41,59 @@ export async function generateMetadata({ params }: TourDetailPageProps): Promise
     ? (tour.image_url.startsWith('http') ? tour.image_url : `https://www.vuelatour.com${tour.image_url}`)
     : 'https://www.vuelatour.com/images/og/og-image.jpg';
 
+  // Build Product Schema for metadata
+  const aircraftPricing = tour.aircraft_pricing || [];
+  const prices = aircraftPricing.map((p: any) => p.price_usd);
+  const minPrice = prices.length > 0 ? Math.min(...prices) : null;
+  const maxPrice = prices.length > 0 ? Math.max(...prices) : null;
+
+  const productSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: locale === 'es' ? `Tour Aéreo ${name}` : `${name} Air Tour`,
+    description: description || (locale === 'es'
+      ? `Tour aéreo panorámico: ${name}. Duración: ${tour.duration || '30-60 min'}. Vive una experiencia única sobrevolando el Caribe mexicano.`
+      : `Panoramic air tour: ${name}. Duration: ${tour.duration || '30-60 min'}. Live a unique experience flying over the Mexican Caribbean.`),
+    image: imageUrl,
+    brand: { '@type': 'Brand', name: 'Vuelatour' },
+    offers: aircraftPricing.length > 1 ? {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'USD',
+      lowPrice: minPrice,
+      highPrice: maxPrice,
+      offerCount: aircraftPricing.length,
+      offers: aircraftPricing.map((pricing: any) => ({
+        '@type': 'Offer',
+        name: `${name} - ${pricing.aircraft_name}`,
+        price: pricing.price_usd,
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/InStock',
+        priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+        url: `https://www.vuelatour.com/${locale}/air-tours/${slug}`,
+      })),
+    } : aircraftPricing.length === 1 ? {
+      '@type': 'Offer',
+      price: aircraftPricing[0].price_usd,
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+      url: `https://www.vuelatour.com/${locale}/air-tours/${slug}`,
+    } : { '@type': 'Offer', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
+    aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '150' },
+    url: `https://www.vuelatour.com/${locale}/air-tours/${slug}`,
+    category: locale === 'es' ? 'Tours Aéreos' : 'Air Tours',
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `https://www.vuelatour.com/${locale}` },
+      { '@type': 'ListItem', position: 2, name: locale === 'es' ? 'Tours Aéreos' : 'Air Tours', item: `https://www.vuelatour.com/${locale}/air-tours` },
+      { '@type': 'ListItem', position: 3, name: name, item: `https://www.vuelatour.com/${locale}/air-tours/${slug}` },
+    ],
+  };
+
   return {
     title: metaTitle,
     description: metaDescription,
@@ -77,6 +129,10 @@ export async function generateMetadata({ params }: TourDetailPageProps): Promise
         'en': `https://www.vuelatour.com/en/air-tours/${slug}`,
         'x-default': `https://www.vuelatour.com/en/air-tours/${slug}`,
       },
+    },
+    other: {
+      'script:ld+json:product': JSON.stringify(productSchema),
+      'script:ld+json:breadcrumb': JSON.stringify(breadcrumbSchema),
     },
   };
 }
@@ -132,27 +188,12 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
     .eq('is_active', true)
     .order('display_order', { ascending: true });
 
-  const name = locale === 'es' ? tour.name_es : tour.name_en;
-
-  // Breadcrumb for SEO
-  const breadcrumbItems = [
-    { name: 'Home', url: `/${locale}` },
-    { name: locale === 'es' ? 'Tours Aéreos' : 'Air Tours', url: `/${locale}/air-tours` },
-    { name: name, url: `/${locale}/air-tours/${slug}` },
-  ];
-
   return (
-    <>
-      {/* SEO Schema Markup */}
-      <TourProductSchema tour={tour} locale={locale} />
-      <BreadcrumbSchema items={breadcrumbItems} />
-
-      <TourDetailContent
-        locale={locale}
-        tour={tour}
-        otherTours={otherTours || []}
-        availableServices={availableServices || []}
-      />
-    </>
+    <TourDetailContent
+      locale={locale}
+      tour={tour}
+      otherTours={otherTours || []}
+      availableServices={availableServices || []}
+    />
   );
 }
