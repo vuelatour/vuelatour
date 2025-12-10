@@ -41,59 +41,6 @@ export async function generateMetadata({ params }: DestinationDetailPageProps): 
     ? (destination.image_url.startsWith('http') ? destination.image_url : `https://www.vuelatour.com${destination.image_url}`)
     : 'https://www.vuelatour.com/images/og/og-image.jpg';
 
-  // Build Product Schema for metadata
-  const aircraftPricing = destination.aircraft_pricing || [];
-  const prices = aircraftPricing.map((p: any) => p.price_usd);
-  const minPrice = prices.length > 0 ? Math.min(...prices) : null;
-  const maxPrice = prices.length > 0 ? Math.max(...prices) : null;
-
-  const productSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: locale === 'es' ? `Vuelo Privado a ${name}` : `Private Flight to ${name}`,
-    description: description || (locale === 'es'
-      ? `Vuelo privado desde Cancún a ${name}. Servicio exclusivo y horarios flexibles.`
-      : `Private flight from Cancún to ${name}. Exclusive service and flexible schedules.`),
-    image: imageUrl,
-    brand: { '@type': 'Brand', name: 'Vuelatour' },
-    offers: aircraftPricing.length > 1 ? {
-      '@type': 'AggregateOffer',
-      priceCurrency: 'USD',
-      lowPrice: minPrice,
-      highPrice: maxPrice,
-      offerCount: aircraftPricing.length,
-      offers: aircraftPricing.map((pricing: any) => ({
-        '@type': 'Offer',
-        name: `${name} - ${pricing.aircraft_name}`,
-        price: pricing.price_usd,
-        priceCurrency: 'USD',
-        availability: 'https://schema.org/InStock',
-        priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-        url: `https://www.vuelatour.com/${locale}/charter-flights/${slug}`,
-      })),
-    } : aircraftPricing.length === 1 ? {
-      '@type': 'Offer',
-      price: aircraftPricing[0].price_usd,
-      priceCurrency: 'USD',
-      availability: 'https://schema.org/InStock',
-      priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-      url: `https://www.vuelatour.com/${locale}/charter-flights/${slug}`,
-    } : { '@type': 'Offer', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
-    aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '150' },
-    url: `https://www.vuelatour.com/${locale}/charter-flights/${slug}`,
-    category: locale === 'es' ? 'Vuelos Privados' : 'Private Charter Flights',
-  };
-
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `https://www.vuelatour.com/${locale}` },
-      { '@type': 'ListItem', position: 2, name: locale === 'es' ? 'Vuelos Privados' : 'Charter Flights', item: `https://www.vuelatour.com/${locale}/charter-flights` },
-      { '@type': 'ListItem', position: 3, name: name, item: `https://www.vuelatour.com/${locale}/charter-flights/${slug}` },
-    ],
-  };
-
   return {
     title: metaTitle,
     description: metaDescription,
@@ -129,10 +76,6 @@ export async function generateMetadata({ params }: DestinationDetailPageProps): 
         'en': `https://www.vuelatour.com/en/charter-flights/${slug}`,
         'x-default': `https://www.vuelatour.com/en/charter-flights/${slug}`,
       },
-    },
-    other: {
-      'script:ld+json:product': JSON.stringify(productSchema),
-      'script:ld+json:breadcrumb': JSON.stringify(breadcrumbSchema),
     },
   };
 }
@@ -188,12 +131,83 @@ export default async function DestinationDetailPage({ params }: DestinationDetai
     .eq('is_active', true)
     .order('display_order', { ascending: true });
 
+  const name = locale === 'es' ? destination.name_es : destination.name_en;
+  const description = locale === 'es' ? destination.description_es : destination.description_en;
+  const imageUrl = destination.image_url
+    ? (destination.image_url.startsWith('http') ? destination.image_url : `https://www.vuelatour.com${destination.image_url}`)
+    : 'https://www.vuelatour.com/images/og/og-image.jpg';
+
+  // Build schemas for rendering
+  const aircraftPricing = destination.aircraft_pricing || [];
+  const prices = aircraftPricing.map((p: any) => p.price_usd);
+  const minPrice = prices.length > 0 ? Math.min(...prices) : null;
+  const maxPrice = prices.length > 0 ? Math.max(...prices) : null;
+
+  const productSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: locale === 'es' ? `Vuelo Privado a ${name}` : `Private Flight to ${name}`,
+    description: description || (locale === 'es'
+      ? `Vuelo privado desde Cancún a ${name}. Servicio exclusivo y horarios flexibles.`
+      : `Private flight from Cancún to ${name}. Exclusive service and flexible schedules.`),
+    image: imageUrl,
+    brand: { '@type': 'Brand', name: 'Vuelatour' },
+    offers: aircraftPricing.length > 1 ? {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'USD',
+      lowPrice: minPrice,
+      highPrice: maxPrice,
+      offerCount: aircraftPricing.length,
+      offers: aircraftPricing.map((pricing: any) => ({
+        '@type': 'Offer',
+        name: `${name} - ${pricing.aircraft_name}`,
+        price: pricing.price_usd,
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/InStock',
+        priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+        url: `https://www.vuelatour.com/${locale}/charter-flights/${slug}`,
+      })),
+    } : aircraftPricing.length === 1 ? {
+      '@type': 'Offer',
+      price: aircraftPricing[0].price_usd,
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+      url: `https://www.vuelatour.com/${locale}/charter-flights/${slug}`,
+    } : { '@type': 'Offer', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
+    aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '150' },
+    url: `https://www.vuelatour.com/${locale}/charter-flights/${slug}`,
+    category: locale === 'es' ? 'Vuelos Privados' : 'Private Charter Flights',
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `https://www.vuelatour.com/${locale}` },
+      { '@type': 'ListItem', position: 2, name: locale === 'es' ? 'Vuelos Privados' : 'Charter Flights', item: `https://www.vuelatour.com/${locale}/charter-flights` },
+      { '@type': 'ListItem', position: 3, name: name, item: `https://www.vuelatour.com/${locale}/charter-flights/${slug}` },
+    ],
+  };
+
   return (
-    <DestinationDetailContent
-      locale={locale}
-      destination={destination}
-      otherDestinations={otherDestinations || []}
-      availableServices={availableServices || []}
-    />
+    <>
+      {/* JSON-LD Schemas */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
+      <DestinationDetailContent
+        locale={locale}
+        destination={destination}
+        otherDestinations={otherDestinations || []}
+        availableServices={availableServices || []}
+      />
+    </>
   );
 }
