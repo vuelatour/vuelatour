@@ -22,6 +22,10 @@ import {
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
+// System version info
+const SYSTEM_VERSION = '1.0.0';
+const RELEASE_DATE = '05/12/2025';
+
 interface AdminSidebarProps {
   userEmail: string;
 }
@@ -105,6 +109,11 @@ export default function AdminSidebar({ userEmail }: AdminSidebarProps) {
           />
           <p className="text-xs text-navy-500 mt-2">Panel de Administración</p>
         </Link>
+        <div className="mt-3 pt-3 border-t border-navy-800/50">
+          <p className="text-[10px] text-navy-600">
+            v{SYSTEM_VERSION} • {RELEASE_DATE}
+          </p>
+        </div>
       </div>
 
       {/* Navigation */}

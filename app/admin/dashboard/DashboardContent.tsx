@@ -12,7 +12,18 @@ import {
   ServerIcon,
   CircleStackIcon,
   ExclamationTriangleIcon,
+  InformationCircleIcon,
 } from '@heroicons/react/24/outline';
+
+// System version info
+const SYSTEM_INFO = {
+  version: '1.0.0',
+  releaseDate: '5 de diciembre de 2025',
+  releaseDateISO: '2025-12-05',
+  codeName: 'Vuelatour Admin',
+  framework: 'Next.js 15.5',
+  database: 'Supabase',
+};
 
 interface StorageStats {
   totalSizeBytes: number;
@@ -354,38 +365,70 @@ export default function DashboardContent({ user, stats }: DashboardContentProps)
         </div>
       </div>
 
-      {/* Plan Info */}
-      <div className="bg-navy-900 rounded-xl border border-navy-800 p-6">
-        <h2 className="text-lg font-medium text-white mb-4">Plan Supabase</h2>
-        <div className="grid sm:grid-cols-4 gap-4">
-          <div className="p-4 bg-navy-800 rounded-lg">
-            <p className="text-xs text-navy-400 mb-1">Plan actual</p>
-            <p className="text-white font-semibold">Free</p>
+      {/* Plan Info & System Info Grid */}
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* Plan Info */}
+        <div className="bg-navy-900 rounded-xl border border-navy-800 p-6">
+          <h2 className="text-lg font-medium text-white mb-4">Plan Supabase</h2>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="p-4 bg-navy-800 rounded-lg">
+              <p className="text-xs text-navy-400 mb-1">Plan actual</p>
+              <p className="text-white font-semibold">Free</p>
+            </div>
+            <div className="p-4 bg-navy-800 rounded-lg">
+              <p className="text-xs text-navy-400 mb-1">Storage</p>
+              <p className="text-white font-semibold">{stats.storage.limitGB} GB</p>
+            </div>
+            <div className="p-4 bg-navy-800 rounded-lg">
+              <p className="text-xs text-navy-400 mb-1">Database</p>
+              <p className="text-white font-semibold">{stats.database.limitMB} MB</p>
+            </div>
+            <div className="p-4 bg-navy-800 rounded-lg">
+              <p className="text-xs text-navy-400 mb-1">Uso total</p>
+              <p className={`font-semibold ${
+                Math.max(stats.storage.usagePercentage, stats.database.usagePercentage) >= 70
+                  ? Math.max(stats.storage.usagePercentage, stats.database.usagePercentage) >= 90
+                    ? 'text-red-400'
+                    : 'text-yellow-400'
+                  : 'text-green-400'
+              }`}>
+                {Math.max(stats.storage.usagePercentage, stats.database.usagePercentage).toFixed(1)}%
+              </p>
+            </div>
           </div>
-          <div className="p-4 bg-navy-800 rounded-lg">
-            <p className="text-xs text-navy-400 mb-1">Storage</p>
-            <p className="text-white font-semibold">{stats.storage.limitGB} GB</p>
-          </div>
-          <div className="p-4 bg-navy-800 rounded-lg">
-            <p className="text-xs text-navy-400 mb-1">Database</p>
-            <p className="text-white font-semibold">{stats.database.limitMB} MB</p>
-          </div>
-          <div className="p-4 bg-navy-800 rounded-lg">
-            <p className="text-xs text-navy-400 mb-1">Uso total</p>
-            <p className={`font-semibold ${
-              Math.max(stats.storage.usagePercentage, stats.database.usagePercentage) >= 70
-                ? Math.max(stats.storage.usagePercentage, stats.database.usagePercentage) >= 90
-                  ? 'text-red-400'
-                  : 'text-yellow-400'
-                : 'text-green-400'
-            }`}>
-              {Math.max(stats.storage.usagePercentage, stats.database.usagePercentage).toFixed(1)}%
-            </p>
-          </div>
+          <p className="text-xs text-navy-500 mt-4">
+            * Plan Pro: 8GB storage + 8GB database por $25/mes
+          </p>
         </div>
-        <p className="text-xs text-navy-500 mt-4">
-          * Plan Pro: 8GB storage + 8GB database por $25/mes
-        </p>
+
+        {/* System Info */}
+        <div className="bg-navy-900 rounded-xl border border-navy-800 p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <InformationCircleIcon className="w-6 h-6 text-brand-400" />
+            <h2 className="text-lg font-medium text-white">Información del Sistema</h2>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="p-4 bg-navy-800 rounded-lg">
+              <p className="text-xs text-navy-400 mb-1">Versión</p>
+              <p className="text-white font-semibold">v{SYSTEM_INFO.version}</p>
+            </div>
+            <div className="p-4 bg-navy-800 rounded-lg">
+              <p className="text-xs text-navy-400 mb-1">Fecha de lanzamiento</p>
+              <p className="text-white font-semibold">{SYSTEM_INFO.releaseDate}</p>
+            </div>
+            <div className="p-4 bg-navy-800 rounded-lg">
+              <p className="text-xs text-navy-400 mb-1">Framework</p>
+              <p className="text-white font-semibold">{SYSTEM_INFO.framework}</p>
+            </div>
+            <div className="p-4 bg-navy-800 rounded-lg">
+              <p className="text-xs text-navy-400 mb-1">Base de datos</p>
+              <p className="text-white font-semibold">{SYSTEM_INFO.database}</p>
+            </div>
+          </div>
+          <p className="text-xs text-navy-500 mt-4">
+            {SYSTEM_INFO.codeName} - Panel de administración
+          </p>
+        </div>
       </div>
     </AdminLayout>
   );
