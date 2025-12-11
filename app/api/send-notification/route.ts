@@ -37,18 +37,25 @@ interface QuoteRequestData {
 
 function formatDate(dateString?: string): string {
   if (!dateString) return 'No especificada';
-  // Parse date as local time to avoid timezone issues
-  // Input formats: "2026-03-15" or "2026-03-15T12:00:00"
-  const datePart = dateString.split('T')[0]; // Extract just the date part
+  // Extract just the date part (YYYY-MM-DD) to avoid any timezone conversion
+  const datePart = dateString.split('T')[0];
   const [year, month, day] = datePart.split('-').map(Number);
-  const date = new Date(year, month - 1, day); // month is 0-indexed
-  return date.toLocaleDateString('es-MX', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'America/Cancun'
-  });
+
+  // Format manually to avoid any timezone issues
+  const months = [
+    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+  ];
+  const weekdays = [
+    'domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'
+  ];
+
+  // Create date at noon to avoid any edge cases
+  const date = new Date(year, month - 1, day, 12, 0, 0);
+  const weekday = weekdays[date.getDay()];
+  const monthName = months[month - 1];
+
+  return `${weekday}, ${day} de ${monthName} de ${year}`;
 }
 
 function formatSlug(slug: string): string {
