@@ -212,6 +212,10 @@ export default function ContactForm({ locale, searchParams }: ContactFormProps) 
       }
 
       setSuccess(true);
+
+      // Scroll to top of the page smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
       setFormData({
         name: '',
         email: '',
