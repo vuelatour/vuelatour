@@ -496,7 +496,7 @@ export default function MessagesContent({ user, messages: initialMessages }: Mes
                             type="date"
                             value={editTravelDate}
                             onChange={(e) => setEditTravelDate(e.target.value)}
-                            className="w-full px-3 py-1.5 bg-navy-900 border border-navy-700 rounded text-white text-sm focus:outline-none focus:border-brand-500"
+                            className="w-full px-3 py-1.5 bg-navy-900 border border-navy-700 rounded text-white text-sm focus:outline-none focus:border-brand-500 [color-scheme:dark]"
                           />
                         ) : selectedMessage.travel_date ? (
                           <div className="flex items-center gap-2 text-white">
@@ -516,7 +516,7 @@ export default function MessagesContent({ user, messages: initialMessages }: Mes
                             type="time"
                             value={editDepartureTime}
                             onChange={(e) => setEditDepartureTime(e.target.value)}
-                            className="w-full px-3 py-1.5 bg-navy-900 border border-navy-700 rounded text-white text-sm focus:outline-none focus:border-brand-500"
+                            className="w-full px-3 py-1.5 bg-navy-900 border border-navy-700 rounded text-white text-sm focus:outline-none focus:border-brand-500 [color-scheme:dark]"
                           />
                         ) : selectedMessage.departure_time ? (
                           <div className="flex items-center gap-2 text-white">
@@ -536,7 +536,7 @@ export default function MessagesContent({ user, messages: initialMessages }: Mes
                             type="date"
                             value={editReturnDate}
                             onChange={(e) => setEditReturnDate(e.target.value)}
-                            className="w-full px-3 py-1.5 bg-navy-900 border border-navy-700 rounded text-white text-sm focus:outline-none focus:border-brand-500"
+                            className="w-full px-3 py-1.5 bg-navy-900 border border-navy-700 rounded text-white text-sm focus:outline-none focus:border-brand-500 [color-scheme:dark]"
                           />
                         ) : selectedMessage.return_date ? (
                           <div className="flex items-center gap-2 text-white">
@@ -556,7 +556,7 @@ export default function MessagesContent({ user, messages: initialMessages }: Mes
                             type="time"
                             value={editReturnTime}
                             onChange={(e) => setEditReturnTime(e.target.value)}
-                            className="w-full px-3 py-1.5 bg-navy-900 border border-navy-700 rounded text-white text-sm focus:outline-none focus:border-brand-500"
+                            className="w-full px-3 py-1.5 bg-navy-900 border border-navy-700 rounded text-white text-sm focus:outline-none focus:border-brand-500 [color-scheme:dark]"
                           />
                         ) : selectedMessage.return_time ? (
                           <div className="flex items-center gap-2 text-white">
