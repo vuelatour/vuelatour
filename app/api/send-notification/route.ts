@@ -37,12 +37,16 @@ interface QuoteRequestData {
 
 function formatDate(dateString?: string): string {
   if (!dateString) return 'No especificada';
-  const date = new Date(dateString);
+  // Parse date as local time to avoid timezone issues
+  // Input format: "2026-03-15" -> should display as March 15, not shifted by timezone
+  const [year, month, day] = dateString.split('-').map(Number);
+  const date = new Date(year, month - 1, day); // month is 0-indexed
   return date.toLocaleDateString('es-MX', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
+    timeZone: 'America/Cancun'
   });
 }
 
