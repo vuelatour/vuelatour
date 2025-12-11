@@ -83,8 +83,31 @@ export default function MessagesContent({ user, messages: initialMessages }: Mes
   const [messages, setMessages] = useState(initialMessages);
   const [selectedMessage, setSelectedMessage] = useState<ContactRequest | null>(null);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('contact_requests')
+        .select(`
+          *,
+          air_tours:tour_id(name_es, name_en, slug),
+          destinations:destination_id(name_es, name_en, slug)
+        `)
+        .order('created_at', { ascending: false });
+
+      if (fetchError) throw fetchError;
+      setMessages(data || []);
+      toast.success('Mensajes actualizados');
+    } catch (err) {
+      toast.error('Error al actualizar mensajes');
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   const handleStatusChange = async (id: string, newStatus: string) => {
     setLoading(true);
@@ -162,13 +185,23 @@ export default function MessagesContent({ user, messages: initialMessages }: Mes
   return (
     <AdminLayout userEmail={user.email || ''}>
       <div className="mb-6">
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-semibold text-white">Mensajes</h1>
-          {pendingCount > 0 && (
-            <span className="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs font-medium rounded-full">
-              {pendingCount} pendiente{pendingCount > 1 ? 's' : ''}
-            </span>
-          )}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-semibold text-white">Mensajes</h1>
+            {pendingCount > 0 && (
+              <span className="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs font-medium rounded-full">
+                {pendingCount} pendiente{pendingCount > 1 ? 's' : ''}
+              </span>
+            )}
+          </div>
+          <button
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="flex items-center gap-2 px-3 py-2 bg-navy-800 hover:bg-navy-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
+          >
+            <ArrowPathIcon className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+            {refreshing ? 'Actualizando...' : 'Actualizar'}
+          </button>
         </div>
         <p className="text-navy-400 mt-1">Solicitudes de contacto recibidas</p>
       </div>
