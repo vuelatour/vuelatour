@@ -19,6 +19,8 @@ import {
   UserGroupIcon,
   PaperAirplaneIcon,
   ArrowPathIcon,
+  PencilIcon,
+  CheckIcon,
 } from '@heroicons/react/24/outline';
 
 interface TourData {
@@ -86,6 +88,14 @@ export default function MessagesContent({ user, messages: initialMessages }: Mes
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
+
+  // Edit mode state
+  const [isEditingDates, setIsEditingDates] = useState(false);
+  const [editTravelDate, setEditTravelDate] = useState('');
+  const [editDepartureTime, setEditDepartureTime] = useState('');
+  const [editReturnDate, setEditReturnDate] = useState('');
+  const [editReturnTime, setEditReturnTime] = useState('');
+  const [savingDates, setSavingDates] = useState(false);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -188,6 +198,80 @@ export default function MessagesContent({ user, messages: initialMessages }: Mes
       month: 'long',
       year: 'numeric',
     }).format(date);
+  };
+
+  // Extract date part from ISO string for input value
+  const getDateInputValue = (dateString: string | null) => {
+    if (!dateString) return '';
+    return dateString.split('T')[0];
+  };
+
+  // Start editing dates
+  const handleStartEditDates = () => {
+    if (!selectedMessage) return;
+    setEditTravelDate(getDateInputValue(selectedMessage.travel_date));
+    setEditDepartureTime(selectedMessage.departure_time || '');
+    setEditReturnDate(getDateInputValue(selectedMessage.return_date));
+    setEditReturnTime(selectedMessage.return_time || '');
+    setIsEditingDates(true);
+  };
+
+  // Cancel editing
+  const handleCancelEditDates = () => {
+    setIsEditingDates(false);
+    setEditTravelDate('');
+    setEditDepartureTime('');
+    setEditReturnDate('');
+    setEditReturnTime('');
+  };
+
+  // Save edited dates
+  const handleSaveDates = async () => {
+    if (!selectedMessage) return;
+    setSavingDates(true);
+
+    try {
+      // Format dates with timezone offset to prevent shift
+      const formatDateForDB = (dateStr: string | null) => {
+        if (!dateStr) return null;
+        return `${dateStr}T12:00:00+00:00`;
+      };
+
+      const updateData = {
+        travel_date: formatDateForDB(editTravelDate || null),
+        departure_time: editDepartureTime || null,
+        return_date: formatDateForDB(editReturnDate || null),
+        return_time: editReturnTime || null,
+      };
+
+      const { error: updateError } = await supabase
+        .from('contact_requests')
+        .update(updateData)
+        .eq('id', selectedMessage.id);
+
+      if (updateError) throw updateError;
+
+      // Update local state
+      const updatedMessage = {
+        ...selectedMessage,
+        travel_date: updateData.travel_date,
+        departure_time: updateData.departure_time,
+        return_date: updateData.return_date,
+        return_time: updateData.return_time,
+      };
+
+      setMessages(messages.map(m =>
+        m.id === selectedMessage.id ? updatedMessage : m
+      ));
+      setSelectedMessage(updatedMessage);
+      setIsEditingDates(false);
+      toast.success('Fechas y horarios actualizados');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Error al actualizar';
+      toast.error(errorMessage);
+    } finally {
+      setSavingDates(false);
+    }
   };
 
   const filteredMessages = filterStatus === 'all'
@@ -372,52 +456,117 @@ export default function MessagesContent({ user, messages: initialMessages }: Mes
                 {/* Flight Details Section - Charter */}
                 {selectedMessage.service_type === 'charter' && (
                   <div className="p-4 bg-navy-800 rounded-lg space-y-3">
-                    <p className="text-navy-400 text-xs font-semibold uppercase mb-3">Detalles del Vuelo Privado</p>
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="text-navy-400 text-xs font-semibold uppercase">Detalles del Vuelo Privado</p>
+                      {!isEditingDates ? (
+                        <button
+                          onClick={handleStartEditDates}
+                          className="flex items-center gap-1 px-2 py-1 text-xs text-navy-400 hover:text-white hover:bg-navy-700 rounded transition-colors"
+                        >
+                          <PencilIcon className="w-3.5 h-3.5" />
+                          Editar fechas
+                        </button>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={handleCancelEditDates}
+                            className="flex items-center gap-1 px-2 py-1 text-xs text-navy-400 hover:text-white hover:bg-navy-700 rounded transition-colors"
+                          >
+                            <XMarkIcon className="w-3.5 h-3.5" />
+                            Cancelar
+                          </button>
+                          <button
+                            onClick={handleSaveDates}
+                            disabled={savingDates}
+                            className="flex items-center gap-1 px-2 py-1 text-xs bg-brand-500 hover:bg-brand-600 text-white rounded transition-colors disabled:opacity-50"
+                          >
+                            <CheckIcon className="w-3.5 h-3.5" />
+                            {savingDates ? 'Guardando...' : 'Guardar'}
+                          </button>
+                        </div>
+                      )}
+                    </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {/* Travel Date */}
-                      {selectedMessage.travel_date && (
-                        <div>
-                          <p className="text-navy-500 text-xs mb-1">Fecha de viaje</p>
+                      <div>
+                        <p className="text-navy-500 text-xs mb-1">Fecha de viaje</p>
+                        {isEditingDates ? (
+                          <input
+                            type="date"
+                            value={editTravelDate}
+                            onChange={(e) => setEditTravelDate(e.target.value)}
+                            className="w-full px-3 py-1.5 bg-navy-900 border border-navy-700 rounded text-white text-sm focus:outline-none focus:border-brand-500"
+                          />
+                        ) : selectedMessage.travel_date ? (
                           <div className="flex items-center gap-2 text-white">
                             <CalendarIcon className="w-4 h-4 text-navy-500" />
                             <span>{formatTravelDate(selectedMessage.travel_date)}</span>
                           </div>
-                        </div>
-                      )}
+                        ) : (
+                          <span className="text-navy-600 text-sm">No especificada</span>
+                        )}
+                      </div>
 
                       {/* Departure Time */}
-                      {selectedMessage.departure_time && (
-                        <div>
-                          <p className="text-navy-500 text-xs mb-1">Hora de salida</p>
+                      <div>
+                        <p className="text-navy-500 text-xs mb-1">Hora de salida</p>
+                        {isEditingDates ? (
+                          <input
+                            type="time"
+                            value={editDepartureTime}
+                            onChange={(e) => setEditDepartureTime(e.target.value)}
+                            className="w-full px-3 py-1.5 bg-navy-900 border border-navy-700 rounded text-white text-sm focus:outline-none focus:border-brand-500"
+                          />
+                        ) : selectedMessage.departure_time ? (
                           <div className="flex items-center gap-2 text-white">
                             <ClockIcon className="w-4 h-4 text-navy-500" />
                             <span>{selectedMessage.departure_time}</span>
                           </div>
-                        </div>
-                      )}
+                        ) : (
+                          <span className="text-navy-600 text-sm">No especificada</span>
+                        )}
+                      </div>
 
                       {/* Return Date */}
-                      {selectedMessage.return_date && (
-                        <div>
-                          <p className="text-navy-500 text-xs mb-1">Fecha de regreso</p>
+                      <div>
+                        <p className="text-navy-500 text-xs mb-1">Fecha de regreso</p>
+                        {isEditingDates ? (
+                          <input
+                            type="date"
+                            value={editReturnDate}
+                            onChange={(e) => setEditReturnDate(e.target.value)}
+                            className="w-full px-3 py-1.5 bg-navy-900 border border-navy-700 rounded text-white text-sm focus:outline-none focus:border-brand-500"
+                          />
+                        ) : selectedMessage.return_date ? (
                           <div className="flex items-center gap-2 text-white">
                             <ArrowPathIcon className="w-4 h-4 text-navy-500" />
                             <span>{formatTravelDate(selectedMessage.return_date)}</span>
                           </div>
-                        </div>
-                      )}
+                        ) : (
+                          <span className="text-navy-600 text-sm">No especificada</span>
+                        )}
+                      </div>
 
                       {/* Return Time */}
-                      {selectedMessage.return_time && (
-                        <div>
-                          <p className="text-navy-500 text-xs mb-1">Hora de regreso</p>
+                      <div>
+                        <p className="text-navy-500 text-xs mb-1">Hora de regreso</p>
+                        {isEditingDates ? (
+                          <input
+                            type="time"
+                            value={editReturnTime}
+                            onChange={(e) => setEditReturnTime(e.target.value)}
+                            className="w-full px-3 py-1.5 bg-navy-900 border border-navy-700 rounded text-white text-sm focus:outline-none focus:border-brand-500"
+                          />
+                        ) : selectedMessage.return_time ? (
                           <div className="flex items-center gap-2 text-white">
                             <ClockIcon className="w-4 h-4 text-navy-500" />
                             <span>{selectedMessage.return_time}</span>
                           </div>
-                        </div>
-                      )}
+                        ) : (
+                          <span className="text-navy-600 text-sm">No especificada</span>
+                        )}
+                      </div>
 
                       {/* Departure Location */}
                       {selectedMessage.departure_location && (
