@@ -134,10 +134,13 @@ export default function ContactForm({ locale, searchParams }: ContactFormProps) 
       }
 
       // Helper to ensure dates are stored correctly without timezone shift
-      // Append T12:00:00 to treat as noon local time, avoiding UTC midnight conversion issues
+      // Append time with explicit Cancun timezone offset to prevent UTC conversion issues
+      // Cancun is UTC-5 (no daylight saving), so we add +00:00 to make the date be interpreted as-is
       const formatDateForDB = (dateStr: string | null) => {
         if (!dateStr) return null;
-        return `${dateStr}T12:00:00`;
+        // Send as ISO string with explicit timezone to prevent Supabase from shifting
+        // Using noon UTC ensures the date stays correct regardless of server timezone
+        return `${dateStr}T12:00:00+00:00`;
       };
 
       const { error: insertError } = await supabase

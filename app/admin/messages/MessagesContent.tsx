@@ -176,6 +176,20 @@ export default function MessagesContent({ user, messages: initialMessages }: Mes
     }).format(date);
   };
 
+  // Format travel/return dates without timezone conversion issues
+  const formatTravelDate = (dateString: string | null) => {
+    if (!dateString) return null;
+    // Extract just the date part (YYYY-MM-DD) to avoid timezone shifts
+    const datePart = dateString.split('T')[0];
+    const [year, month, day] = datePart.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    return new Intl.DateTimeFormat('es-MX', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).format(date);
+  };
+
   const filteredMessages = filterStatus === 'all'
     ? messages
     : messages.filter(m => m.status === filterStatus);
@@ -367,7 +381,7 @@ export default function MessagesContent({ user, messages: initialMessages }: Mes
                           <p className="text-navy-500 text-xs mb-1">Fecha de viaje</p>
                           <div className="flex items-center gap-2 text-white">
                             <CalendarIcon className="w-4 h-4 text-navy-500" />
-                            <span>{new Date(selectedMessage.travel_date).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                            <span>{formatTravelDate(selectedMessage.travel_date)}</span>
                           </div>
                         </div>
                       )}
@@ -389,7 +403,7 @@ export default function MessagesContent({ user, messages: initialMessages }: Mes
                           <p className="text-navy-500 text-xs mb-1">Fecha de regreso</p>
                           <div className="flex items-center gap-2 text-white">
                             <ArrowPathIcon className="w-4 h-4 text-navy-500" />
-                            <span>{new Date(selectedMessage.return_date).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                            <span>{formatTravelDate(selectedMessage.return_date)}</span>
                           </div>
                         </div>
                       )}
@@ -464,7 +478,7 @@ export default function MessagesContent({ user, messages: initialMessages }: Mes
                           <p className="text-navy-500 text-xs mb-1">Fecha de viaje</p>
                           <div className="flex items-center gap-2 text-white">
                             <CalendarIcon className="w-4 h-4 text-navy-500" />
-                            <span>{new Date(selectedMessage.travel_date).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                            <span>{formatTravelDate(selectedMessage.travel_date)}</span>
                           </div>
                         </div>
                       )}
