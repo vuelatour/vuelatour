@@ -3,6 +3,7 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { Inter } from 'next/font/google';
 import { Metadata, Viewport } from 'next';
+import { Analytics } from '@vercel/analytics/next';
 import Header from '@/components/layout/Header';
 import FooterWrapper from '@/components/layout/FooterWrapper';
 import { LazyCookieBanner } from '@/components/layout/LazyComponents';
@@ -107,6 +108,7 @@ export default async function LocaleLayout({
             </LoadingProvider>
           </CurrencyProvider>
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );
