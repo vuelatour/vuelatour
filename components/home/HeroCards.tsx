@@ -173,8 +173,8 @@ export default function HeroCards({ locale, featuredTour, featuredDestination, h
         </Link>
       )}
 
-      {/* Social Proof Card - Rotating */}
-      <div className="card p-4 overflow-hidden">
+      {/* Social Proof Card - Rotating - Fixed height to prevent CLS */}
+      <div className="card p-4 overflow-hidden h-[72px]">
         <div
           className={`flex items-center gap-3 transition-all duration-300 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
@@ -208,8 +208,8 @@ export default function HeroCards({ locale, featuredTour, featuredDestination, h
         </div>
       </div>
 
-      {/* TripAdvisor Rating Widget */}
-      <div className="card p-3">
+      {/* TripAdvisor Rating Widget - Fixed height to prevent CLS */}
+      <div className="card p-3 min-h-[56px]">
         <TripAdvisorRatingWidget locale={locale} />
       </div>
     </div>

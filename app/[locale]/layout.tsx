@@ -72,14 +72,14 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>
-        {/* Preconnect links for performance - placed in body for Next.js */}
+      <head>
+        {/* Critical preconnects for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-        <link rel="dns-prefetch" href="https://static.tacdn.com" />
-
+      </head>
+      <body className={`${inter.className} antialiased`}>
         {/* Theme detection script - must be inline to prevent FOUC */}
         <script
           dangerouslySetInnerHTML={{

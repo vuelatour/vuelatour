@@ -74,9 +74,11 @@ export default function HeroSection({ locale, content, heroImage, featuredTour, 
           fill
           priority
           fetchPriority="high"
-          quality={90}
+          quality={75}
           sizes="100vw"
           className="object-cover"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIBAAAgEEAgMBAAAAAAAAAAAAAQIDAAQFERIhBjFBUf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AyXxrIZC3uZIrG8uIYgiFljkKqSQTsgdnQ0PtKUoP/9k="
           unoptimized={heroImageUrl.startsWith('http')}
         />
         {/* Solid overlay - no gradient */}
