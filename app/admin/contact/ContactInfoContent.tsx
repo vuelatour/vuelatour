@@ -255,7 +255,7 @@ export default function ContactInfoContent({ user, contactInfo }: ContactInfoCon
                             type="text"
                             value={phone.display}
                             onChange={(e) => updatePhone(index, 'display', e.target.value)}
-                            placeholder="+52 998 740 7149"
+                            placeholder="+52 998 240 7149"
                             className="w-full px-3 py-2 bg-navy-900 border border-navy-600 rounded-lg text-white placeholder-navy-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
                           />
                         </div>
@@ -267,7 +267,7 @@ export default function ContactInfoContent({ user, contactInfo }: ContactInfoCon
                             type="text"
                             value={phone.link}
                             onChange={(e) => updatePhone(index, 'link', e.target.value)}
-                            placeholder="+529987407149"
+                            placeholder="+529982407149"
                             className="w-full px-3 py-2 bg-navy-900 border border-navy-600 rounded-lg text-white placeholder-navy-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
                           />
                         </div>
@@ -355,11 +355,11 @@ export default function ContactInfoContent({ user, contactInfo }: ContactInfoCon
                     type="text"
                     value={formData.whatsapp_number}
                     onChange={(e) => setFormData({ ...formData, whatsapp_number: e.target.value })}
-                    placeholder="529987407149"
+                    placeholder="529982407149"
                     className="w-full max-w-md px-3 py-2 bg-navy-800 border border-navy-700 rounded-lg text-white placeholder-navy-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
                   <p className="text-xs text-navy-500 mt-1">
-                    Ejemplo: 529987407149 (52 es el código de México)
+                    Ejemplo: 529982407149 (52 es el código de México)
                   </p>
                 </div>
 
@@ -395,7 +395,7 @@ export default function ContactInfoContent({ user, contactInfo }: ContactInfoCon
                   <div className="p-4 bg-navy-800 rounded-lg">
                     <p className="text-sm text-navy-400 mb-2">Vista previa del enlace:</p>
                     <a
-                      href={`https://wa.me/${formData.whatsapp_number}${formData.whatsapp_message_es ? `?text=${encodeURIComponent(formData.whatsapp_message_es)}` : ''}`}
+                      href={`https://wa.me/${formData.whatsapp_number.replace(/\D/g, '')}${formData.whatsapp_message_es ? `?text=${encodeURIComponent(formData.whatsapp_message_es)}` : ''}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"

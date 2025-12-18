@@ -40,7 +40,7 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
   // Get phones array or fallback to old phone field
   const phones: Phone[] = dbContactInfo?.phones && Array.isArray(dbContactInfo.phones) && dbContactInfo.phones.length > 0
     ? dbContactInfo.phones
-    : [{ display: dbContactInfo?.phone || '+52 998 740 7149', link: dbContactInfo?.phone_link || '+529987407149' }];
+    : [{ display: dbContactInfo?.phone || '+52 998 240 7149', link: dbContactInfo?.phone_link || '+529982407149' }];
 
   // Build contact info array with database values or defaults
   const contactInfoItems = [
@@ -67,7 +67,9 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
   ];
 
   // WhatsApp configuration
-  const whatsappNumber = dbContactInfo?.whatsapp_number || '529987407149';
+  const whatsappNumberRaw = dbContactInfo?.whatsapp_number || '529982407149';
+  // Remove all non-numeric characters for WhatsApp URL
+  const whatsappNumber = whatsappNumberRaw.replace(/\D/g, '');
   const whatsappMessage = locale === 'es'
     ? (dbContactInfo?.whatsapp_message_es || '')
     : (dbContactInfo?.whatsapp_message_en || '');

@@ -63,7 +63,7 @@ export default function Footer({ contactInfo }: FooterProps) {
     },
     contactInfo?.whatsapp_number && {
       icon: FaWhatsapp,
-      href: `https://wa.me/${contactInfo.whatsapp_number}`,
+      href: `https://wa.me/${contactInfo.whatsapp_number.replace(/\D/g, '')}`,
       label: 'WhatsApp',
     },
   ].filter(Boolean) as { icon: typeof FaFacebook; href: string; label: string }[];
@@ -76,7 +76,7 @@ export default function Footer({ contactInfo }: FooterProps) {
   // Get phones array or fallback to old phone field
   const phones = contactInfo?.phones && Array.isArray(contactInfo.phones) && contactInfo.phones.length > 0
     ? contactInfo.phones
-    : [{ display: contactInfo?.phone || '+52 998 740 7149', link: contactInfo?.phone_link || '+529987407149' }];
+    : [{ display: contactInfo?.phone || '+52 998 240 7149', link: contactInfo?.phone_link || '+529982407149' }];
 
   const email = contactInfo?.email || 'info@vuelatour.com';
 
