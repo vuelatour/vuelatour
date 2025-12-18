@@ -285,12 +285,22 @@ export async function POST(request: NextRequest) {
       : `Nueva Cotización: Tour ${tour ? formatSlug(tour) : 'aéreo'} - ${data.name}`;
 
     const resend = getResendClient();
+
+    // Generate unique Message-ID for threading
+    const timestamp = Date.now();
+    const randomId = Math.random().toString(36).substring(2, 15);
+    const messageId = `<${timestamp}.${randomId}.${data.email.replace('@', '-at-')}@vuelatour.com>`;
+
     const { data: emailData, error } = await resend.emails.send({
       from: 'Vuelatour Notificaciones <notificaciones@notify.vuelatour.com>',
       to: ['info@vuelatour.com'],
       subject: subject,
       html: generateEmailHTML(data),
       replyTo: data.email,
+      headers: {
+        'Message-ID': messageId,
+        'X-Entity-Ref-ID': `quote-${timestamp}`,
+      },
     });
 
     if (error) {
