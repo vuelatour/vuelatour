@@ -143,7 +143,7 @@ export default function AirToursContent({ locale, tours }: AirToursContentProps)
                     className="h-full bg-white dark:bg-navy-900 rounded-3xl border border-brand-200 dark:border-brand-800 overflow-hidden hover:border-brand-400 dark:hover:border-brand-600 hover:shadow-xl hover:shadow-brand-100 dark:hover:shadow-brand-900/30 transition-all duration-300 scroll-mt-24"
                   >
                     {/* Image */}
-                    <div className="relative aspect-[16/10] overflow-hidden">
+                    <div className="relative aspect-[16/10] overflow-hidden bg-brand-100 dark:bg-brand-900/50">
                       {tour.image_url ? (
                         <Image
                           src={tour.image_url}
@@ -153,6 +153,8 @@ export default function AirToursContent({ locale, tours }: AirToursContentProps)
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
+                          placeholder="blur"
+                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIBAAAgEEAgMBAAAAAAAAAAAAAQIDAAQFERIhBjFBUf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AyXxrIZC3uZIrG8uIYgiFljkKqSQTsgdnQ0PtKUoP/9k="
                         />
                       ) : (
                         <div className="w-full h-full bg-brand-100 dark:bg-brand-900/50 flex items-center justify-center">

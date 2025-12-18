@@ -139,7 +139,7 @@ export default function CharterFlightsContent({ locale, destinations }: CharterF
                     className="h-full bg-white dark:bg-navy-900 rounded-3xl border border-navy-200 dark:border-navy-700 overflow-hidden hover:border-navy-400 dark:hover:border-navy-500 hover:shadow-xl hover:shadow-navy-100 dark:hover:shadow-navy-900/50 transition-all duration-300 scroll-mt-24"
                   >
                     {/* Image */}
-                    <div className="relative aspect-[16/10] overflow-hidden">
+                    <div className="relative aspect-[16/10] overflow-hidden bg-navy-100 dark:bg-navy-800">
                       {dest.image_url ? (
                         <Image
                           src={dest.image_url}
@@ -149,6 +149,8 @@ export default function CharterFlightsContent({ locale, destinations }: CharterF
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
+                          placeholder="blur"
+                          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIBAAAgEEAgMBAAAAAAAAAAAAAQIDAAQFERIhBjFBUf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AyXxrIZC3uZIrG8uIYgiFljkKqSQTsgdnQ0PtKUoP/9k="
                         />
                       ) : (
                         <div className="w-full h-full bg-navy-100 dark:bg-navy-800 flex items-center justify-center">
