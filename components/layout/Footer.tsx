@@ -86,7 +86,7 @@ export default function Footer({ contactInfo }: FooterProps) {
         {/* Main Footer */}
         <div className="py-12 md:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 min-h-[200px]">
             <Link
               href={`/${locale}`}
               className="inline-block mb-2"
