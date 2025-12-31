@@ -107,6 +107,10 @@ export default function AdminSidebar({ userEmail }: AdminSidebarProps) {
             height={35}
             className="h-8 w-auto"
           />
+          <p className="text-xs italic mt-1">
+            <span className="text-navy-400">flying is </span>
+            <span className="text-brand-500">wonderful!</span>
+          </p>
           <p className="text-xs text-navy-500 mt-2">Panel de Administración</p>
         </Link>
         <div className="mt-3 pt-3 border-t border-navy-800/50">
