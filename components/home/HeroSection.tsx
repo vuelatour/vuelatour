@@ -85,6 +85,25 @@ export default function HeroSection({ locale, content, heroImage, featuredTour, 
         <div className="absolute inset-0 bg-white/90 dark:bg-navy-950/90" />
       </div>
 
+      {/* Decorative flight path - dashed curved line */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <svg
+          className="absolute w-[800px] h-[400px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 dark:opacity-15"
+          viewBox="0 0 800 400"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M-50 350 Q 200 50, 400 150 T 850 50"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeDasharray="12 8"
+            strokeLinecap="round"
+            className="text-brand-500"
+          />
+        </svg>
+      </div>
+
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-hidden">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Content */}
