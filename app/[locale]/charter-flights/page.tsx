@@ -65,10 +65,10 @@ export default async function CharterFlightsPage({ params }: CharterFlightsPageP
   const { locale } = await params;
   const supabase = await createClient();
 
-  // Fetch all active destinations
+  // Fetch only needed fields for better performance
   const { data: destinations } = await supabase
     .from('destinations')
-    .select('*')
+    .select('id, slug, name_es, name_en, description_es, description_en, flight_time, price_from, image_url, aircraft_pricing')
     .eq('is_active', true)
     .order('display_order', { ascending: true });
 

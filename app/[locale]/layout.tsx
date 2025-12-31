@@ -76,6 +76,8 @@ export default async function LocaleLayout({
         {/* Critical preconnects for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Preconnect to Supabase for faster image loading */}
+        <link rel="preconnect" href="https://qrfnlmwjpyolusntakvy.supabase.co" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
       </head>

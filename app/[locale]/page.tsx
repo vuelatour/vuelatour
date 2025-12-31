@@ -21,77 +21,35 @@ export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
   const supabase = await createClient();
 
-  // Fetch destinations from Supabase
-  const { data: destinations } = await supabase
-    .from('destinations')
-    .select('*')
-    .eq('is_active', true)
-    .order('display_order', { ascending: true });
-
-  // Fetch air tours from Supabase
-  const { data: tours } = await supabase
-    .from('air_tours')
-    .select('*')
-    .eq('is_active', true)
-    .order('display_order', { ascending: true });
-
-  // Get most popular destination/tour based on contact requests
-  // Query contact_requests grouped by destination field to find the most requested
-  const { data: popularRequests } = await supabase
-    .from('contact_requests')
-    .select('destination, service_type')
-    .not('destination', 'is', null)
-    .not('destination', 'eq', '');
-
-  // Count occurrences and find the most popular
-  const destinationCounts: Record<string, { count: number; type: string }> = {};
-  (popularRequests || []).forEach((req) => {
-    if (req.destination) {
-      const slug = req.destination.toLowerCase().replace(/\s+/g, '-');
-      if (!destinationCounts[slug]) {
-        destinationCounts[slug] = { count: 0, type: req.service_type || 'charter' };
-      }
-      destinationCounts[slug].count++;
-    }
-  });
-
-  // Find the most popular slug
-  let mostPopularSlug: string | null = null;
-  let maxCount = 0;
-  let popularType = 'charter';
-  Object.entries(destinationCounts).forEach(([slug, data]) => {
-    if (data.count > maxCount) {
-      maxCount = data.count;
-      mostPopularSlug = slug;
-      popularType = data.type;
-    }
-  });
-
-  // Find the actual destination or tour that matches the most popular
-  let popularItem = null;
-  if (mostPopularSlug && maxCount >= 1) {
-    // Try to find in destinations first
-    popularItem = (destinations || []).find(
-      (d) => d.slug === mostPopularSlug || d.name_es.toLowerCase().includes(mostPopularSlug!) || d.name_en.toLowerCase().includes(mostPopularSlug!)
-    );
-    // If not found, try tours
-    if (!popularItem) {
-      popularItem = (tours || []).find(
-        (t) => t.slug === mostPopularSlug || t.name_es.toLowerCase().includes(mostPopularSlug!) || t.name_en.toLowerCase().includes(mostPopularSlug!)
-      );
-      if (popularItem) popularType = 'tour';
-    }
-  }
-
-  // Fetch site content from Supabase
-  const { data: content } = await supabase
-    .from('site_content')
-    .select('*');
-
-  // Fetch site images from Supabase
-  const { data: images } = await supabase
-    .from('site_images')
-    .select('*');
+  // Run all queries in parallel for better performance
+  const [
+    { data: destinations },
+    { data: tours },
+    { data: content },
+    { data: images },
+  ] = await Promise.all([
+    // Fetch destinations
+    supabase
+      .from('destinations')
+      .select('*')
+      .eq('is_active', true)
+      .order('display_order', { ascending: true }),
+    // Fetch tours
+    supabase
+      .from('air_tours')
+      .select('*')
+      .eq('is_active', true)
+      .order('display_order', { ascending: true }),
+    // Fetch site content
+    supabase
+      .from('site_content')
+      .select('key, value_es, value_en'),
+    // Fetch only hero and fleet images
+    supabase
+      .from('site_images')
+      .select('id, key, url, alt_es, alt_en, category, is_primary')
+      .in('category', ['hero', 'fleet']),
+  ]);
 
   // Transform images to a map by category
   const imagesMap = (images || []).reduce((acc, img) => {
@@ -140,9 +98,9 @@ export default async function HomePage({ params }: HomePageProps) {
         locale={locale}
         content={contentMap}
         heroImage={heroImage}
-        featuredTour={popularType === 'tour' && popularItem ? popularItem : (tours?.[0] || null)}
-        featuredDestination={popularType !== 'tour' && popularItem ? popularItem : (destinations?.[0] || null)}
-        hasPopularData={!!popularItem}
+        featuredTour={tours?.[0] || null}
+        featuredDestination={destinations?.[0] || null}
+        hasPopularData={false}
       />
       <LazyServicesWrapper
         locale={locale}

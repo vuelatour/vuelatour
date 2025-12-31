@@ -65,10 +65,10 @@ export default async function AirToursPage({ params }: AirToursPageProps) {
   const { locale } = await params;
   const supabase = await createClient();
 
-  // Fetch all active tours
+  // Fetch only needed fields for better performance
   const { data: tours } = await supabase
     .from('air_tours')
-    .select('*')
+    .select('id, slug, name_es, name_en, description_es, description_en, duration, price_from, image_url, highlights_es, highlights_en, aircraft_pricing')
     .eq('is_active', true)
     .order('display_order', { ascending: true });
 

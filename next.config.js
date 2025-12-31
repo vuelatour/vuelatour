@@ -8,6 +8,11 @@ const nextConfig = {
   compress: true, // Enable gzip compression
   poweredByHeader: false, // Remove X-Powered-By header
 
+  // Experimental optimizations for better performance
+  experimental: {
+    optimizeCss: true, // Minify CSS for better FCP
+  },
+
   // Compiler optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? {

@@ -110,15 +110,15 @@ export default function HeroCards({ locale, featuredTour, featuredDestination, h
 
   return (
     <div className="grid gap-3">
-      {/* Featured Tour/Destination Card */}
+      {/* Featured Tour/Destination Card - Fixed height to prevent CLS */}
       {featured && (
         <Link
           href={`/${locale}/${featuredType}/${featured.slug}`}
-          className="group card p-0 overflow-hidden hover:shadow-xl transition-all duration-300"
+          className="group card p-0 overflow-hidden hover:shadow-xl transition-all duration-300 h-[232px]"
         >
-          <div className="relative">
+          <div className="relative h-full">
             {/* Image */}
-            <div className="relative h-32 overflow-hidden">
+            <div className="relative h-32 overflow-hidden bg-gray-100 dark:bg-navy-800">
               {featured.image_url ? (
                 <Image
                   src={featured.image_url}
@@ -126,6 +126,8 @@ export default function HeroCards({ locale, featuredTour, featuredDestination, h
                   fill
                   sizes="400px"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIBAAAgEEAgMBAAAAAAAAAAAAAQIDAAQFERIhBjFBUf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AyXxrIZC3uZIrG8uIYgiFljkKqSQTsgdnQ0PtKUoP/9k="
                 />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-brand-400 to-brand-600" />
@@ -195,10 +197,10 @@ export default function HeroCards({ locale, featuredTour, featuredDestination, h
         </div>
       </div>
 
-      {/* Certification Badge */}
-      <div className="card p-3">
+      {/* Certification Badge - Fixed height to prevent CLS */}
+      <div className="card p-3 h-[56px]">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
             <CheckBadgeIcon className="w-5 h-5 text-green-600 dark:text-green-400" />
           </div>
           <div>
@@ -209,7 +211,7 @@ export default function HeroCards({ locale, featuredTour, featuredDestination, h
       </div>
 
       {/* TripAdvisor Rating Widget - Fixed height to prevent CLS */}
-      <div className="card p-3 min-h-[56px]">
+      <div className="card p-3 h-[56px]">
         <TripAdvisorRatingWidget locale={locale} />
       </div>
     </div>
