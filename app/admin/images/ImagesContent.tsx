@@ -306,13 +306,17 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
     const oldUrl = formData.url;
 
     try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+      // Use the key as filename for better SEO and organization, fallback to timestamp if no key
+      const baseFileName = formData.key
+        ? formData.key.toLowerCase().replace(/[^a-z0-9-_]/g, '-').replace(/-+/g, '-')
+        : `${Date.now()}-${Math.random().toString(36).substring(7)}`;
+      const fileName = `${baseFileName}.${fileExt}`;
       const filePath = `${formData.category || 'other'}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('images')
-        .upload(filePath, file);
+        .upload(filePath, file, { upsert: true });
 
       if (uploadError) throw uploadError;
 
