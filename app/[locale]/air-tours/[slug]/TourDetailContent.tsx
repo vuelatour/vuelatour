@@ -76,11 +76,16 @@ interface ServiceOption {
   is_active: boolean;
 }
 
+interface ImageAltMap {
+  [url: string]: { alt_es: string | null; alt_en: string | null };
+}
+
 interface TourDetailContentProps {
   locale: string;
   tour: AirTour;
   otherTours: AirTour[];
   availableServices: ServiceOption[];
+  imageAltMap?: ImageAltMap;
 }
 
 // Icon mapping for dynamic services
@@ -160,6 +165,7 @@ export default function TourDetailContent({
   tour,
   otherTours,
   availableServices,
+  imageAltMap = {},
 }: TourDetailContentProps) {
   const t = translations[locale as keyof typeof translations] || translations.es;
   const { formatPrice } = useCurrency();
@@ -197,6 +203,19 @@ export default function TourDetailContent({
     ? tour.gallery_images
     : [];
   const hasGallery = galleryImages.length > 0;
+
+  // Helper to get alt text for gallery images
+  const getGalleryImageAlt = (imageUrl: string, index: number): string => {
+    const altData = imageAltMap[imageUrl];
+    if (altData) {
+      const alt = locale === 'es' ? altData.alt_es : altData.alt_en;
+      if (alt) return alt;
+    }
+    // Fallback to generic alt
+    return locale === 'es'
+      ? `Tour aéreo ${name} - Galería imagen ${index + 1} de ${galleryImages.length} - Vuelatour`
+      : `${name} air tour - Gallery image ${index + 1} of ${galleryImages.length} - Vuelatour`;
+  };
 
   // Track tour view on mount
   useEffect(() => {
@@ -369,9 +388,7 @@ export default function TourDetailContent({
                     >
                       <Image
                         src={galleryImages[currentSlide]}
-                        alt={locale === 'es'
-                          ? `Tour aéreo ${name} - Galería imagen ${currentSlide + 1} de ${galleryImages.length} - Vuelatour`
-                          : `Air tour ${name} - Gallery image ${currentSlide + 1} of ${galleryImages.length} - Vuelatour`}
+                        alt={getGalleryImageAlt(galleryImages[currentSlide], currentSlide)}
                         fill
                         className="object-cover transition-all duration-500"
                       />
@@ -646,9 +663,7 @@ export default function TourDetailContent({
           >
             <Image
               src={galleryImages[currentSlide]}
-              alt={locale === 'es'
-                ? `Tour aéreo ${name} - Galería imagen ${currentSlide + 1} de ${galleryImages.length} - Vuelatour`
-                : `Air tour ${name} - Gallery image ${currentSlide + 1} of ${galleryImages.length} - Vuelatour`}
+              alt={getGalleryImageAlt(galleryImages[currentSlide], currentSlide)}
               width={1200}
               height={800}
               className="object-contain w-full h-full max-h-[85vh]"

@@ -68,11 +68,16 @@ interface ServiceOption {
   is_active: boolean;
 }
 
+interface ImageAltMap {
+  [url: string]: { alt_es: string | null; alt_en: string | null };
+}
+
 interface DestinationDetailContentProps {
   locale: string;
   destination: Destination;
   otherDestinations: Destination[];
   availableServices: ServiceOption[];
+  imageAltMap?: ImageAltMap;
 }
 
 // Icon mapping for dynamic services
@@ -139,6 +144,7 @@ export default function DestinationDetailContent({
   destination,
   otherDestinations,
   availableServices,
+  imageAltMap = {},
 }: DestinationDetailContentProps) {
   const t = translations[locale as keyof typeof translations] || translations.es;
   const { formatPrice } = useCurrency();
@@ -172,6 +178,19 @@ export default function DestinationDetailContent({
     ? destination.gallery_images
     : [];
   const hasGallery = galleryImages.length > 0;
+
+  // Helper to get alt text for gallery images
+  const getGalleryImageAlt = (imageUrl: string, index: number): string => {
+    const altData = imageAltMap[imageUrl];
+    if (altData) {
+      const alt = locale === 'es' ? altData.alt_es : altData.alt_en;
+      if (alt) return alt;
+    }
+    // Fallback to generic alt
+    return locale === 'es'
+      ? `Vuelo privado a ${name} - Galería imagen ${index + 1} de ${galleryImages.length} - Vuelatour`
+      : `Private flight to ${name} - Gallery image ${index + 1} of ${galleryImages.length} - Vuelatour`;
+  };
 
   // Track destination view on mount
   useEffect(() => {
@@ -334,9 +353,7 @@ export default function DestinationDetailContent({
                     >
                       <Image
                         src={galleryImages[currentSlide]}
-                        alt={locale === 'es'
-                          ? `Vuelo privado a ${name} - Galería imagen ${currentSlide + 1} de ${galleryImages.length} - Vuelatour`
-                          : `Private flight to ${name} - Gallery image ${currentSlide + 1} of ${galleryImages.length} - Vuelatour`}
+                        alt={getGalleryImageAlt(galleryImages[currentSlide], currentSlide)}
                         fill
                         className="object-cover transition-all duration-500"
                       />
@@ -586,9 +603,7 @@ export default function DestinationDetailContent({
           >
             <Image
               src={galleryImages[currentSlide]}
-              alt={locale === 'es'
-                ? `Vuelo privado a ${name} - Imagen ${currentSlide + 1} de ${galleryImages.length} - Vuelatour`
-                : `Private flight to ${name} - Image ${currentSlide + 1} of ${galleryImages.length} - Vuelatour`}
+              alt={getGalleryImageAlt(galleryImages[currentSlide], currentSlide)}
               width={1200}
               height={800}
               className="object-contain w-full h-full max-h-[85vh]"

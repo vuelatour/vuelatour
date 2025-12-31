@@ -33,7 +33,8 @@
       "Bash(psql:*)",
       "Bash(git pull:*)",
       "Bash(git stash:*)",
-      "Bash(git diff:*)"
+      "Bash(git diff:*)",
+      "Bash(findstr:*)"
     ],
     "deny": [],
     "ask": []

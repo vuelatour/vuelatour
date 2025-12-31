@@ -131,6 +131,21 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
     .eq('is_active', true)
     .order('display_order', { ascending: true });
 
+  // Fetch site_images to get alt text for gallery images
+  const galleryUrls = tour.gallery_images || [];
+  const { data: siteImages } = galleryUrls.length > 0
+    ? await supabase
+        .from('site_images')
+        .select('url, alt_es, alt_en')
+        .in('url', galleryUrls)
+    : { data: [] };
+
+  // Create a map of URL -> alt text for easy lookup
+  const imageAltMap: Record<string, { alt_es: string | null; alt_en: string | null }> = {};
+  siteImages?.forEach(img => {
+    imageAltMap[img.url] = { alt_es: img.alt_es, alt_en: img.alt_en };
+  });
+
   const name = locale === 'es' ? tour.name_es : tour.name_en;
   const description = locale === 'es' ? tour.description_es : tour.description_en;
   const imageUrl = tour.image_url
@@ -207,6 +222,7 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
         tour={tour}
         otherTours={otherTours || []}
         availableServices={availableServices || []}
+        imageAltMap={imageAltMap}
       />
     </>
   );
