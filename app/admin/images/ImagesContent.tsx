@@ -468,6 +468,7 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
     const categoryImages = getImagesByCategory(category.value);
     const config = getCategoryConfig(category.value);
     const heavyImages = categoryImages.filter(img => isHeavyImage(img.file_size));
+    const missingAltImages = categoryImages.filter(img => !img.alt_es || !img.alt_en);
 
     return (
       <div className="bg-navy-900 rounded-xl border border-navy-800 overflow-hidden">
@@ -485,6 +486,11 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
                   {heavyImages.length > 0 && (
                     <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-red-500/20 text-red-400 border border-red-500/30">
                       ⚠️ {heavyImages.length} pesada{heavyImages.length > 1 ? 's' : ''} (&gt;150KB)
+                    </span>
+                  )}
+                  {missingAltImages.length > 0 && (
+                    <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                      📝 {missingAltImages.length} sin ALT
                     </span>
                   )}
                   {config.hasCarousel && (
@@ -681,6 +687,13 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
                     {isHeavyImage(image.file_size) && ' ⚠️'}
                   </div>
 
+                  {/* Badge de alt text faltante */}
+                  {(!image.alt_es || !image.alt_en) && (
+                    <div className="absolute bottom-8 left-2 px-2 py-1 bg-orange-500/90 text-white text-[10px] font-bold rounded-md flex items-center gap-1 border border-orange-400">
+                      📝 {!image.alt_es && !image.alt_en ? 'Sin ALT' : !image.alt_es ? 'Sin ALT ES' : 'Sin ALT EN'}
+                    </div>
+                  )}
+
                   {/* Overlay con acciones */}
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                     <button
@@ -748,6 +761,7 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
 
   const totalSize = images.reduce((acc, img) => acc + (img.file_size || 0), 0);
   const heavyImagesCount = images.filter(img => isHeavyImage(img.file_size)).length;
+  const missingAltCount = images.filter(img => !img.alt_es || !img.alt_en).length;
 
   return (
     <AdminLayout userEmail={user.email || ''}>
@@ -767,6 +781,14 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
                 <span className="text-navy-600">•</span>
                 <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-red-500/20 text-red-400 border border-red-500/30">
                   ⚠️ {heavyImagesCount} pesada{heavyImagesCount > 1 ? 's' : ''} (&gt;150KB)
+                </span>
+              </>
+            )}
+            {missingAltCount > 0 && (
+              <>
+                <span className="text-navy-600">•</span>
+                <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                  📝 {missingAltCount} sin ALT
                 </span>
               </>
             )}
