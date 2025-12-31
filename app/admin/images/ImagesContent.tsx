@@ -37,6 +37,7 @@ interface SiteImage {
 interface ImagesContentProps {
   user: User;
   images: SiteImage[];
+  usedImageUrls: string[];
 }
 
 interface CategoryConfigItem {
@@ -204,9 +205,29 @@ const getStoragePathFromUrl = (url: string): string | null => {
   return match ? match[1] : null;
 };
 
-export default function ImagesContent({ user, images: initialImages }: ImagesContentProps) {
+// Helper para extraer el formato de imagen de una URL
+const getImageFormat = (url: string): string | null => {
+  if (!url) return null;
+  try {
+    const pathname = new URL(url).pathname;
+    const ext = pathname.split('.').pop()?.toLowerCase();
+    if (ext && ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'avif'].includes(ext)) {
+      return ext === 'jpeg' ? 'jpg' : ext;
+    }
+  } catch {
+    // Fallback for relative URLs or invalid URLs
+    const ext = url.split('.').pop()?.toLowerCase().split('?')[0];
+    if (ext && ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'avif'].includes(ext)) {
+      return ext === 'jpeg' ? 'jpg' : ext;
+    }
+  }
+  return null;
+};
+
+export default function ImagesContent({ user, images: initialImages, usedImageUrls }: ImagesContentProps) {
   const router = useRouter();
   const supabase = createClient();
+  const usedUrlsSet = new Set(usedImageUrls);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState(initialImages);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -469,6 +490,7 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
     const config = getCategoryConfig(category.value);
     const heavyImages = categoryImages.filter(img => isHeavyImage(img.file_size));
     const missingAltImages = categoryImages.filter(img => !img.alt_es || !img.alt_en);
+    const unusedImages = categoryImages.filter(img => !usedUrlsSet.has(img.url));
 
     return (
       <div className="bg-navy-900 rounded-xl border border-navy-800 overflow-hidden">
@@ -491,6 +513,11 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
                   {missingAltImages.length > 0 && (
                     <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/30">
                       📝 {missingAltImages.length} sin ALT
+                    </span>
+                  )}
+                  {unusedImages.length > 0 && (
+                    <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-gray-500/20 text-gray-400 border border-gray-500/30">
+                      🔗 {unusedImages.length} sin uso
                     </span>
                   )}
                   {config.hasCarousel && (
@@ -687,6 +714,20 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
                     {isHeavyImage(image.file_size) && ' ⚠️'}
                   </div>
 
+                  {/* Badge de formato de imagen */}
+                  {getImageFormat(image.url) && (
+                    <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-navy-900/80 text-white text-[10px] font-bold rounded uppercase">
+                      {getImageFormat(image.url)}
+                    </div>
+                  )}
+
+                  {/* Badge de imagen sin uso */}
+                  {!usedUrlsSet.has(image.url) && (
+                    <div className="absolute bottom-14 left-2 px-2 py-1 bg-gray-500/90 text-white text-[10px] font-bold rounded-md flex items-center gap-1 border border-gray-400">
+                      🔗 Sin uso
+                    </div>
+                  )}
+
                   {/* Badge de alt text faltante */}
                   {(!image.alt_es || !image.alt_en) && (
                     <div className="absolute bottom-8 left-2 px-2 py-1 bg-orange-500/90 text-white text-[10px] font-bold rounded-md flex items-center gap-1 border border-orange-400">
@@ -762,6 +803,7 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
   const totalSize = images.reduce((acc, img) => acc + (img.file_size || 0), 0);
   const heavyImagesCount = images.filter(img => isHeavyImage(img.file_size)).length;
   const missingAltCount = images.filter(img => !img.alt_es || !img.alt_en).length;
+  const unusedImagesCount = images.filter(img => !usedUrlsSet.has(img.url)).length;
 
   return (
     <AdminLayout userEmail={user.email || ''}>
@@ -789,6 +831,14 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
                 <span className="text-navy-600">•</span>
                 <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/30">
                   📝 {missingAltCount} sin ALT
+                </span>
+              </>
+            )}
+            {unusedImagesCount > 0 && (
+              <>
+                <span className="text-navy-600">•</span>
+                <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-gray-500/20 text-gray-400 border border-gray-500/30">
+                  🔗 {unusedImagesCount} sin uso
                 </span>
               </>
             )}
@@ -920,6 +970,13 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
                       {config.icon} {config.label}
                     </div>
 
+                    {/* Format badge */}
+                    {getImageFormat(image.url) && (
+                      <div className="absolute top-10 left-2 px-1.5 py-0.5 bg-navy-900/80 text-white text-[10px] font-bold rounded uppercase">
+                        {getImageFormat(image.url)}
+                      </div>
+                    )}
+
                     {/* File size badge */}
                     <div className={`absolute bottom-2 right-2 px-2 py-1 text-xs font-bold rounded-md ${
                       isHeavyImage(image.file_size)
@@ -929,6 +986,13 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
                       {formatFileSize(image.file_size)}
                       {isHeavyImage(image.file_size) && ' ⚠️'}
                     </div>
+
+                    {/* Unused badge */}
+                    {!usedUrlsSet.has(image.url) && (
+                      <div className="absolute bottom-2 left-2 px-2 py-1 bg-gray-500/90 text-white text-[10px] font-bold rounded-md border border-gray-400">
+                        🔗 Sin uso
+                      </div>
+                    )}
 
                     {/* Carousel indicator */}
                     {config.hasCarousel && (

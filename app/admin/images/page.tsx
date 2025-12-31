@@ -16,6 +16,17 @@ export default async function ImagesPage() {
     .select('*')
     .order('category', { ascending: true });
 
+  // Fetch destinations and tours to check which images are used
+  const [{ data: destinations }, { data: tours }] = await Promise.all([
+    supabase.from('destinations').select('image_url'),
+    supabase.from('air_tours').select('image_url'),
+  ]);
+
+  // Collect all used image URLs
+  const usedImageUrls = new Set<string>();
+  destinations?.forEach(d => d.image_url && usedImageUrls.add(d.image_url));
+  tours?.forEach(t => t.image_url && usedImageUrls.add(t.image_url));
+
   // Get file sizes for each image from Supabase Storage
   const imagesWithSize = await Promise.all(
     (images || []).map(async (image) => {
@@ -49,5 +60,5 @@ export default async function ImagesPage() {
     })
   );
 
-  return <ImagesContent user={user} images={imagesWithSize} />;
+  return <ImagesContent user={user} images={imagesWithSize} usedImageUrls={Array.from(usedImageUrls)} />;
 }
