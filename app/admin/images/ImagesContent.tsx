@@ -196,6 +196,14 @@ const isHeavyImage = (bytes: number | null | undefined): boolean => {
   return bytes ? bytes > 100 * 1024 : false;
 };
 
+// Helper para extraer el path del Storage de una URL de Supabase
+const getStoragePathFromUrl = (url: string): string | null => {
+  if (!url) return null;
+  // URL format: https://xxx.supabase.co/storage/v1/object/public/images/category/filename.ext
+  const match = url.match(/\/storage\/v1\/object\/public\/images\/(.+)$/);
+  return match ? match[1] : null;
+};
+
 export default function ImagesContent({ user, images: initialImages }: ImagesContentProps) {
   const router = useRouter();
   const supabase = createClient();
@@ -294,6 +302,9 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
     setUploading(true);
     setError('');
 
+    // Store the old URL to delete after successful upload
+    const oldUrl = formData.url;
+
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
@@ -308,6 +319,21 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
       const { data: { publicUrl } } = supabase.storage
         .from('images')
         .getPublicUrl(filePath);
+
+      // Delete old image from Storage if it was a Supabase URL
+      if (oldUrl) {
+        const oldStoragePath = getStoragePathFromUrl(oldUrl);
+        if (oldStoragePath) {
+          const { error: deleteError } = await supabase.storage
+            .from('images')
+            .remove([oldStoragePath]);
+
+          if (deleteError) {
+            console.warn('Could not delete old image from storage:', deleteError);
+            // Don't throw - the new upload was successful
+          }
+        }
+      }
 
       setFormData({ ...formData, url: publicUrl });
     } catch (err: any) {
@@ -356,21 +382,41 @@ export default function ImagesContent({ user, images: initialImages }: ImagesCon
   };
 
   const handleDelete = async (id: string) => {
+    // Find the image to get its URL for Storage deletion
+    const imageToDelete = images.find(img => img.id === id);
+
     toast('¿Eliminar esta imagen?', {
-      description: 'Esta acción no se puede deshacer',
+      description: 'Esta acción no se puede deshacer. La imagen también se eliminará del almacenamiento.',
       action: {
         label: 'Eliminar',
         onClick: async () => {
           setLoading(true);
           try {
+            // First, delete from database
             const { error: deleteError } = await supabase
               .from('site_images')
               .delete()
               .eq('id', id);
 
             if (deleteError) throw deleteError;
+
+            // Then, try to delete from Storage if it's a Supabase URL
+            if (imageToDelete?.url) {
+              const storagePath = getStoragePathFromUrl(imageToDelete.url);
+              if (storagePath) {
+                const { error: storageError } = await supabase.storage
+                  .from('images')
+                  .remove([storagePath]);
+
+                if (storageError) {
+                  console.warn('Could not delete from storage:', storageError);
+                  // Don't throw - the DB record is already deleted
+                }
+              }
+            }
+
             setImages(images.filter(img => img.id !== id));
-            toast.success('Imagen eliminada');
+            toast.success('Imagen eliminada completamente');
             router.refresh();
           } catch (err: any) {
             toast.error(err.message || 'Error al eliminar');
