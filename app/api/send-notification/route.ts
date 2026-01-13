@@ -33,6 +33,9 @@ interface QuoteRequestData {
 
   // Pre-selected info
   preSelectedPrice?: string;
+
+  // Language preference
+  locale?: string;
 }
 
 function formatDate(dateString?: string): string {
@@ -111,6 +114,24 @@ function generateEmailHTML(data: QuoteRequestData): string {
                 <tr>
                   <td style="background-color: ${isCharter ? '#dbeafe' : '#dcfce7'}; color: ${isCharter ? '#1e40af' : '#166534'}; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; text-align: center;">
                     ${isCharter ? '✈️ VUELO PRIVADO' : '🎯 TOUR AÉREO'}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Language Indicator -->
+          <tr>
+            <td style="padding: 15px 40px 0 40px;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #fef3c7; border: 2px solid #f59e0b; border-radius: 8px; padding: 12px;">
+                <tr>
+                  <td style="text-align: center;">
+                    <p style="margin: 0; color: #92400e; font-size: 13px; font-weight: 600;">
+                      🌐 Idioma del formulario: <span style="color: #b45309; font-size: 14px;">${data.locale === 'es' ? 'ESPAÑOL 🇪🇸' : data.locale === 'en' ? 'ENGLISH 🇺🇸' : 'NO ESPECIFICADO'}</span>
+                    </p>
+                    <p style="margin: 5px 0 0 0; color: #78350f; font-size: 11px;">
+                      ${data.locale === 'es' ? 'El cliente llenó el formulario en español' : data.locale === 'en' ? 'The client filled out the form in English' : 'Language not specified'}
+                    </p>
                   </td>
                 </tr>
               </table>

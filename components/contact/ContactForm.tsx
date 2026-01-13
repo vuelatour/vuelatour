@@ -204,6 +204,7 @@ export default function ContactForm({ locale, searchParams }: ContactFormProps) 
             tour: formData.tour,
             number_of_passengers: parseInt(formData.number_of_passengers) || null,
             preSelectedPrice: preSelectedPrice,
+            locale: locale, // Include language preference
           }),
         });
       } catch (emailError) {
