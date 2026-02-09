@@ -553,6 +553,24 @@ export default function ContactForm({ locale, searchParams }: ContactFormProps) 
                 />
               </div>
             )}
+
+            {/* Number of Passengers */}
+            <div>
+              <label htmlFor="number_of_passengers" className="block text-sm font-medium mb-2">
+                {labels.numberOfPassengers} *
+              </label>
+              <input
+                type="number"
+                id="number_of_passengers"
+                name="number_of_passengers"
+                value={formData.number_of_passengers}
+                onChange={handleChange}
+                min="1"
+                max="20"
+                required
+                className="w-full px-4 py-3 rounded-lg border border-default bg-white dark:bg-navy-900 text-foreground focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
+              />
+            </div>
           </>
         )}
 
