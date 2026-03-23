@@ -63,6 +63,19 @@ const translations = {
     customTitle: '¿No encuentras tu destino?',
     customDesc: 'Ofrecemos vuelos privados personalizados a cualquier destino en la región. Contáctanos para una cotización.',
     requestQuote: 'Solicitar cotización',
+    whyTitle: '¿Por qué elegir un vuelo privado?',
+    whyItems: [
+      { title: 'Ahorra tiempo', desc: 'Un vuelo de Cancún a Cozumel toma solo 20 minutos, comparado con más de 2 horas por tierra y ferry. Aprovecha tu tiempo al máximo.' },
+      { title: 'Flexibilidad total', desc: 'Tú eliges el horario. Sin filas, sin esperas, sin escalas. Despegamos cuando tú estés listo, desde las 6:00 AM hasta las 8:00 PM.' },
+      { title: 'Privacidad y exclusividad', desc: 'El avión es solo para ti y tu grupo. Sin pasajeros desconocidos, sin retrasos por otros vuelos. Una experiencia completamente privada.' },
+      { title: 'Seguridad certificada', desc: 'Contamos con certificaciones TAI y TAN de la autoridad aeronáutica mexicana. Pilotos con miles de horas de vuelo y aeronaves con mantenimiento riguroso.' },
+    ],
+    howTitle: '¿Cómo funciona?',
+    howSteps: [
+      { step: '1', title: 'Cotiza tu vuelo', desc: 'Elige tu destino y aeronave. Recibe una cotización sin compromiso en menos de 24 horas.' },
+      { step: '2', title: 'Confirma tu reserva', desc: 'Selecciona la fecha y hora de tu vuelo. Nuestro equipo se encarga de todo.' },
+      { step: '3', title: 'Despega desde Cancún', desc: 'Llega a la Terminal FBO del Aeropuerto de Cancún. Sin filas ni documentación complicada.' },
+    ],
   },
   en: {
     title: 'Charter Flights',
@@ -76,6 +89,19 @@ const translations = {
     customTitle: "Can't find your destination?",
     customDesc: 'We offer custom charter flights to any destination in the region. Contact us for a quote.',
     requestQuote: 'Request a quote',
+    whyTitle: 'Why choose a private flight?',
+    whyItems: [
+      { title: 'Save time', desc: 'A flight from Cancún to Cozumel takes only 20 minutes, compared to over 2 hours by land and ferry. Make the most of your time.' },
+      { title: 'Total flexibility', desc: 'You choose the schedule. No lines, no waiting, no layovers. We take off when you\'re ready, from 6:00 AM to 8:00 PM.' },
+      { title: 'Privacy and exclusivity', desc: 'The aircraft is just for you and your group. No unknown passengers, no delays from other flights. A completely private experience.' },
+      { title: 'Certified safety', desc: 'We hold TAI and TAN certifications from the Mexican aviation authority. Pilots with thousands of flight hours and rigorously maintained aircraft.' },
+    ],
+    howTitle: 'How does it work?',
+    howSteps: [
+      { step: '1', title: 'Get a quote', desc: 'Choose your destination and aircraft. Receive a no-obligation quote within 24 hours.' },
+      { step: '2', title: 'Confirm your booking', desc: 'Select the date and time for your flight. Our team takes care of everything.' },
+      { step: '3', title: 'Take off from Cancún', desc: 'Arrive at the FBO Terminal at Cancún Airport. No lines or complicated paperwork.' },
+    ],
   },
 };
 
@@ -210,6 +236,41 @@ export default function CharterFlightsContent({ locale, destinations }: CharterF
             )}
           </div>
         </section>
+
+        {/* Why Choose Section */}
+        <LazySection animation="fade" className="py-16 md:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">{t.whyTitle}</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              {t.whyItems.map((item, idx) => (
+                <div key={idx} className="card p-6">
+                  <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+                  <p className="text-muted">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </LazySection>
+
+        {/* How it works */}
+        <LazySection animation="fade" className="py-16 md:py-20 bg-gray-50 dark:bg-navy-900/50">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">{t.howTitle}</h2>
+            <div className="space-y-6">
+              {t.howSteps.map((step) => (
+                <div key={step.step} className="flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold flex-shrink-0">
+                    {step.step}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg">{step.title}</h3>
+                    <p className="text-muted">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </LazySection>
 
         {/* Bottom CTA */}
         <LazySection animation="fade" className="py-16 md:py-20 bg-gradient-to-r from-navy-900 to-navy-800">

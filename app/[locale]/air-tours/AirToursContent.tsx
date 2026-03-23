@@ -66,6 +66,13 @@ const translations = {
     customTitle: '¿Buscas una experiencia personalizada?',
     customDesc: 'Diseñamos tours aéreos a medida para grupos, eventos especiales y ocasiones únicas.',
     contactNow: 'Contactar ahora',
+    experienceTitle: 'La experiencia de un tour aéreo',
+    experienceItems: [
+      { title: 'Vistas que no olvidarás', desc: 'Sobrevuela la zona hotelera de Cancún, las aguas turquesa del Caribe, ruinas mayas milenarias y la selva tropical de la Península de Yucatán.' },
+      { title: 'Para todos los gustos', desc: 'Desde tours de 30 minutos sobre la zona hotelera hasta vuelos de 60+ minutos a Chichén Itzá. Tenemos opciones para cada presupuesto y tiempo disponible.' },
+      { title: 'Seguro y cómodo', desc: 'Nuestras aeronaves están equipadas con auriculares para comunicarte con el piloto, aire acondicionado, y amplias ventanas para las mejores fotos.' },
+      { title: 'Ideal para ocasiones especiales', desc: 'Propuestas de matrimonio, aniversarios, cumpleaños o simplemente una experiencia única durante tus vacaciones.' },
+    ],
   },
   en: {
     title: 'Air Tours',
@@ -80,6 +87,13 @@ const translations = {
     customTitle: 'Looking for a custom experience?',
     customDesc: 'We design custom air tours for groups, special events, and unique occasions.',
     contactNow: 'Contact us now',
+    experienceTitle: 'The air tour experience',
+    experienceItems: [
+      { title: 'Views you won\'t forget', desc: 'Fly over the Cancún Hotel Zone, the turquoise waters of the Caribbean, ancient Mayan ruins, and the tropical jungle of the Yucatan Peninsula.' },
+      { title: 'Something for everyone', desc: 'From 30-minute tours over the Hotel Zone to 60+ minute flights to Chichén Itzá. We have options for every budget and available time.' },
+      { title: 'Safe and comfortable', desc: 'Our aircraft are equipped with headsets to communicate with the pilot, air conditioning, and wide windows for the best photos.' },
+      { title: 'Ideal for special occasions', desc: 'Marriage proposals, anniversaries, birthdays, or simply a unique experience during your vacation.' },
+    ],
   },
 };
 
@@ -214,6 +228,21 @@ export default function AirToursContent({ locale, tours }: AirToursContentProps)
             )}
           </div>
         </section>
+
+        {/* Experience Section */}
+        <LazySection animation="fade" className="py-16 md:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">{t.experienceTitle}</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              {t.experienceItems.map((item, idx) => (
+                <div key={idx} className="card p-6">
+                  <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
+                  <p className="text-muted">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </LazySection>
 
         {/* Bottom CTA */}
         <LazySection animation="fade" className="py-16 md:py-20 bg-gradient-to-r from-brand-600 to-brand-500">

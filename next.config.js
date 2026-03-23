@@ -61,9 +61,19 @@ const nextConfig = {
           },
         ],
       },
-      // Cache static assets aggressively (images, fonts, etc.)
+      // HTML pages: always revalidate on new deployments
       {
-        source: '/images/:path*',
+        source: '/((?!_next/static|images|favicon).*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, must-revalidate',
+          },
+        ],
+      },
+      // Static assets: cache forever (they have hashed filenames)
+      {
+        source: '/_next/static/:path*',
         headers: [
           {
             key: 'Cache-Control',
@@ -71,12 +81,13 @@ const nextConfig = {
           },
         ],
       },
+      // Images: cache but revalidate periodically
       {
-        source: '/_next/static/:path*',
+        source: '/images/:path*',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            value: 'public, max-age=86400, stale-while-revalidate=604800',
           },
         ],
       },

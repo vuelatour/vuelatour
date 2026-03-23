@@ -84,7 +84,7 @@ export default function Footer({ contactInfo }: FooterProps) {
     <footer className="bg-navy-900 border-t border-navy-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer */}
-        <div className="py-12 md:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        <div className="py-12 md:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10">
           {/* Brand */}
           <div className="lg:col-span-1 min-h-[200px]">
             <Link
@@ -141,30 +141,45 @@ export default function Footer({ contactInfo }: FooterProps) {
             <h4 className="font-semibold text-white mb-4">{t('footer.services')}</h4>
             <ul className="space-y-3">
               <li>
-                <Link
-                  href={`/${locale}/charter-flights`}
-                  className="text-sm text-gray-400 hover:text-white transition-colors"
-                  onClick={() => trackNavigation(t('nav.charterFlights'), 'footer')}
-                >
+                <Link href={`/${locale}/charter-flights`} className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => trackNavigation(t('nav.charterFlights'), 'footer')}>
                   {t('nav.charterFlights')}
                 </Link>
               </li>
               <li>
-                <Link
-                  href={`/${locale}/air-tours`}
-                  className="text-sm text-gray-400 hover:text-white transition-colors"
-                  onClick={() => trackNavigation(t('nav.airTours'), 'footer')}
-                >
+                <Link href={`/${locale}/air-tours`} className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => trackNavigation(t('nav.airTours'), 'footer')}>
                   {t('nav.airTours')}
                 </Link>
               </li>
               <li>
-                <Link
-                  href={`/${locale}/contact`}
-                  className="text-sm text-gray-400 hover:text-white transition-colors"
-                  onClick={() => trackNavigation(t('nav.contact'), 'footer')}
-                >
+                <Link href={`/${locale}/fleet`} className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => trackNavigation(t('nav.fleet'), 'footer')}>
+                  {t('nav.fleet')}
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/contact`} className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => trackNavigation(t('nav.contact'), 'footer')}>
                   {t('nav.contact')}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h4 className="font-semibold text-white mb-4">{locale === 'es' ? 'Empresa' : 'Company'}</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link href={`/${locale}/about`} className="text-sm text-gray-400 hover:text-white transition-colors" onClick={() => trackNavigation(t('nav.about'), 'footer')}>
+                  {t('nav.about')}
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/blog`} className="text-sm text-gray-400 hover:text-white transition-colors">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/faq`} className="text-sm text-gray-400 hover:text-white transition-colors">
+                  {locale === 'es' ? 'Preguntas Frecuentes' : 'FAQ'}
                 </Link>
               </li>
             </ul>
