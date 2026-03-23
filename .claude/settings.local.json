@@ -34,7 +34,9 @@
       "Bash(git pull:*)",
       "Bash(git stash:*)",
       "Bash(git diff:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(npx tsc:*)",
+      "Bash(node scripts/insert-blog-post.js)"
     ],
     "deny": [],
     "ask": []
