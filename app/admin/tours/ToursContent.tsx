@@ -72,11 +72,20 @@ interface Feature {
 }
 
 interface AircraftPricing {
+  aircraft_id?: string;
   aircraft_name: string;
   max_passengers: number;
   price_usd: number;
   notes_es: string;
   notes_en: string;
+}
+
+interface CatalogAircraft {
+  id: string;
+  name: string;
+  slug: string;
+  max_passengers: number;
+  image_url: string | null;
 }
 
 // Default aircraft pricing
@@ -116,6 +125,7 @@ interface ToursContentProps {
   user: User;
   tours: AirTour[];
   availableServices: ServiceOption[];
+  aircraftCatalog: CatalogAircraft[];
 }
 
 const emptyTour: Omit<AirTour, 'id'> = {
@@ -147,7 +157,7 @@ const emptyTour: Omit<AirTour, 'id'> = {
 
 type TabKey = 'basic' | 'content' | 'pricing' | 'gallery' | 'services' | 'seo';
 
-export default function ToursContent({ user, tours: initialTours, availableServices }: ToursContentProps) {
+export default function ToursContent({ user, tours: initialTours, availableServices, aircraftCatalog }: ToursContentProps) {
   const router = useRouter();
   const supabase = createClient();
   const [tours, setTours] = useState(initialTours);
@@ -383,6 +393,7 @@ export default function ToursContent({ user, tours: initialTours, availableServi
   const addAircraftPricing = () => {
     const currentPricing = getCurrentPricing();
     const newPricing: AircraftPricing = {
+      aircraft_id: '',
       aircraft_name: '',
       max_passengers: 5,
       price_usd: 0,
@@ -390,6 +401,20 @@ export default function ToursContent({ user, tours: initialTours, availableServi
       notes_en: 'Does not include taxes and possible extra charges*',
     };
     setFormData({ ...formData, aircraft_pricing: [...currentPricing, newPricing] });
+  };
+
+  const selectCatalogAircraft = (index: number, aircraftId: string) => {
+    const catalogItem = aircraftCatalog.find(a => a.id === aircraftId);
+    if (!catalogItem) return;
+    const currentPricing = getCurrentPricing();
+    const newPricing = [...currentPricing];
+    newPricing[index] = {
+      ...newPricing[index],
+      aircraft_id: catalogItem.id,
+      aircraft_name: catalogItem.name,
+      max_passengers: catalogItem.max_passengers,
+    };
+    setFormData({ ...formData, aircraft_pricing: newPricing });
   };
 
   const removeAircraftPricing = (index: number) => {
@@ -844,14 +869,22 @@ export default function ToursContent({ user, tours: initialTours, availableServi
 
                         <div className="grid grid-cols-2 gap-4 mb-4">
                           <div>
-                            <label className="block text-xs font-medium text-navy-400 mb-1">Nombre del avión</label>
-                            <input
-                              type="text"
-                              value={pricing.aircraft_name}
-                              onChange={(e) => updateAircraftPricing(index, 'aircraft_name', e.target.value)}
-                              placeholder="Ej: Cessna 206"
-                              className="w-full px-3 py-2 text-sm bg-navy-900 border border-navy-600 rounded-lg text-white placeholder-navy-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-                            />
+                            <label className="block text-xs font-medium text-navy-400 mb-1">Aeronave</label>
+                            <select
+                              value={pricing.aircraft_id || ''}
+                              onChange={(e) => selectCatalogAircraft(index, e.target.value)}
+                              className="w-full px-3 py-2 text-sm bg-navy-900 border border-navy-600 rounded-lg text-white focus:outline-none focus:ring-1 focus:ring-brand-500"
+                            >
+                              <option value="">Seleccionar aeronave...</option>
+                              {aircraftCatalog.map(ac => (
+                                <option key={ac.id} value={ac.id}>
+                                  {ac.name} ({ac.max_passengers} pax)
+                                </option>
+                              ))}
+                            </select>
+                            {pricing.aircraft_name && !pricing.aircraft_id && (
+                              <p className="text-[10px] text-yellow-400 mt-1">Dato anterior: {pricing.aircraft_name} - Selecciona del catálogo para vincular</p>
+                            )}
                           </div>
                           <div>
                             <label className="block text-xs font-medium text-navy-400 mb-1">Máx. pasajeros</label>

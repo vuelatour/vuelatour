@@ -19,6 +19,9 @@ import {
   XMarkIcon,
   WrenchScrewdriverIcon,
   ShieldCheckIcon,
+  QuestionMarkCircleIcon,
+  StarIcon,
+  NewspaperIcon,
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
@@ -47,6 +50,11 @@ const menuItems = [
     href: '/admin/tours',
   },
   {
+    title: 'Flota',
+    icon: PaperAirplaneIcon,
+    href: '/admin/fleet',
+  },
+  {
     title: 'Servicios',
     icon: WrenchScrewdriverIcon,
     href: '/admin/services',
@@ -55,6 +63,21 @@ const menuItems = [
     title: 'Imágenes',
     icon: PhotoIcon,
     href: '/admin/images',
+  },
+  {
+    title: 'FAQs',
+    icon: QuestionMarkCircleIcon,
+    href: '/admin/faqs',
+  },
+  {
+    title: 'Testimonios',
+    icon: StarIcon,
+    href: '/admin/testimonials',
+  },
+  {
+    title: 'Blog',
+    icon: NewspaperIcon,
+    href: '/admin/blog',
   },
   {
     title: 'Contenido',

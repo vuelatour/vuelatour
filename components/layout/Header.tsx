@@ -55,6 +55,7 @@ export default function Header() {
   const navLinks = [
     { label: t('nav.charterFlights'), href: `/${locale}/charter-flights` },
     { label: t('nav.airTours'), href: `/${locale}/air-tours` },
+    { label: t('nav.fleet'), href: `/${locale}/fleet` },
     { label: t('nav.contact'), href: `/${locale}/contact` },
   ];
 

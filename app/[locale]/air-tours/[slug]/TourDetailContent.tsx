@@ -26,6 +26,7 @@ import {
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import LazySection from '@/components/ui/LazySection';
+import FAQSection from '@/components/ui/FAQSection';
 import { trackItemView, trackBookingClick } from '@/lib/analytics';
 
 interface Feature {
@@ -86,6 +87,8 @@ interface TourDetailContentProps {
   otherTours: AirTour[];
   availableServices: ServiceOption[];
   imageAltMap?: ImageAltMap;
+  aircraftImageMap?: Record<string, string>;
+  faqs?: Array<{ question: string; answer: string }>;
 }
 
 // Icon mapping for dynamic services
@@ -166,6 +169,8 @@ export default function TourDetailContent({
   otherTours,
   availableServices,
   imageAltMap = {},
+  aircraftImageMap = {},
+  faqs = [],
 }: TourDetailContentProps) {
   const t = translations[locale as keyof typeof translations] || translations.es;
   const { formatPrice } = useCurrency();
@@ -341,8 +346,20 @@ export default function TourDetailContent({
                   {aircraftPricing.map((pricing, index) => (
                     <div
                       key={index}
-                      className="bg-white dark:bg-navy-900 rounded-2xl border-2 border-gray-100 dark:border-navy-800 p-6 shadow-lg hover:border-brand-300 dark:hover:border-brand-700 transition-all hover:shadow-xl"
+                      className="bg-white dark:bg-navy-900 rounded-2xl border-2 border-gray-100 dark:border-navy-800 shadow-lg hover:border-brand-300 dark:hover:border-brand-700 transition-all hover:shadow-xl overflow-hidden"
                     >
+                      {aircraftImageMap[pricing.aircraft_name] && (
+                        <div className="relative h-36 bg-gray-100 dark:bg-navy-800">
+                          <Image
+                            src={aircraftImageMap[pricing.aircraft_name]}
+                            alt={pricing.aircraft_name}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          />
+                        </div>
+                      )}
+                      <div className="p-6">
                       <div className="flex items-center justify-between mb-4">
                         <div>
                           <p className="text-sm text-muted">
@@ -369,6 +386,7 @@ export default function TourDetailContent({
                         <GlobeAmericasIcon className="w-5 h-5" />
                         {t.bookNow}
                       </Link>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -552,6 +570,18 @@ export default function TourDetailContent({
             </div>
           </div>
         </section>
+
+        {/* FAQs */}
+        {faqs.length > 0 && (
+          <section className="py-16 md:py-20">
+            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+              <FAQSection
+                faqs={faqs}
+                title={locale === 'es' ? 'Preguntas frecuentes' : 'Frequently asked questions'}
+              />
+            </div>
+          </section>
+        )}
 
         {/* Other Tours */}
         {otherTours.length > 0 && (

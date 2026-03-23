@@ -131,6 +131,28 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
     .eq('is_active', true)
     .order('display_order', { ascending: true });
 
+  // Fetch FAQs related to this tour + general tour FAQs
+  const { data: faqs } = await supabase
+    .from('faqs')
+    .select('question_es, question_en, answer_es, answer_en')
+    .eq('is_active', true)
+    .or(`related_tour_id.eq.${tour.id},category.eq.tours,category.eq.general`)
+    .order('display_order', { ascending: true })
+    .limit(5);
+
+  // Fetch aircraft catalog for images
+  const { data: aircraftCatalogData } = await supabase
+    .from('aircraft')
+    .select('id, name, image_url')
+    .eq('is_active', true);
+
+  const aircraftImageMap: Record<string, string> = {};
+  aircraftCatalogData?.forEach(ac => {
+    if (ac.image_url) {
+      aircraftImageMap[ac.name] = ac.image_url;
+    }
+  });
+
   // Fetch site_images to get alt text for gallery images
   const galleryUrls = tour.gallery_images || [];
   const { data: siteImages } = galleryUrls.length > 0
@@ -223,6 +245,11 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
         otherTours={otherTours || []}
         availableServices={availableServices || []}
         imageAltMap={imageAltMap}
+        aircraftImageMap={aircraftImageMap}
+        faqs={(faqs || []).map(f => ({
+          question: locale === 'es' ? f.question_es : f.question_en,
+          answer: locale === 'es' ? f.answer_es : f.answer_en,
+        }))}
       />
     </>
   );

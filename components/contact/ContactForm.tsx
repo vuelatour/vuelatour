@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { CheckCircleIcon, ExclamationCircleIcon, PaperAirplaneIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, ExclamationCircleIcon, PaperAirplaneIcon, XMarkIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { trackContactFormSubmit, trackBookingClick } from '@/lib/analytics';
+import Image from 'next/image';
 
 interface SearchParams {
   destination?: string;
@@ -43,6 +44,7 @@ export default function ContactForm({ locale, searchParams }: ContactFormProps) 
   const [error, setError] = useState('');
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const [airTours, setAirTours] = useState<AirTour[]>([]);
+  const [aircraftImage, setAircraftImage] = useState<{ image_url: string; name: string; max_passengers: number } | null>(null);
 
   // Extract pre-selection info from URL params
   const preSelectedDestination = searchParams?.destination;
@@ -111,6 +113,30 @@ export default function ContactForm({ locale, searchParams }: ContactFormProps) 
       }));
     }
   }, [preSelectedDestination, preSelectedTour, preSelectedAircraft]);
+
+  // Fetch aircraft image from catalog
+  useEffect(() => {
+    const fetchAircraftImage = async () => {
+      const aircraftName = formData.aircraft_selected || preSelectedAircraft;
+      if (!aircraftName) {
+        setAircraftImage(null);
+        return;
+      }
+      const { data } = await supabase
+        .from('aircraft')
+        .select('image_url, name, max_passengers')
+        .eq('name', aircraftName)
+        .eq('is_active', true)
+        .single();
+
+      if (data) {
+        setAircraftImage(data);
+      } else {
+        setAircraftImage(null);
+      }
+    };
+    fetchAircraftImage();
+  }, [formData.aircraft_selected, preSelectedAircraft, supabase]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -374,6 +400,35 @@ export default function ContactForm({ locale, searchParams }: ContactFormProps) 
                 <span className="hidden sm:inline">{labels.clearSelection}</span>
               </a>
             </div>
+            {/* Aircraft Image */}
+            {aircraftImage && (
+              <div className="mt-3 pt-3 border-t border-brand-200 dark:border-brand-800">
+                <div className="flex items-center gap-3">
+                  {aircraftImage.image_url ? (
+                    <div className="relative w-24 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                      <Image
+                        src={aircraftImage.image_url}
+                        alt={aircraftImage.name}
+                        fill
+                        className="object-cover"
+                        sizes="96px"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-24 h-16 rounded-lg bg-gray-100 dark:bg-navy-800 flex items-center justify-center flex-shrink-0">
+                      <PaperAirplaneIcon className="w-6 h-6 text-muted" />
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{aircraftImage.name}</p>
+                    <div className="flex items-center gap-1 text-xs text-muted">
+                      <UserGroupIcon className="w-3.5 h-3.5" />
+                      <span>{aircraftImage.max_passengers} {locale === 'es' ? 'pasajeros' : 'passengers'}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 

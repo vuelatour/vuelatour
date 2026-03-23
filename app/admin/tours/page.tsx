@@ -23,11 +23,19 @@ export default async function ToursPage() {
     .eq('is_active', true)
     .order('display_order', { ascending: true });
 
+  // Fetch aircraft catalog
+  const { data: aircraftCatalog } = await supabase
+    .from('aircraft')
+    .select('id, name, slug, max_passengers, image_url')
+    .eq('is_active', true)
+    .order('display_order', { ascending: true });
+
   return (
     <ToursContent
       user={user}
       tours={tours || []}
       availableServices={availableServices || []}
+      aircraftCatalog={aircraftCatalog || []}
     />
   );
 }

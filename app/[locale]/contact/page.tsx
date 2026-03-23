@@ -3,11 +3,13 @@ import { createClient } from '@/lib/supabase/server';
 import ContactForm from '@/components/contact/ContactForm';
 import { EmailLink, PhoneLinks, WhatsAppButton } from '@/components/contact/ContactInfoLinks';
 import LazyMap from '@/components/ui/LazyMap';
+import Image from 'next/image';
 import {
   MapPinIcon,
   PhoneIcon,
   EnvelopeIcon,
   ClockIcon,
+  UserGroupIcon,
 } from '@heroicons/react/24/outline';
 
 interface Phone {
@@ -74,6 +76,20 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
     ? (dbContactInfo?.whatsapp_message_es || '')
     : (dbContactInfo?.whatsapp_message_en || '');
   const whatsappUrl = `https://wa.me/${whatsappNumber}${whatsappMessage ? `?text=${encodeURIComponent(whatsappMessage)}` : ''}`;
+
+  // Fetch aircraft data if pre-selected
+  let aircraftPreview: { name: string; image_url: string | null; max_passengers: number; description_es: string | null; description_en: string | null } | null = null;
+  if (urlParams?.aircraft) {
+    const { data: acData } = await supabase
+      .from('aircraft')
+      .select('name, image_url, max_passengers, description_es, description_en')
+      .eq('name', urlParams.aircraft)
+      .eq('is_active', true)
+      .single();
+    if (acData) {
+      aircraftPreview = acData;
+    }
+  }
 
   // Google Maps URL
   const googleMapsEmbed = dbContactInfo?.google_maps_embed ||
@@ -158,6 +174,39 @@ export default async function ContactPage({ params, searchParams }: ContactPageP
                   title={locale === 'es' ? 'Ubicación de Vuelatour' : 'Vuelatour Location'}
                 />
               </div>
+
+              {/* Aircraft Preview (when pre-selected) */}
+              {aircraftPreview && (
+                <div className="card overflow-hidden">
+                  {aircraftPreview.image_url ? (
+                    <div className="relative h-48">
+                      <Image
+                        src={aircraftPreview.image_url}
+                        alt={aircraftPreview.name}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
+                  ) : (
+                    <div className="h-32 bg-gray-100 dark:bg-navy-800 flex items-center justify-center">
+                      <p className="text-sm text-muted">{locale === 'es' ? 'Foto próximamente' : 'Photo coming soon'}</p>
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <h3 className="font-semibold mb-1">{aircraftPreview.name}</h3>
+                    <div className="flex items-center gap-1.5 text-sm text-muted mb-2">
+                      <UserGroupIcon className="w-4 h-4" />
+                      <span>{aircraftPreview.max_passengers} {locale === 'es' ? 'pasajeros' : 'passengers'}</span>
+                    </div>
+                    {(locale === 'es' ? aircraftPreview.description_es : aircraftPreview.description_en) && (
+                      <p className="text-sm text-muted">
+                        {locale === 'es' ? aircraftPreview.description_es : aircraftPreview.description_en}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
