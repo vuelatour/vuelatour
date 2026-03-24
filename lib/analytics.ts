@@ -1,5 +1,6 @@
-// Google Analytics 4 utilities
+// Google Analytics 4 + Google Ads conversion tracking
 // GA4 ID: G-HN7PLHRVGY
+// Google Ads ID: AW-11193736446
 
 declare global {
   interface Window {
@@ -9,6 +10,9 @@ declare global {
 }
 
 const GA_MEASUREMENT_ID = 'G-HN7PLHRVGY';
+const GOOGLE_ADS_ID = 'AW-11193736446';
+const GADS_CONVERSION_LABEL_EN = 'lrI6CPaB_44cEP65y9kp';
+const GADS_CONVERSION_LABEL_ES = 'er04CPX77I4cEP65y9kp';
 
 // Check if analytics consent was given
 export function hasAnalyticsConsent(): boolean {
@@ -50,6 +54,9 @@ export function initializeAnalytics(): void {
     // Performance optimization: send minimal data on initial load
     send_page_view: true,
   });
+
+  // Configure Google Ads conversion tracking
+  window.gtag('config', GOOGLE_ADS_ID);
 }
 
 // Track page views (for SPA navigation)
@@ -93,6 +100,17 @@ export function trackContactFormSubmit(formType: string = 'contact'): void {
     event_category: 'conversion',
     event_label: formType,
     form_name: formType,
+  });
+}
+
+// Fire Google Ads conversion event on successful booking/quote submission
+export function trackGoogleAdsConversion(locale: string): void {
+  if (typeof window === 'undefined' || !window.gtag) return;
+  if (!hasAnalyticsConsent()) return;
+
+  const label = locale === 'es' ? GADS_CONVERSION_LABEL_ES : GADS_CONVERSION_LABEL_EN;
+  window.gtag('event', 'conversion', {
+    send_to: `${GOOGLE_ADS_ID}/${label}`,
   });
 }
 

@@ -516,9 +516,17 @@ export default function DestinationDetailContent({
           <section className="py-16 md:py-20">
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
               <FAQSection
-                faqs={faqs}
+                faqs={faqs.slice(0, 4)}
                 title={locale === 'es' ? 'Preguntas frecuentes' : 'Frequently asked questions'}
               />
+              <div className="mt-6 text-center">
+                <Link
+                  href={`/${locale}/faq`}
+                  className="text-brand-600 dark:text-brand-400 hover:underline font-medium text-sm"
+                >
+                  {locale === 'es' ? 'Ver todas las preguntas →' : 'See all questions →'}
+                </Link>
+              </div>
             </div>
           </section>
         )}

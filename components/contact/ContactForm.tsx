@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { CheckCircleIcon, ExclamationCircleIcon, PaperAirplaneIcon, XMarkIcon, UserGroupIcon } from '@heroicons/react/24/outline';
-import { trackContactFormSubmit, trackBookingClick } from '@/lib/analytics';
+import { trackContactFormSubmit, trackBookingClick, trackGoogleAdsConversion } from '@/lib/analytics';
 import Image from 'next/image';
 
 interface SearchParams {
@@ -199,6 +199,7 @@ export default function ContactForm({ locale, searchParams }: ContactFormProps) 
       const formType = formData.service_type === 'charter' ? 'charter_quote' :
                        formData.service_type === 'tour' ? 'tour_quote' : 'contact';
       trackContactFormSubmit(formType);
+      trackGoogleAdsConversion(locale);
 
       // Track booking click if it's a quote request
       if (formData.service_type === 'charter' && formData.destination) {
@@ -304,11 +305,11 @@ export default function ContactForm({ locale, searchParams }: ContactFormProps) 
     charterTitle: locale === 'es' ? 'Cotiza tu Vuelo Privado' : 'Get a quote for your Charter flight',
     charterSubtitle: locale === 'es'
       ? 'Nos pondremos en contacto contigo en pocas horas con una oferta sin compromiso. ¡Gracias por elegirnos!'
-      : 'We will get in touch with you within a few hours with a non-binding offer. Thank you for choosing us!',
+      : 'We\'ll confirm your booking within 24 hours and send all the details by email. Thank you for choosing us!',
     tourTitle: locale === 'es' ? 'Cotiza tu Tour Aéreo' : 'Get a quote for your Air Tour',
     tourSubtitle: locale === 'es'
       ? 'Nos pondremos en contacto contigo con una oferta sin compromiso en 24 horas. ¡Gracias por elegirnos! ¿Quieres ver más? ¡Echa un vistazo a nuestros otros Tours Aéreos!'
-      : 'We will reach out to you with a non binding offer within 24 hours. Thank you for choosing us! Want to see more? Have a look at our other Air Tours!',
+      : 'We\'ll confirm your booking within 24 hours and send all the details by email. Thank you for choosing us! Want to see more? Have a look at our other Air Tours!',
     travelDate: locale === 'es' ? 'Fecha de viaje (YYYY-MM-DD)' : 'Travel Date (YYYY-MM-DD)',
     departureTime: locale === 'es' ? 'Hora de salida (hora de Cancún, México)' : 'Time of departure (Cancún, Mexico time)',
     returnDate: locale === 'es' ? 'Si es necesario, Fecha de regreso (YYYY-MM-DD)' : 'If required, Date of return (YYYY-MM-DD)',

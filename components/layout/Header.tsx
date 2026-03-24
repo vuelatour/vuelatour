@@ -56,6 +56,7 @@ export default function Header() {
     { label: t('nav.charterFlights'), href: `/${locale}/charter-flights` },
     { label: t('nav.airTours'), href: `/${locale}/air-tours` },
     { label: t('nav.fleet'), href: `/${locale}/fleet` },
+    { label: 'FAQ', href: `/${locale}/faq` },
     { label: t('nav.contact'), href: `/${locale}/contact` },
   ];
 
