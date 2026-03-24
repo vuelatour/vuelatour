@@ -204,22 +204,22 @@ export async function generateMetadata({ params }: HomePageProps) {
     : locale === 'es' ? 'Vuelatour - Vuelos en Cancún' : 'Vuelatour - Flights in Cancún';
 
   const titles = {
-    es: 'Vuelatour | Vuelos Privados y Tours Aéreos en Cancún',
-    en: 'Vuelatour | Charter Flights & Air Tours in Cancún',
+    es: 'Vuelatour | Vuelos Privados y Tours Aéreos en Cancún y Riviera Maya',
+    en: 'Vuelatour | Private Flights & Airplane Tours in Cancún, Mexico',
   };
 
   const yearsExp = getYearsOfExperienceFormatted();
   const descriptions = {
-    es: `Vuelos privados y tours aéreos en Cancún. Sobrevuela Tulum, Chichén Itzá, Cozumel. ${yearsExp} años de experiencia. Reserva hoy.`,
-    en: `Private flights and air tours in Cancún. Fly over Tulum, Chichén Itzá, Cozumel. ${yearsExp} years experience. Book today.`,
+    es: `Vuelos privados y tours aéreos panorámicos en Cancún. Sobrevuela Chichén Itzá, Tulum, Cozumel en avioneta privada. ${yearsExp} años de experiencia, pilotos certificados. Cotiza hoy.`,
+    en: `Private charter flights and airplane tours in Cancún. Fly over Chichén Itzá, Tulum, Cozumel by private plane. ${yearsExp} years experience, certified pilots. Book today.`,
   };
 
   return {
     title: titles[locale as keyof typeof titles] || titles.es,
     description: descriptions[locale as keyof typeof descriptions] || descriptions.es,
     keywords: locale === 'es'
-      ? 'vuelos privados cancun, tours aereos riviera maya, vuelos privados mexico, paseos aereos cancun, chichen itza desde el aire'
-      : 'charter flights cancun, air tours riviera maya, private flights mexico, aerial tours cancun, chichen itza from above',
+      ? 'vuelos privados cancun, tours aereos cancun, avioneta cancun, vuelo panoramico cancun, vuelo chichen itza, tour aereo tulum, vuelos privados riviera maya'
+      : 'cancun airplane tours, private plane cancun, charter flights cancun, cancun plane tours, scenic flight cancun, chichen itza flight, tulum air tour',
     openGraph: {
       title: titles[locale as keyof typeof titles] || titles.es,
       description: descriptions[locale as keyof typeof descriptions] || descriptions.es,

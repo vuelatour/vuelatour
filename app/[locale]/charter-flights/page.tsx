@@ -10,13 +10,13 @@ export async function generateMetadata({ params }: CharterFlightsPageProps): Pro
   const { locale } = await params;
 
   const titles = {
-    es: 'Vuelos Privados en Cancún | Charter a Cozumel, Holbox, Mérida | Vuelatour',
-    en: 'Private Charter Flights in Cancún | Fly to Cozumel, Holbox, Mérida | Vuelatour',
+    es: 'Vuelos Privados en Cancún | Avión Charter a Cozumel, Holbox, Tulum | Vuelatour',
+    en: 'Private Plane Flights from Cancún | Charter to Cozumel, Holbox, Tulum | Vuelatour',
   };
 
   const descriptions = {
-    es: 'Vuelos privados desde Cancún a Cozumel, Holbox, Mérida, Tulum y más destinos del Caribe mexicano. Servicio exclusivo, horarios flexibles. Reserva hoy.',
-    en: 'Private charter flights from Cancún to Cozumel, Holbox, Mérida, Tulum and more Mexican Caribbean destinations. Exclusive service, flexible schedules. Book today.',
+    es: 'Vuelos privados en avioneta desde Cancún a Cozumel, Holbox, Mérida, Tulum y más. Desde $650 USD. Horarios flexibles, pilotos certificados, 25+ años de experiencia. Cotiza sin compromiso.',
+    en: 'Private plane flights from Cancún to Cozumel, Holbox, Mérida, Tulum and more. From $650 USD. Flexible schedules, certified pilots, 25+ years experience. Get a free quote.',
   };
 
   const title = titles[locale as keyof typeof titles] || titles.es;
@@ -26,8 +26,8 @@ export async function generateMetadata({ params }: CharterFlightsPageProps): Pro
     title,
     description,
     keywords: locale === 'es'
-      ? 'vuelos privados cancun, charter cozumel, vuelo holbox, avion privado merida, vuelos ejecutivos cancun'
-      : 'private flights cancun, charter cozumel, holbox flight, private plane merida, executive flights cancun',
+      ? 'vuelos privados cancun, avion privado cancun, charter cozumel, vuelo holbox, avioneta cancun, vuelo privado tulum, charter cancun precio'
+      : 'private plane cancun, charter flights cancun, cancun private flight, cozumel flight, holbox flight, private aircraft cancun, cancun plane charter',
     openGraph: {
       title,
       description,

@@ -10,13 +10,13 @@ export async function generateMetadata({ params }: AirToursPageProps): Promise<M
   const { locale } = await params;
 
   const titles = {
-    es: 'Tours Aéreos en Cancún | Sobrevuela Chichén Itzá, Tulum, Isla Mujeres | Vuelatour',
-    en: 'Air Tours in Cancún | Fly Over Chichén Itzá, Tulum, Isla Mujeres | Vuelatour',
+    es: 'Tours Aéreos en Cancún | Vuelos Panorámicos sobre Chichén Itzá y Tulum | Vuelatour',
+    en: 'Cancún Airplane Tours | Scenic Plane Tours over Chichén Itzá & Tulum | Vuelatour',
   };
 
   const descriptions = {
-    es: 'Tours aéreos en Cancún. Sobrevuela Chichén Itzá, Tulum, Zona Hotelera e Isla Mujeres. Experiencia única e inolvidable. Reserva hoy.',
-    en: 'Air tours in Cancún. Fly over Chichén Itzá, Tulum, Hotel Zone and Isla Mujeres. Unique and unforgettable experience. Book today.',
+    es: 'Tours aéreos y vuelos panorámicos en Cancún desde $299 USD. Sobrevuela Chichén Itzá, Tulum, la Zona Hotelera e Isla Mujeres en avioneta privada. Pilotos certificados, 25+ años de experiencia. Reserva hoy.',
+    en: 'Cancún airplane tours and scenic plane tours from $299 USD. Fly over Chichén Itzá, Tulum, the Hotel Zone and Isla Mujeres in a private aircraft. Certified pilots, 25+ years experience. Book today.',
   };
 
   const title = titles[locale as keyof typeof titles] || titles.es;
@@ -26,8 +26,8 @@ export async function generateMetadata({ params }: AirToursPageProps): Promise<M
     title,
     description,
     keywords: locale === 'es'
-      ? 'tours aereos cancun, vuelo chichen itza, tour aereo tulum, paseo aereo riviera maya, vuelo panoramico cancun'
-      : 'air tours cancun, chichen itza flight, tulum air tour, riviera maya aerial tour, panoramic flight cancun',
+      ? 'tours aereos cancun, vuelo panoramico cancun, tour aereo tulum, vuelo chichen itza, paseo aereo riviera maya, avioneta cancun, vuelo panoramico tulum'
+      : 'cancun airplane tours, cancun plane tours, scenic flight cancun, tulum air tour, chichen itza flight tour, cancun aerial tour, private plane tour cancun',
     openGraph: {
       title,
       description,
