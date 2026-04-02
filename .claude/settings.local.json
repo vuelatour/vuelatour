@@ -36,7 +36,10 @@
       "Bash(git diff:*)",
       "Bash(findstr:*)",
       "Bash(npx tsc:*)",
-      "Bash(node scripts/insert-blog-post.js)"
+      "Bash(node scripts/insert-blog-post.js)",
+      "Bash(node scripts/insert-missing-faqs.js)",
+      "Bash(node scripts/insert-blog-posts.js)",
+      "Bash(npx next:*)"
     ],
     "deny": [],
     "ask": []

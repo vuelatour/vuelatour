@@ -1,8 +1,9 @@
 'use client';
 
+import { useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { UserGroupIcon } from '@heroicons/react/24/outline';
+import { UserGroupIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import LazySection from '@/components/ui/LazySection';
 
 interface FleetAircraft {
@@ -13,6 +14,7 @@ interface FleetAircraft {
   description_es: string | null;
   description_en: string | null;
   image_url: string | null;
+  gallery_images: string[] | null;
   specs: Record<string, string> | null;
 }
 
@@ -54,6 +56,85 @@ const translations = {
   },
 };
 
+function AircraftImageCarousel({ images, name, noPhotoText }: { images: string[]; name: string; noPhotoText: string }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const goTo = useCallback((index: number) => {
+    setCurrentIndex(index);
+  }, []);
+
+  const goPrev = useCallback(() => {
+    setCurrentIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));
+  }, [images.length]);
+
+  const goNext = useCallback(() => {
+    setCurrentIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
+  }, [images.length]);
+
+  if (images.length === 0) {
+    return (
+      <div className="relative h-64 bg-gray-100 dark:bg-navy-800 overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <p className="text-muted text-sm">{noPhotoText}</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative h-64 bg-gray-100 dark:bg-navy-800 overflow-hidden group/carousel">
+      <Image
+        src={images[currentIndex]}
+        alt={`${name} - ${currentIndex + 1}`}
+        fill
+        className="object-cover transition-opacity duration-300"
+        sizes="(max-width: 768px) 100vw, 50vw"
+      />
+
+      {images.length > 1 && (
+        <>
+          {/* Navigation arrows */}
+          <button
+            onClick={(e) => { e.preventDefault(); goPrev(); }}
+            className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors z-10"
+            aria-label="Previous image"
+          >
+            <ChevronLeftIcon className="w-5 h-5" />
+          </button>
+          <button
+            onClick={(e) => { e.preventDefault(); goNext(); }}
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors z-10"
+            aria-label="Next image"
+          >
+            <ChevronRightIcon className="w-5 h-5" />
+          </button>
+
+          {/* Dots indicator */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {images.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={(e) => { e.preventDefault(); goTo(idx); }}
+                className={`rounded-full transition-all shadow-sm ${
+                  idx === currentIndex
+                    ? 'bg-white w-6 h-2.5'
+                    : 'bg-white/60 hover:bg-white/90 w-2.5 h-2.5'
+                }`}
+                aria-label={`Image ${idx + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Counter badge */}
+          <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm rounded-md px-2 py-1 z-10">
+            <span className="text-xs text-white font-medium">{currentIndex + 1} / {images.length}</span>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default function FleetPageContent({ locale, aircraft }: FleetPageContentProps) {
   const t = translations[locale as keyof typeof translations] || translations.es;
 
@@ -78,28 +159,29 @@ export default function FleetPageContent({ locale, aircraft }: FleetPageContentP
               const description = locale === 'es' ? plane.description_es : plane.description_en;
               const hasSpecs = plane.specs && Object.values(plane.specs).some(v => v);
 
+              // Build array of all images (main + gallery)
+              const allImages: string[] = [];
+              if (plane.image_url) allImages.push(plane.image_url);
+              if (plane.gallery_images?.length) {
+                plane.gallery_images.forEach(img => {
+                  if (img && !allImages.includes(img)) allImages.push(img);
+                });
+              }
+
               return (
                 <div
                   key={plane.id}
                   className="card overflow-hidden group hover:shadow-xl transition-all duration-300"
                 >
-                  {/* Image */}
-                  <div className="relative h-64 bg-gray-100 dark:bg-navy-800 overflow-hidden">
-                    {plane.image_url ? (
-                      <Image
-                        src={plane.image_url}
-                        alt={plane.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <p className="text-muted text-sm">{t.noPhoto}</p>
-                      </div>
-                    )}
+                  {/* Image Carousel with badge */}
+                  <div className="relative">
+                    <AircraftImageCarousel
+                      images={allImages}
+                      name={plane.name}
+                      noPhotoText={t.noPhoto}
+                    />
                     {/* Passengers badge */}
-                    <div className="absolute top-4 right-4 bg-white/90 dark:bg-navy-900/90 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-1.5">
+                    <div className="absolute top-4 right-4 bg-white/90 dark:bg-navy-900/90 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-1.5 z-20">
                       <UserGroupIcon className="w-4 h-4 text-brand-600" />
                       <span className="text-sm font-medium">
                         {plane.max_passengers} {t.passengers}

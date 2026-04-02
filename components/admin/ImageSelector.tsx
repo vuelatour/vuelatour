@@ -27,6 +27,8 @@ interface ImageSelectorProps {
   label?: string;
   description?: string;
   placeholder?: string;
+  autoOpen?: boolean; // Abre el modal automáticamente al montar
+  onClose?: () => void; // Callback al cerrar el modal sin seleccionar
 }
 
 const categoryLabels: Record<string, string> = {
@@ -46,11 +48,13 @@ export default function ImageSelector({
   label = 'Imagen',
   description = 'Selecciona una imagen existente o sube una nueva',
   placeholder = 'https://ejemplo.com/imagen.jpg',
+  autoOpen = false,
+  onClose,
 }: ImageSelectorProps) {
   const supabase = createClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(autoOpen);
   const [images, setImages] = useState<SiteImage[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -135,6 +139,11 @@ export default function ImageSelector({
     }
   };
 
+  const handleClose = () => {
+    setIsOpen(false);
+    onClose?.();
+  };
+
   const handleSelectImage = (url: string) => {
     onChange(url);
     setIsOpen(false);
@@ -207,7 +216,7 @@ export default function ImageSelector({
           {/* Overlay */}
           <div
             className="fixed inset-0 bg-black/70 z-50"
-            onClick={() => setIsOpen(false)}
+            onClick={handleClose}
           />
 
           {/* Modal */}
@@ -216,7 +225,7 @@ export default function ImageSelector({
             <div className="flex items-center justify-between px-6 py-4 border-b border-navy-800">
               <h3 className="text-lg font-semibold text-white">Seleccionar imagen</h3>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={handleClose}
                 className="p-2 text-navy-400 hover:text-white hover:bg-navy-800 rounded-lg transition-colors"
               >
                 <XMarkIcon className="w-5 h-5" />

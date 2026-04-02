@@ -64,7 +64,7 @@ export default async function FleetPage({ params }: FleetPageProps) {
 
   const { data: aircraft } = await supabase
     .from('aircraft')
-    .select('id, name, slug, max_passengers, description_es, description_en, image_url, specs')
+    .select('id, name, slug, max_passengers, description_es, description_en, image_url, gallery_images, specs')
     .eq('is_active', true)
     .order('display_order', { ascending: true });
 

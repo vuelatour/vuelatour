@@ -14,6 +14,7 @@ import {
   ChevronUpIcon,
   ChevronDownIcon,
   UserGroupIcon,
+  PhotoIcon,
 } from '@heroicons/react/24/outline';
 import ImageSelector from '@/components/admin/ImageSelector';
 import Image from 'next/image';
@@ -41,6 +42,7 @@ export default function FleetContent({ user, aircraft: initialAircraft }: FleetC
   const [isCreating, setIsCreating] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [galleryPickerOpen, setGalleryPickerOpen] = useState(false);
 
   const [formData, setFormData] = useState<Omit<Aircraft, 'id' | 'created_at' | 'updated_at'>>({
     name: '',
@@ -391,6 +393,72 @@ export default function FleetContent({ user, aircraft: initialAircraft }: FleetC
                 label="Foto principal"
                 description="Selecciona o sube una foto de la aeronave"
               />
+
+              {/* Gallery Images */}
+              <div>
+                <label className="block text-sm font-medium text-navy-300 mb-1">Fotos adicionales</label>
+                <p className="text-xs text-navy-500 mb-3">Se mostrarán en un carrusel junto con la foto principal</p>
+
+                <div className="grid grid-cols-3 gap-2">
+                  {/* Existing gallery images */}
+                  {formData.gallery_images.map((img, idx) => (
+                    <div key={idx} className="relative group aspect-video rounded-lg overflow-hidden border border-navy-700">
+                      <img
+                        src={img}
+                        alt={`Foto ${idx + 2}`}
+                        className="w-full h-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFormData({
+                            ...formData,
+                            gallery_images: formData.gallery_images.filter((_, i) => i !== idx),
+                          });
+                        }}
+                        className="absolute top-1 right-1 p-1 bg-red-500/80 hover:bg-red-500 text-white rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                        title="Quitar imagen"
+                      >
+                        <XMarkIcon className="w-3 h-3" />
+                      </button>
+                      <div className="absolute bottom-0 inset-x-0 bg-black/50 text-center py-0.5">
+                        <span className="text-[10px] text-white/70">{idx + 2}</span>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Add button - same visual size as thumbnails */}
+                  <button
+                    type="button"
+                    onClick={() => setGalleryPickerOpen(true)}
+                    className="aspect-video rounded-lg border-2 border-dashed border-navy-600 hover:border-brand-500 flex flex-col items-center justify-center gap-1 transition-colors group"
+                  >
+                    <PlusIcon className="w-5 h-5 text-navy-500 group-hover:text-brand-400" />
+                    <span className="text-[10px] text-navy-500 group-hover:text-brand-400">Agregar</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Gallery Image Picker - opens ImageSelector modal directly */}
+              {galleryPickerOpen && (
+                <ImageSelector
+                  value=""
+                  onChange={(url) => {
+                    if (url && !formData.gallery_images.includes(url)) {
+                      setFormData({
+                        ...formData,
+                        gallery_images: [...formData.gallery_images, url],
+                      });
+                    }
+                    setGalleryPickerOpen(false);
+                  }}
+                  category="fleet"
+                  label=""
+                  description=""
+                  autoOpen
+                  onClose={() => setGalleryPickerOpen(false)}
+                />
+              )}
 
               {/* Descriptions */}
               <div className="grid grid-cols-1 gap-4">
