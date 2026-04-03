@@ -98,6 +98,34 @@ export default async function LocaleLayout({
             `,
           }}
         />
+        {/* Google Consent Mode V2 - MUST be before gtag.js */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', {
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied',
+                'analytics_storage': 'denied'
+              });
+            `,
+          }}
+        />
+        {/* gtag.js - Always loaded for Google modeled conversions */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-HN7PLHRVGY" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-HN7PLHRVGY');
+              gtag('config', 'AW-11193736446');
+            `,
+          }}
+        />
         <NextIntlClientProvider messages={messages}>
           <CurrencyProvider>
             <LoadingProvider>

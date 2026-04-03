@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { initializeAnalytics, trackPageView, hasAnalyticsConsent } from '@/lib/analytics';
+import { initializeAnalytics, trackPageView, hasAnalyticsConsent, grantAnalyticsConsent } from '@/lib/analytics';
 
 export default function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

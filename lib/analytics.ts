@@ -30,33 +30,34 @@ export function hasAnalyticsConsent(): boolean {
   return false;
 }
 
+// Update Google Consent Mode to 'granted' (called when user accepts cookies)
+export function grantAnalyticsConsent(): void {
+  if (typeof window === 'undefined' || !window.gtag) return;
+
+  window.gtag('consent', 'update', {
+    'ad_storage': 'granted',
+    'ad_user_data': 'granted',
+    'ad_personalization': 'granted',
+    'analytics_storage': 'granted',
+  });
+}
+
 // Initialize GA4 (called when consent is given)
+// gtag.js is already loaded in layout.tsx; this just updates consent and configures
 export function initializeAnalytics(): void {
   if (typeof window === 'undefined') return;
   if (!hasAnalyticsConsent()) return;
 
-  // Load gtag script if not already loaded
-  if (!document.querySelector(`script[src*="googletagmanager.com/gtag"]`)) {
-    const script = document.createElement('script');
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-    script.async = true;
-    script.defer = true; // Defer execution for better performance
-    document.head.appendChild(script);
+  // Ensure gtag function is available (already set up by layout inline script)
+  window.dataLayer = window.dataLayer || [];
+  if (!window.gtag) {
+    window.gtag = function gtag() {
+      window.dataLayer.push(arguments);
+    };
   }
 
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag() {
-    window.dataLayer.push(arguments);
-  };
-  window.gtag('js', new Date());
-  window.gtag('config', GA_MEASUREMENT_ID, {
-    page_path: window.location.pathname,
-    // Performance optimization: send minimal data on initial load
-    send_page_view: true,
-  });
-
-  // Configure Google Ads conversion tracking
-  window.gtag('config', GOOGLE_ADS_ID);
+  // Update consent mode to granted
+  grantAnalyticsConsent();
 }
 
 // Track page views (for SPA navigation)
@@ -104,14 +105,29 @@ export function trackContactFormSubmit(formType: string = 'contact'): void {
 }
 
 // Fire Google Ads conversion event on successful booking/quote submission
+// ALWAYS fires regardless of consent - uses temporary consent override
+// so Google Ads can optimize campaigns even without full cookie consent
 export function trackGoogleAdsConversion(locale: string): void {
   if (typeof window === 'undefined' || !window.gtag) return;
-  if (!hasAnalyticsConsent()) return;
+
+  // Temporarily grant ad consent so the conversion is always recorded
+  window.gtag('consent', 'update', {
+    'ad_storage': 'granted',
+    'ad_user_data': 'granted',
+  });
 
   const label = locale === 'es' ? GADS_CONVERSION_LABEL_ES : GADS_CONVERSION_LABEL_EN;
   window.gtag('event', 'conversion', {
     send_to: `${GOOGLE_ADS_ID}/${label}`,
   });
+
+  // Restore consent to previous state if user hadn't accepted analytics
+  if (!hasAnalyticsConsent()) {
+    window.gtag('consent', 'update', {
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+    });
+  }
 }
 
 // Track "Reserve Now" / "Book Now" button clicks
