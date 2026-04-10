@@ -2,7 +2,6 @@
 # https://www.vuelatour.com
 
 User-agent: *
-Allow: /
 Allow: /en/
 Allow: /es/
 
@@ -11,6 +10,10 @@ Disallow: /admin
 Disallow: /admin/
 Disallow: /_next/
 Disallow: /api/
+
+# Block all URLs with query parameters (prevents crawling of
+# /contact?destination=X&aircraft=Y&price=Z combinations)
+Disallow: /*?*
 
 # Sitemap location (use www version)
 Sitemap: https://www.vuelatour.com/sitemap.xml

@@ -13,25 +13,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     supabase.from('blog_posts').select('slug, updated_at').eq('is_published', true),
   ]);
 
-  // Static routes with locale-specific paths
-  const staticRoutes: { path: { es: string; en: string }; priority: number }[] = [
-    { path: { es: '', en: '' }, priority: 1 },
-    { path: { es: '/vuelos-charter', en: '/charter-flights' }, priority: 0.9 },
-    { path: { es: '/tours-aereos', en: '/air-tours' }, priority: 0.9 },
-    { path: { es: '/contacto', en: '/contact' }, priority: 0.8 },
-    { path: { es: '/about', en: '/about' }, priority: 0.8 },
-    { path: { es: '/fleet', en: '/fleet' }, priority: 0.7 },
-    { path: { es: '/faq', en: '/faq' }, priority: 0.7 },
-    { path: { es: '/blog', en: '/blog' }, priority: 0.7 },
-    { path: { es: '/privacidad', en: '/privacy' }, priority: 0.5 },
-    { path: { es: '/terminos', en: '/terms' }, priority: 0.5 },
-    { path: { es: '/cookies', en: '/cookies' }, priority: 0.5 },
+  // Static routes - paths match the actual filesystem structure
+  // (no localized slugs; both locales use the same URL paths)
+  const staticRoutes: { path: string; priority: number }[] = [
+    { path: '', priority: 1 },
+    { path: '/charter-flights', priority: 0.9 },
+    { path: '/air-tours', priority: 0.9 },
+    { path: '/contact', priority: 0.8 },
+    { path: '/about', priority: 0.8 },
+    { path: '/fleet', priority: 0.7 },
+    { path: '/faq', priority: 0.7 },
+    { path: '/blog', priority: 0.7 },
+    { path: '/privacy', priority: 0.5 },
+    { path: '/terms', priority: 0.5 },
+    { path: '/cookies', priority: 0.5 },
   ];
 
   // Generate sitemap entries for static routes (both locales)
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.flatMap((route) =>
     locales.map((locale) => ({
-      url: `${baseUrl}/${locale}${route.path[locale as keyof typeof route.path]}`,
+      url: `${baseUrl}/${locale}${route.path}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: route.priority,

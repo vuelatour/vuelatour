@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createBuildClient } from '@/lib/supabase/server';
 import BlogPostContent from './BlogPostContent';
 
 interface BlogPostPageProps {
@@ -52,6 +52,26 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       },
     },
   };
+}
+
+export async function generateStaticParams() {
+  const supabase = createBuildClient();
+
+  const { data: posts } = await supabase
+    .from('blog_posts')
+    .select('slug')
+    .eq('is_published', true);
+
+  const locales = ['es', 'en'];
+  const params: { locale: string; slug: string }[] = [];
+
+  posts?.forEach((post) => {
+    locales.forEach((locale) => {
+      params.push({ locale, slug: post.slug });
+    });
+  });
+
+  return params;
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {

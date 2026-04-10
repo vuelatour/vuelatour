@@ -35,10 +35,12 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/admin');
 
   if (!isValidPath) {
-    // Redirect to English home page
+    // Return 404 for unknown paths instead of redirecting to home.
+    // Rewrite to a non-existent path so Next.js serves not-found.tsx with 404 status.
+    // This tells Google to drop these URLs from the index instead of following redirects.
     const url = request.nextUrl.clone();
-    url.pathname = '/en';
-    return NextResponse.redirect(url);
+    url.pathname = '/en/_not-found';
+    return NextResponse.rewrite(url);
   }
 
   // Handle internationalized routes
