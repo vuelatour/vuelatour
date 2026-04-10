@@ -65,12 +65,30 @@ export default async function CharterFlightsPage({ params }: CharterFlightsPageP
   const { locale } = await params;
   const supabase = await createClient();
 
-  // Fetch only needed fields for better performance
-  const { data: destinations } = await supabase
-    .from('destinations')
-    .select('id, slug, name_es, name_en, description_es, description_en, flight_time, price_from, image_url, aircraft_pricing')
-    .eq('is_active', true)
-    .order('display_order', { ascending: true });
+  // Fetch destinations and SEO content in parallel
+  const [{ data: destinations }, { data: seoRows }] = await Promise.all([
+    supabase
+      .from('destinations')
+      .select('id, slug, name_es, name_en, description_es, description_en, flight_time, price_from, image_url, aircraft_pricing')
+      .eq('is_active', true)
+      .order('display_order', { ascending: true }),
+    supabase
+      .from('site_content')
+      .select('key, value_es, value_en')
+      .in('key', ['charter_seo_title', 'charter_seo_content']),
+  ]);
 
-  return <CharterFlightsContent locale={locale} destinations={destinations || []} />;
+  // Pick localized value for each key
+  const seoMap = Object.fromEntries(
+    (seoRows || []).map((row) => [row.key, locale === 'es' ? row.value_es : row.value_en])
+  );
+
+  return (
+    <CharterFlightsContent
+      locale={locale}
+      destinations={destinations || []}
+      seoTitle={seoMap.charter_seo_title || null}
+      seoContent={seoMap.charter_seo_content || null}
+    />
+  );
 }

@@ -65,12 +65,30 @@ export default async function AirToursPage({ params }: AirToursPageProps) {
   const { locale } = await params;
   const supabase = await createClient();
 
-  // Fetch only needed fields for better performance
-  const { data: tours } = await supabase
-    .from('air_tours')
-    .select('id, slug, name_es, name_en, description_es, description_en, duration, price_from, image_url, highlights_es, highlights_en, aircraft_pricing')
-    .eq('is_active', true)
-    .order('display_order', { ascending: true });
+  // Fetch tours and SEO content in parallel
+  const [{ data: tours }, { data: seoRows }] = await Promise.all([
+    supabase
+      .from('air_tours')
+      .select('id, slug, name_es, name_en, description_es, description_en, duration, price_from, image_url, highlights_es, highlights_en, aircraft_pricing')
+      .eq('is_active', true)
+      .order('display_order', { ascending: true }),
+    supabase
+      .from('site_content')
+      .select('key, value_es, value_en')
+      .in('key', ['tours_seo_title', 'tours_seo_content']),
+  ]);
 
-  return <AirToursContent locale={locale} tours={tours || []} />;
+  // Pick localized value for each key
+  const seoMap = Object.fromEntries(
+    (seoRows || []).map((row) => [row.key, locale === 'es' ? row.value_es : row.value_en])
+  );
+
+  return (
+    <AirToursContent
+      locale={locale}
+      tours={tours || []}
+      seoTitle={seoMap.tours_seo_title || null}
+      seoContent={seoMap.tours_seo_content || null}
+    />
+  );
 }

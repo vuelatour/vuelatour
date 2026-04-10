@@ -48,6 +48,8 @@ function getMinPassengers(aircraftPricing?: AircraftPricing[] | null): number {
 interface CharterFlightsContentProps {
   locale: string;
   destinations: Destination[];
+  seoTitle?: string | null;
+  seoContent?: string | null;
 }
 
 const translations = {
@@ -105,7 +107,7 @@ const translations = {
   },
 };
 
-export default function CharterFlightsContent({ locale, destinations }: CharterFlightsContentProps) {
+export default function CharterFlightsContent({ locale, destinations, seoTitle, seoContent }: CharterFlightsContentProps) {
   const t = translations[locale as keyof typeof translations] || translations.es;
   const { formatPrice, currency } = useCurrency();
 
@@ -236,6 +238,22 @@ export default function CharterFlightsContent({ locale, destinations }: CharterF
             )}
           </div>
         </section>
+
+        {/* SEO Content Section */}
+        {seoTitle && seoContent && (
+          <section className="py-16 md:py-20 bg-gray-50 dark:bg-navy-900/50">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">
+                {seoTitle}
+              </h2>
+              <div className="space-y-5 text-gray-700 dark:text-gray-300 leading-relaxed text-base md:text-lg">
+                {seoContent.split('\n\n').map((paragraph, idx) => (
+                  <p key={idx}>{paragraph}</p>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Why Choose Section */}
         <LazySection animation="fade" className="py-16 md:py-20">
