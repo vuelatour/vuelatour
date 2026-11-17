@@ -126,6 +126,11 @@ export default async function LocaleLayout({
             `,
           }}
         />
+        {/* Tourist.com offers widget (partner id 80648): floating "Offers" button on every public page.
+            Its look, language and offers are managed in the Tourist.com partner panel, not here.
+            Keep the ?id= in the URL (without it the script renders its built-in demo offers) and keep
+            partners.tourist.com in the CSP (script-src + connect-src) in next.config.js. */}
+        <script async src="https://partners.tourist.com/w/offers.js?id=80648" />
         <NextIntlClientProvider messages={messages}>
           <CurrencyProvider>
             <LoadingProvider>

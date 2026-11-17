@@ -133,3 +133,11 @@ green-500: #22c55e    // Status indicators (available today badge)
   ```
 - **Admin UI**: Editable in destinations/tours admin under "Precios" tab
 - **Display**: Shows pricing cards in destination detail sidebar
+
+### Third-party scripts & CSP
+- `next.config.js` sends a strict `Content-Security-Policy` on every route. A new external script only works if its host is added there: `script-src` for the script itself and `connect-src` for anything it fetches. Without that the browser blocks it silently (console error only, nothing on screen).
+- Third-party scripts for the public site go in `app/[locale]/layout.tsx` as a plain `<script async src>` (same as gtag). `app/admin/layout.tsx` is a separate root layout, so they never load in the admin panel.
+- **Tourist.com offers widget** (`https://partners.tourist.com/w/offers.js?id=80648`, added Nov 2026): floating "Offers" button + panel, rendered in a Shadow DOM element (`<tourist-offers>`) appended to `<html>`.
+  - It reads the partner id from its own `src` (`document.currentScript`) and then fetches `https://partners.tourist.com/w/offers/80648.json`. If the id is missing from the URL it shows its built-in demo data (a hotel), so never bundle, proxy or rename the script.
+  - Offers, colors, button style, side and language come from the Tourist.com partner panel (`config` in that JSON), not from this repo. With no offers, or with the widget disabled there, nothing is rendered.
+  - No cookies; it only writes the `sessionStorage` key `tw_seen`.
